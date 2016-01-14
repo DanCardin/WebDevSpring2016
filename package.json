@@ -1,35 +1,31 @@
 {
-  "name": "OpenShift-Sample-App",
+  "name": "WebDevelopment",
   "version": "1.0.0",
-  "description": "OpenShift Sample Application",
+  "description": "Web development application",
   "keywords": [
-    "OpenShift",
     "Node.js",
     "application",
-    "openshift"
+    "dancardin"
   ],
   "author": {
-    "name": "OpenShift",
-    "email": "ramr@example.org",
-    "url": "http://www.openshift.com/"
+    "name": "Daniel Cardin",
+    "email": "ddcardin@gmail.com",
+    "url": ""
   },
-  "homepage": "http://www.openshift.com/",
+  "homepage": "http://webdevelopment-cardindaniel.rhcloud.com/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/openshift/origin-server"
+    "url": "ssh://569802d789f5cffa9100011f@webdevelopment-cardindaniel.rhcloud.com/~/git/webdevelopment.git/"
   },
-
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
-    "express": "~3.4.4"
+    "express": "^3.4.8"
   },
   "devDependencies": {},
   "bundleDependencies": [],
-
   "private": true,
   "main": "server.js"
 }
