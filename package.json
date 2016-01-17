@@ -8,7 +8,12 @@
     "url": ""
   },
   "keywords": [],
-  "main": "server/server.js",
+  "main": "public/server.js",
+  "scripts": {
+    "tscserver": "cd server; tsc; true",
+    "tscclient": "cd client; tsc; true",
+    "start": "npm run tscserver; npm run tscclient; node public/server.js"
+  },
   "dependencies": {
     "angular2": "2.0.0-beta.1",
     "es6-promise": "3.0.2",
@@ -18,6 +23,9 @@
     "rxjs": "5.0.0-beta.0",
     "systemjs": "0.19.6",
     "zone.js": "0.5.10"
+  },
+  "devDependencies": {
+    "typescript": "^1.7.5"
   },
   "license": "ISC",
   "repository": {
