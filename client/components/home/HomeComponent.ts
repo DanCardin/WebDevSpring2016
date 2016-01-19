@@ -1,10 +1,9 @@
-import {Component, OnInit} from 'angular2/core';
+import {Component, OnInit} from "angular2/core";
 
 @Component({
-    selector: 'home',
-    template: `<h1>WaT cool though!!!</h1>`
+    selector: "home",
+    templateUrl: "public/assignment/home.html",
 })
-
 export class HomeComponent implements OnInit {
 
     constructor() { }
