@@ -10,8 +10,8 @@
   "keywords": [],
   "main": "public/server.js",
   "scripts": {
-    "tscserver": "cd server; tsc; true",
-    "tscclient": "cd client; tsc; true",
+    "tscserver": "cd server; rm tsconfig.json; mv ../.openshift/server/tsconfig.json .; tsc; true",
+    "tscclient": "cd client; rm tsconfig.json; mv ../.openshift/client/tsconfig.json .; tsc; true",
     "start": "npm run tscserver; npm run tscclient; node public/server.js"
   },
   "dependencies": {
