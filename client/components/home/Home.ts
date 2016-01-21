@@ -4,7 +4,7 @@ import {Component, OnInit} from "angular2/core";
     selector: "home",
     templateUrl: "public/assignment/home.html",
 })
-export class HomeComponent implements OnInit {
+export class Home implements OnInit {
 
     constructor() { }
 

@@ -4,7 +4,7 @@ import {Component, OnInit} from "angular2/core";
     selector: "register",
     templateUrl: "public/assignment/register.html",
 })
-export class RegisterComponent implements OnInit {
+export class Register implements OnInit {
 
     constructor() { }
 

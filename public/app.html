@@ -1,0 +1,28 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Form Maker</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li [class.active]="linkActive('/register')"><a [routerLink]="['Register']">Register</a></li>
+      <li [class.active]="linkActive('/login')"><a [routerLink]="['Login']">Login</a></li>
+      <li><a>Username</a></li>
+      <li><a>Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li [class.active]="linkActive('/home')"><a [routerLink]="['Home']">Home</a></li>
+        <li [class.active]="linkActive('/profile')"><a [routerLink]="['Profile']">Profile</a></li>
+        <li [class.active]="linkActive('/admin')"><a [routerLink]="['Admin']">Admin</a></li>
+        <li [class.active]="linkActive('/forms')"><a [routerLink]="['Forms']">Forms</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
