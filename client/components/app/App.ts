@@ -1,5 +1,5 @@
 import {Component} from "angular2/core";
-import {Location, RouteConfig, ROUTER_DIRECTIVES} from "angular2/router";
+import {RouteConfig, Router, ROUTER_DIRECTIVES} from "angular2/router";
 
 import {Admin} from "../admin/Admin";
 import {Forms} from "../forms/Forms";
@@ -10,7 +10,7 @@ import {Register} from "../register/Register";
 
 @RouteConfig([
     {path: "/admin", component: Admin, name: "Admin"},
-    {path: "/forms", component: Forms, name: "Forms"},
+    {path: "/forms/...", component: Forms, name: "Forms"},
     {path: "/home", component: Home, name: "Home", useAsDefault: true},
     {path: "/login", component: Login, name: "Login"},
     {path: "/profile", component: Profile, name: "Profile"},
@@ -19,14 +19,14 @@ import {Register} from "../register/Register";
 @Component({
     selector: "app",
     templateUrl: "public/app.html",
-    directives: [ROUTER_DIRECTIVES]
+    directives: [ROUTER_DIRECTIVES],
 })
 export class App {
-    constructor(private location: Location) {
-        this.location = location;
+    constructor(private router: Router) {
+        this.router = router;
     }
 
     linkActive(path: String) {
-        return this.location.path() === path;
+        return this.router.isRouteActive(this.router.generate([path]));
     }
 }
