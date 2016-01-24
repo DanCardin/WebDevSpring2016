@@ -1,0 +1,14 @@
+<ul class="nav nav-sidebar">
+  <li class="nav-item" [class.active]="linkActive('/Home')">
+    <a class="nav-link" [routerLink]="['Home']">Home</a>
+  </li>
+  <li class="nav-item" [class.active]="linkActive('/Profile')">
+    <a class="nav-link" [routerLink]="['Profile']">Profile</a>
+  </li>
+  <li class="nav-item" [class.active]="linkActive('/Admin')">
+    <a class="nav-link" [routerLink]="['Admin']">Admin</a>
+  </li>
+  <li class="nav-item" [class.active]="linkActive('/Forms')">
+    <a class="nav-link" [routerLink]="['Forms']">Forms</a>
+  </li>
+</ul>

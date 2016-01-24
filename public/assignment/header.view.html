@@ -1,0 +1,39 @@
+<nav class="navbar navbar-fixed-top navbar-light bg-faded">
+  <div class="navbar-header">
+    <a class="navbar-brand"  [routerLink]="['Home']">Form Maker</a>
+  </div>
+  <button class="navbar-toggler hidden-sm-up pull-xs-right"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbar">
+    &#9776;
+  </button>
+  <div class="collapse navbar-toggleable-xs" id="navbar">
+    <ul class="nav navbar-nav pull-sm-right">
+      <li class="nav-item" [class.active]="linkActive('/Register')">
+        <a class="nav-link" [routerLink]="['Register']">Register</a>
+      </li>
+      <li class="nav-item"[class.active]="linkActive('/Login')">
+        <a class="nav-link" [routerLink]="['Login']">Login</a>
+      </li>
+      <li class="nav-item"><a class="nav-link">Username</a></li>
+      <li class="nav-item"><a class="nav-link">Logout</a></li>
+
+      <div class="hidden-sm-up">
+        <br>
+        <li class="nav-item" [class.active]="linkActive('/Home')">
+          <a class="nav-link" [routerLink]="['Home']">Home</a>
+        </li>
+        <li class="nav-item" [class.active]="linkActive('/Profile')">
+          <a class="nav-link" [routerLink]="['Profile']">Profile</a>
+        </li>
+        <li class="nav-item" [class.active]="linkActive('/Admin')">
+          <a class="nav-link" [routerLink]="['Admin']">Admin</a>
+        </li>
+        <li class="nav-item" [class.active]="linkActive('/Forms')">
+          <a class="nav-link" [routerLink]="['Forms']">Forms</a>
+        </li>
+      </div>
+    </ul>
+  </div>
+</nav>
