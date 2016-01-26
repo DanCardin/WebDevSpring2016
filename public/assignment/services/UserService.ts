@@ -1,20 +1,29 @@
+import {Injectable} from "angular2/core";
+
 export interface User {
     id: string;
     username: string;
     password: string;
 }
 
+@Injectable()
 export class UserService {
-    private currentUsers: Array<User>;
+    private _currentUsers: Array<User>;
+    private _thisUser: User;
+
     constructor() {
-        this.currentUsers = [];
+        this._currentUsers = [];
+    }
+
+    setUser(user: User) {
+        this._thisUser = user;
     }
 
     findUserByUsernameAndPassword(
         username: string, password: string, callback: (User) => void
     ) {
         if (callback) {
-            this.currentUsers.forEach(user => {
+            this._currentUsers.forEach(user => {
                 if (user.username === username && user.password === password) {
                     callback(user);
                     return;
@@ -26,13 +35,13 @@ export class UserService {
 
     findAllUsers(callback: () => void) {
         if (callback) {
-            callback(this.currentUsers);
+            callback(this._currentUsers);
         }
     }
 
     createUser(user: User, callback: () => void) {
         // Adds a GUID: https://www.npmjs.com/package/guid
-        this.currentUsers.append(user);
+        this._currentUsers.append(user);
         if (callback) {
             callback(user);
         }
@@ -40,20 +49,20 @@ export class UserService {
 
     deleteUserById(guid: string, callback: () => void) {
         let index: int;
-        this.currentUsers.forEach((user, i) => {
+        this._currentUsers.forEach((user, i) => {
             if (user.id === guid) {
                 index = i;
                 return;
             }
         });
-        this.currentUsers.splice(index, 1);
+        this._currentUsers.splice(index, 1);
         if (callback) {
-            callback(this.currentUsers);
+            callback(this._currentUsers);
         }
     }
 
     updateUser(guid: string, updatedUser: User, callback: () => void) {
-        this.currentUsers.forEach(user => {
+        this._currentUsers.forEach(user => {
             if (user.id === guid) {
                 for (let key in user) {
                     if (key === "id") {

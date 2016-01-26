@@ -10,6 +10,8 @@ import {Register} from "app/register/register.component";
 import {Header} from "app/header/header.component";
 import {Sidebar} from "app/sidebar/sidebar.component";
 
+import {UserService} from "app/services/UserService";
+
 @RouteConfig([
     {path: "/admin", component: Admin, name: "Admin"},
     {path: "/forms/...", component: Forms, name: "Forms"},
@@ -19,8 +21,9 @@ import {Sidebar} from "app/sidebar/sidebar.component";
     {path: "/register", component: Register, name: "Register"},
 ])
 @Component({
-    directives: [RouterOutlet, Register, Header, Sidebar],
     selector: "app",
     templateUrl: "app/app/app.view.html",
+    directives: [RouterOutlet, Register, Header, Sidebar],
+    providers: [UserService],
 })
 export class FormBuilderApp {}

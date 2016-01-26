@@ -1,12 +1,13 @@
 <h1>Login</h1>
 
-<form (submit)="login($event)">
+<div role="form">
   <div class="form-group">
     <label class="control-label col-sm-3" for="username">
       Username:
     </label>
     <div class="col-sm-9">
       <input
+        #username
         type="text"
         id="username"
         class="form-control"
@@ -20,6 +21,7 @@
     </label>
     <div class="col-sm-9">
       <input
+        #password
         type="password"
         id="password"
         class="form-control"
@@ -29,7 +31,12 @@
   </div>
   <div class="form-group">
     <div class="col-sm-9 col-sm-offset-3">
-      <button type="submit" class="btn btn-default col-sm-12">Login</button>
+      <button
+        (click)="login(username.value, password.value)"
+        class="btn btn-default col-sm-12"
+      >
+        Login
+      </button>
     </div>
   </div>
-</form>
+</div>
