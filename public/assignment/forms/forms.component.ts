@@ -1,8 +1,8 @@
 import {Component, OnInit} from "angular2/core";
 import {RouteConfig, Router, ROUTER_DIRECTIVES, RouterOutlet} from "angular2/router";
 
-import {FormsList} from "../forms/forms-list/FormsList";
-import {FieldsList} from "../forms/fields-list/FieldsList";
+import {FormsList} from "app/forms/form-list/form-list.component";
+import {FieldsList} from "app/forms/form-fields/form-fields.component";
 
 @RouteConfig([
     {path: "/forms", component: FormsList, name: "FormsList", useAsDefault: true},
@@ -10,7 +10,7 @@ import {FieldsList} from "../forms/fields-list/FieldsList";
 ])
 @Component({
     selector: "forms",
-    templateUrl: "public/assignment/forms.html",
+    templateUrl: "app/forms/forms.view.html",
     directives: [ROUTER_DIRECTIVES],
 })
 export class Forms implements OnInit {

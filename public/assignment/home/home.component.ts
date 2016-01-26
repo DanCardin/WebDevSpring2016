@@ -2,11 +2,10 @@ import {Component, OnInit} from "angular2/core";
 
 @Component({
     selector: "home",
-    templateUrl: "public/assignment/home.html",
+    templateUrl: "app/home/home.view.html",
 })
 export class Home implements OnInit {
+    constructor() {}
 
-    constructor() { }
-
-    ngOnInit() { }
+    ngOnInit() {}
 }

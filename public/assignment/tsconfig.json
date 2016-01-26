@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "../public/app",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": false,

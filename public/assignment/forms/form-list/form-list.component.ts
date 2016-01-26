@@ -3,7 +3,7 @@ import {Router} from "angular2/router";
 
 @Component({
     selector: "forms-list",
-    templateUrl: "public/assignment/form-form.html",
+    templateUrl: "app/forms/form-list/form-list.view.html",
 })
 export class FormsList implements OnInit {
     constructor(router: Router) {

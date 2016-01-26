@@ -2,7 +2,7 @@ import {Component, OnInit} from "angular2/core";
 
 @Component({
     selector: "fields-list",
-    templateUrl: "public/assignment/form-fields.html",
+    templateUrl: "app/forms/form-fields/form-fields.view.html",
 })
 export class FieldsList implements OnInit {
     shown: boolean = false;

@@ -2,10 +2,9 @@ import {Component, OnInit} from "angular2/core";
 
 @Component({
     selector: "admin",
-    templateUrl: "public/assignment/admin.html",
+    templateUrl: "app/admin/admin.view.html",
 })
 export class Admin implements OnInit {
-
     constructor() { }
 
     ngOnInit() { }

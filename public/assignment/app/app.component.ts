@@ -1,14 +1,14 @@
 import {Component} from "angular2/core";
 import {RouteConfig, Router, RouterOutlet} from "angular2/router";
 
-import {Admin} from "../admin/Admin";
-import {Forms} from "../forms/Forms";
-import {Home} from "../home/Home";
-import {Login} from "../login/Login";
-import {Profile} from "../profile/Profile";
-import {Register} from "../register/Register";
-import {Header} from "../header/Header";
-import {Sidebar} from "../sidebar/Sidebar";
+import {Admin} from "app/admin/admin.component";
+import {Forms} from "app/forms/forms.component";
+import {Home} from "app/home/home.component";
+import {Login} from "app/login/login.component";
+import {Profile} from "app/profile/profile.component";
+import {Register} from "app/register/register.component";
+import {Header} from "app/header/header.component";
+import {Sidebar} from "app/sidebar/sidebar.component";
 
 @RouteConfig([
     {path: "/admin", component: Admin, name: "Admin"},
@@ -21,6 +21,6 @@ import {Sidebar} from "../sidebar/Sidebar";
 @Component({
     directives: [RouterOutlet, Register, Header, Sidebar],
     selector: "app",
-    templateUrl: "public/app.html",
+    templateUrl: "app/app/app.view.html",
 })
 export class FormBuilderApp {}
