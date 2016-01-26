@@ -1,5 +1,6 @@
 node_modules
-public/**/*.js
+public/**/*.component.js
 public/**/*.js.map
 *.log
 *.js
+!public/assignment/config.js
