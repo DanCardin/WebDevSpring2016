@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "../public",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "declaration": false,
@@ -11,6 +10,7 @@
     "sourceMap": true,
     "target": "ES5"
   },
+  "files": ["server.ts"],
   "exclude": [
     "node_modules"
   ]

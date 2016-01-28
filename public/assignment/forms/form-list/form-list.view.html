@@ -11,31 +11,31 @@
       </a></th>
     </tr>
     <tr>
-      <td><input type="text" placeholder="name"></td>
       <td>
-        <a><span class="fa fa-medsize fa-plus" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-ok" aria-hidden="true"></span></a>
+        <input
+          #name
+          type="text"
+          placeholder="name"
+        >
+      </td>
+      <td>
+        <a (click)="addForm(name)">
+          <span class="fa fa-medsize fa-plus" aria-hidden="true"></span>
+        </a>
+        <a (click)="updateForm()">
+          <span class="fa fa-medsize fa-check" aria-hidden="true"></span>
+        </a>
       </td>
     </tr>
-    <tr>
-      <td><a (click)="router.navigate(['/Forms/FieldsList'])">Registration Form</a></td>
+    <tr *ngFor="#form of forms">
+      <td><a (click)="router.navigate(['/Forms/FieldsList'])">{{form.name}}</a></td>
       <td>
-        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
-      </td>
-    </tr>
-    <tr>
-      <td><a (click)="router.navigate(['/Forms/FieldsList'])">Contact List</a></td>
-      <td>
-        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
-      </td>
-    </tr>
-    <tr>
-      <td><a (click)="router.navigate(['/Forms/FieldsList'])">To Do List</a></td>
-      <td>
-        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
+        <a (click)="deleteForm(form)">
+          <span class="fa fa-medsize fa-remove" aria-hidden="true"></span>
+        </a>
+        <a (click)="selectForm(form)">
+          <span class="fa fa-medsize fa-pencil" aria-hidden="true"></span>
+        </a>
       </td>
     </tr>
   </table>

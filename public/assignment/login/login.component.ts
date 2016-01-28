@@ -1,7 +1,7 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "app/services/UserService";
+import {User, UserService} from "../services/UserService";
 
 @Component({
     selector: "login",
@@ -10,7 +10,7 @@ import {User, UserService} from "app/services/UserService";
 export class Login {
     constructor(
         private _router: Router,
-        private _userService: UserService,
+        private _userService: UserService
     ) {
     }
 

@@ -1,9 +1,34 @@
+// import {Guid} from "Guid";
 import {Injectable} from "angular2/core";
 
-export interface User {
+export interface IUser {
     id: string;
-    username: string;
+    name: string;
     password: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+}
+
+export class User {
+    id: string;
+    name: string;
+    password: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+
+    constructor(
+        name: string, password: string, email: string,
+        firstName: string, lastName: string
+    ) {
+        this.id = null;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
 
 @Injectable()
@@ -13,10 +38,15 @@ export class UserService {
 
     constructor() {
         this._currentUsers = [];
+        this._thisUser = new User("Dan", "dan", "email", "Dan", "Cardin");
     }
 
     setUser(user: User) {
         this._thisUser = user;
+    }
+
+    getUser() {
+        return this._thisUser;
     }
 
     findUserByUsernameAndPassword(
@@ -24,7 +54,7 @@ export class UserService {
     ) {
         if (callback) {
             this._currentUsers.forEach(user => {
-                if (user.username === username && user.password === password) {
+                if (user.name === username && user.password === password) {
                     callback(user);
                     return;
                 }
@@ -33,22 +63,19 @@ export class UserService {
         }
     }
 
-    findAllUsers(callback: () => void) {
-        if (callback) {
-            callback(this._currentUsers);
-        }
+    findAllUsers(callback: (User) => void) {
+        callback(this._currentUsers);
     }
 
-    createUser(user: User, callback: () => void) {
-        // Adds a GUID: https://www.npmjs.com/package/guid
-        this._currentUsers.append(user);
-        if (callback) {
-            callback(user);
-        }
+    createUser(user: User, callback: (User) => void) {
+        // user.id = Guid.raw();
+        user.id = "asldkfjasdfjslkd";
+        this._currentUsers.push(user);
+        callback(user);
     }
 
-    deleteUserById(guid: string, callback: () => void) {
-        let index: int;
+    deleteUserById(guid: string, callback: (User) => void) {
+        let index: number;
         this._currentUsers.forEach((user, i) => {
             if (user.id === guid) {
                 index = i;
@@ -56,12 +83,10 @@ export class UserService {
             }
         });
         this._currentUsers.splice(index, 1);
-        if (callback) {
-            callback(this._currentUsers);
-        }
+        callback(this._currentUsers);
     }
 
-    updateUser(guid: string, updatedUser: User, callback: () => void) {
+    updateUser(guid: string, updatedUser, callback: (User) => void) {
         this._currentUsers.forEach(user => {
             if (user.id === guid) {
                 for (let key in user) {
@@ -70,14 +95,10 @@ export class UserService {
                     }
                     user[key] = updatedUser[key];
                 }
-                if (callback) {
-                    callback(user);
-                }
+                callback(user);
                 return;
             }
         });
-        if (callback) {
-            callback(null);
-        }
+        callback(null);
     }
 }

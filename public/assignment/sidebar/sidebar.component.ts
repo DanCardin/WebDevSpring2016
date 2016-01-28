@@ -1,7 +1,7 @@
 import {Component, OnInit} from "angular2/core";
 import {RouteConfig, Router, RouterLink, RouterOutlet} from "angular2/router";
 
-import {PathAware} from "app/path-aware.component";
+import {PathAware} from "../path-aware.component";
 
 @Component({
     directives: [RouterLink, RouterOutlet],
