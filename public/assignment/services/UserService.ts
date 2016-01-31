@@ -89,7 +89,7 @@ export class UserService {
         return new Promise<Array<User>>((resolve, reject) => {
             if (this._users.has(guid)) {
                 this._users.set(user.id, user);
-                return resolve(this._users[user.id]);
+                return resolve(this._users.get(user.id));
             }
             return reject("User doesn't exist");
         });

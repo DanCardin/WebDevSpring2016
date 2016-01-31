@@ -23,6 +23,13 @@ export class Form implements IForm {
 @Injectable()
 export class FormService {
     private _forms: Map<string, IForm>;
+    private _currentForm: IForm;
+    get currentForm() {
+        return this._currentForm;
+    }
+    set currentForm(form: IForm) {
+        this._currentForm = form;
+    }
 
     constructor() {
         this._forms = new Map<string, IForm>();
@@ -57,18 +64,15 @@ export class FormService {
     updateFormById(formId: string, newForm: Form): Promise<IForm> {
         return new Promise<IForm>((resolve, reject) => {
             if (this._forms.has(formId)) {
-                let form = this._forms[formId];
-                if (form.id === formId) {
-                    for (let key in form) {
-                        if (key === "id") {
-                            continue;
-                        }
+                let form = this._forms.get(formId);
+                Object.keys(form).forEach((key) => {
+                    if (key !== "id") {
                         form[key] = newForm[key];
                     }
-                    return resolve(form)
-                }
-                return reject("this form doesnt exist");
+                });
+                return resolve(form)
             }
+            return reject("this form doesnt exist");
         });
     }
 }

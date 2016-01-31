@@ -40,7 +40,21 @@ export class FormsList {
         name.value = "";
     }
 
-    updateForm() {
+    updateForm(name) {
+        let user = this._userService.currentUser;
+        this._formService
+            .updateFormById(
+                this._formService.currentForm.id,
+                new Form(name.value, user.id)
+            )
+            .then((form) => console.log('updated the form'))
+            .catch(error => console.log("Couldnt update the form"));
+
+        this._formService
+            .findAllFormsForUser(user.id)
+            .then((forms) => this.forms = forms);
+
+        name.value = "";
     }
 
     deleteForm(form: IForm) {
@@ -50,6 +64,8 @@ export class FormsList {
             .catch(error => console.log("Couldnt delete the form"));
     }
 
-    selectForm(form: IForm) {
+    selectForm(form: IForm, name) {
+        this._formService.currentForm = form;
+        name.value = this._formService.currentForm.name;
     }
 }
