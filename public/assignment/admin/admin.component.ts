@@ -14,10 +14,8 @@ export class Admin {
         private _userService: UserService
     ) {
         this.users = [];
-        Observable.fromPromise(
-        this._userService
-            .findAllUsers()
-        )
+        Observable
+            .fromPromise(this._userService.findAllUsers())
             .subscribe(users => this.users = users);
     }
 }

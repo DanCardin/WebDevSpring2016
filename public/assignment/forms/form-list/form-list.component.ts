@@ -1,5 +1,7 @@
 import {Component, OnInit} from "angular2/core";
 import {Router} from "angular2/router";
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/fromPromise';
 
 import {Form, IForm, FormService} from "../../services/FormService";
 import {User, UserService} from "../../services/UserService";
@@ -16,33 +18,25 @@ export class FormsList {
         private _userService: UserService,
         private router: Router
     ) {
-        let callback: (IForm) => void = (forms) => {
-            this.forms = forms;
-        };
-        this._formService.findAllFormsForUser(
-            this._userService.currentUser.id,
-            callback
-        );
+        Observable
+            .fromPromise(
+                this._formService.findAllFormsForUser(this._userService.currentUser.id)
+            )
+            .subscribe(forms => this.forms = forms);
     }
 
     addForm(name) {
         let user = this._userService.currentUser;
-        let form: Form = new Form(name.value);
-        let callback: (IForm) => void = (form) => {
-            console.log(`Created the form ${name.value}.`);
-        };
-        this._formService.createFormForUser(
-            user.id,
-            form,
-            callback
-        );
-        let callback2: (IForm) => void = (forms) => {
-            this.forms = forms;
-        };
-        this._formService.findAllFormsForUser(
-            user.id,
-            callback2
-        );
+        let form: Form = new Form(name.value, user.id);
+        this._formService
+            .createFormForUser(form)
+            .then(form => console.log(`Created the form ${name.value}.`))
+            .catch(error => console.log(error));
+
+        this._formService
+            .findAllFormsForUser(user.id)
+            .then((forms) => this.forms = forms);
+
         name.value = "";
     }
 
@@ -50,10 +44,10 @@ export class FormsList {
     }
 
     deleteForm(form: IForm) {
-        let callback: (Iform) => void = (forms) => {
-            this.forms = forms;
-        };
-        this._formService.deleteFormById(form.id, callback);
+        this._formService
+            .deleteFormById(form.id)
+            .then((forms) => this.forms = forms)
+            .catch(error => console.log("Couldnt delete the form"));
     }
 
     selectForm(form: IForm) {

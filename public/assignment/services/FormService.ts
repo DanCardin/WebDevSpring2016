@@ -12,58 +12,62 @@ export class Form implements IForm {
     name: string;
     userId: string;
 
-    constructor(name: string) {
-        this.id = null;
+    constructor(name: string, userId: string) {
+        // form.id = Guid.raw();
+        this.id = 'asdfsadf';
         this.name = name;
-        this.userId = null;
+        this.userId = userId;
     }
 }
 
 @Injectable()
 export class FormService {
-    private _forms: Array<IForm>;
+    private _forms: Map<string, IForm>;
 
     constructor() {
-        this._forms = [];
+        this._forms = new Map<string, IForm>();
+        let form = new Form("SomeForm", "asdflaskdjfasldkfj");
+        this._forms.set(form.id, form);
     }
 
-    createFormForUser(uid: string, form: IForm, callback: (IForm) => void) {
-        // form.id = Guid.raw();
-        form.id = "asdfasdf";
-        form.userId = uid;
-        this._forms.push(form);
-        callback(form);
-    }
-
-    findAllFormsForUser(uid: string, callback: (Form) => void) {
-        let userForms: Array<Form> = this._forms.filter((form) => {
-            return form.userId === uid;
+    createFormForUser(form: IForm): Promise<IForm> {
+        return new Promise<IForm>((resolve, reject) => {
+            this._forms.set(form.id, form);
+            return resolve(form);
         });
-        callback(userForms);
     }
 
-    deleteFormById(formId: string, callback: (Form) => void) {
-        let index: number;
-        this._forms.forEach((form, i) => {
-            if (form.id === formId) {
-                index = i;
-                return;
+    findAllFormsForUser(uid: string): Promise<Array<IForm>> {
+        return new Promise<Array<IForm>>((resolve, reject) => {
+            resolve(Array.from(this._forms.values()).filter((form) => {
+                return form.userId === uid;
+            }));
+        });
+    }
+
+    deleteFormById(formId: string): Promise<Array<IForm>> {
+        return new Promise<Array<IForm>>((resolve, reject) => {
+            if (this._forms.has(formId)) {
+                this._forms.delete(formId);
             }
+            resolve(Array.from(this._forms.values()));
         });
-        this._forms.splice(index, 1);
-        callback(this._forms);
     }
 
-    updateFormById(formId: string, newForm: Form, callback: (Form) => void) {
-        this._forms.forEach((form) => {
-            if (form.id === formId) {
-                for (let key in form) {
-                    if (key === "id") {
-                        continue;
+    updateFormById(formId: string, newForm: Form): Promise<IForm> {
+        return new Promise<IForm>((resolve, reject) => {
+            if (this._forms.has(formId)) {
+                let form = this._forms[formId];
+                if (form.id === formId) {
+                    for (let key in form) {
+                        if (key === "id") {
+                            continue;
+                        }
+                        form[key] = newForm[key];
                     }
-                    form[key] = newForm[key];
+                    return resolve(form)
                 }
-                callback(form);
+                return reject("this form doesnt exist");
             }
         });
     }
