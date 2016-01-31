@@ -15,16 +15,15 @@ export class Login {
     }
 
     login(username: string, password: string) {
-        this._userService.findUserByUsernameAndPassword(
-            username,
-            password,
-            (user: User) => {
-                if (user) {
-                    console.log("logged in", user);
-                    this._userService.setUser(user);
-                    this._router.navigate(["/Profile"]);
-                }
-            }
-        );
+        this._userService
+            .findUserByUsernameAndPassword(username, password)
+            .then((user) => {
+                console.log("logged in", user);
+                this._userService.currentUser = user;
+                this._router.navigate(["/Profile"]);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 }

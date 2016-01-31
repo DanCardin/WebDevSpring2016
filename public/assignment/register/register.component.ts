@@ -16,17 +16,18 @@ export class Register {
 
     login(username: string, password: string, verify: string, email: string) {
         if (password === verify) {
-            let user: User = {
-                id: null,
-                name: username,
-                password: password,
-                email: email,
-            };
-            let fn = (user) => {
-                this._userService.setUser(user);
-                this._router.navigate(["/Profile"]);
-            };
-            this._userService.createUser(user, fn);
+            let user: User = new User(
+                username,
+                password,
+                email
+            );
+            this._userService
+                .createUser(user)
+                .then((user) => {
+                    this._userService.currentUser = user;
+                    this._router.navigate(["/Profile"]);
+                })
+                .catch(error => console.log(error));
         }
     }
 }

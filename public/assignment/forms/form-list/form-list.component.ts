@@ -20,13 +20,13 @@ export class FormsList {
             this.forms = forms;
         };
         this._formService.findAllFormsForUser(
-            this._userService.getUser().id,
+            this._userService.currentUser.id,
             callback
         );
     }
 
     addForm(name) {
-        let user = this._userService.getUser();
+        let user = this._userService.currentUser;
         let form: Form = new Form(name.value);
         let callback: (IForm) => void = (form) => {
             console.log(`Created the form ${name.value}.`);

@@ -20,17 +20,12 @@ export class Profile {
            lastName: string,
            email: string
     ) {
-        let thisUser = this._userService.getUser();
-        let update = {
-            name: username,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-        };
-        let fn = (user) => void {
-        };
-        this._userService.updateUser(thisUser.id, update, fn);
+        console.log('updating')
+        let update = new User(username, password, email, firstName, lastName);
+        this._userService
+            .updateUser(this._userService.currentUser.id, update)
+            .then(user => console.log("Updated"))
+            .catch(error => console.log(error));
         this._router.navigate(["/Profile"]);
     }
 }

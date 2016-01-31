@@ -8,97 +8,90 @@ export interface IUser {
     email: string;
     firstName: string;
     lastName: string;
+    role: string;
 }
 
-export class User {
+export class User implements IUser {
     id: string;
     name: string;
     password: string;
     email: string;
     firstName: string;
     lastName: string;
+    role: string;
 
     constructor(
         name: string, password: string, email: string,
-        firstName: string, lastName: string
+        firstName: string = "", lastName: string = ""
     ) {
-        this.id = null;
+        this.id = "asdflaskdjfasldkfj";
         this.name = name;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = "Student";
     }
 }
 
 @Injectable()
 export class UserService {
-    private _currentUsers: Array<User>;
-    private _thisUser: User;
+    private _users: Map<string, User>;
+    private _currentUser: User;
+    get currentUser(): User {
+        return this._currentUser;
+    }
+    set currentUser(user: User) {
+        this._currentUser = user;
+    }
 
     constructor() {
-        this._currentUsers = [];
-        this._thisUser = new User("Dan", "dan", "email", "Dan", "Cardin");
+        this._users = new Map<string, User>();
+        let user = new User("Dan", "dan", "email", "Dan", "Cardin");
+        this._currentUser = user;
+        this._users.set(user.id, user);
     }
 
-    setUser(user: User) {
-        this._thisUser = user;
-    }
-
-    getUser() {
-        return this._thisUser;
-    }
-
-    findUserByUsernameAndPassword(
-        username: string, password: string, callback: (User) => void
-    ) {
-        if (callback) {
-            this._currentUsers.forEach(user => {
+    findUserByUsernameAndPassword(username: string, password: string): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
+            this._users.forEach(function(user) {
                 if (user.name === username && user.password === password) {
-                    callback(user);
-                    return;
+                    return resolve(user);
                 }
             });
-            callback(null);
-        }
-    }
-
-    findAllUsers(callback: (User) => void) {
-        callback(this._currentUsers);
-    }
-
-    createUser(user: User, callback: (User) => void) {
-        // user.id = Guid.raw();
-        user.id = "asldkfjasdfjslkd";
-        this._currentUsers.push(user);
-        callback(user);
-    }
-
-    deleteUserById(guid: string, callback: (User) => void) {
-        let index: number;
-        this._currentUsers.forEach((user, i) => {
-            if (user.id === guid) {
-                index = i;
-                return;
-            }
+            return reject("No user");
         });
-        this._currentUsers.splice(index, 1);
-        callback(this._currentUsers);
     }
 
-    updateUser(guid: string, updatedUser, callback: (User) => void) {
-        this._currentUsers.forEach(user => {
-            if (user.id === guid) {
-                for (let key in user) {
-                    if (key === "id") {
-                        continue;
-                    }
-                    user[key] = updatedUser[key];
-                }
-                callback(user);
-                return;
-            }
+    findAllUsers(): Promise<Array<User>> {
+        return new Promise<Array<User>>((resolve, reject) => {
+            return resolve(Array.from(this._users.values()));
         });
-        callback(null);
+    }
+
+    createUser(user: User): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
+            // user.id = Guid.raw();
+            user.id = "asldkfjasdfjslkd";
+            this._users.set(user.id, user);
+            return resolve(user);
+        });
+    }
+
+    deleteUserById(guid: string): Promise<Array<User>> {
+        return new Promise<Array<User>>((resolve, reject) => {
+            this._users.delete(guid);
+            return resolve(Array.from(this._users.values()));
+        });
+    }
+
+    updateUser(guid: string, user: User): Promise<Array<User>> {
+        return new Promise<Array<User>>((resolve, reject) => {
+            if (this._users.has(guid)) {
+                this._users.set(user.id, user);
+                return resolve(this._users[user.id]);
+            }
+            return reject("User doesn't exist");
+        });
     }
 }
