@@ -6,7 +6,7 @@ import {PathAware} from "../path-aware.component";
 @Component({
     directives: [RouterLink, RouterOutlet],
     selector: "sidebar",
-    templateUrl: "app/sidebar/sidebar.view.html",
+    templateUrl: "app/views/sidebar/sidebar.view.html",
 })
 export class Sidebar extends PathAware {
     constructor(router: Router) {

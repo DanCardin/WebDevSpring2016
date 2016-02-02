@@ -1,11 +1,11 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../services/UserService";
+import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "register",
-    templateUrl: "app/register/register.view.html",
+    templateUrl: "app/views/register/register.view.html",
 })
 export class Register {
     constructor(

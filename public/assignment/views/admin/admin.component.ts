@@ -2,11 +2,11 @@ import {Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 
-import {User, UserService} from "../services/UserService";
+import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "admin",
-    templateUrl: "app/admin/admin.view.html",
+    templateUrl: "app/views/admin/admin.view.html",
 })
 export class Admin {
     private users: Array<User> = [];

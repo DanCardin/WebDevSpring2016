@@ -1,11 +1,11 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../services/UserService";
+import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "login",
-    templateUrl: "app/login/login.view.html",
+    templateUrl: "app/views/login/login.view.html",
 })
 export class Login {
     constructor(

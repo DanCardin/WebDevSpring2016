@@ -1,11 +1,11 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../services/UserService";
+import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "profile",
-    templateUrl: "app/profile/profile.view.html",
+    templateUrl: "app/views/profile/profile.view.html",
 })
 export class Profile {
     constructor(
