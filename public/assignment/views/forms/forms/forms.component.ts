@@ -12,12 +12,14 @@ import {User, UserService} from "../../../services/UserService";
 })
 export class FormsList {
     forms: Array<IForm> = [];
+    currentForm: IForm;
 
     constructor(
         private _formService: FormService,
         private _userService: UserService,
         private router: Router
     ) {
+        this._currentForm = null;
         Observable
             .fromPromise(
                 this._formService.findAllFormsForUser(this._userService.currentUser._id)
@@ -44,7 +46,7 @@ export class FormsList {
         let user = this._userService.currentUser;
         this._formService
             .updateFormById(
-                this._formService.currentForm._id,
+                this.currentForm._id,
                 new Form(name.value, user._id)
             )
             .then((form) => console.log('updated the form'))
@@ -54,6 +56,7 @@ export class FormsList {
             .findAllFormsForUser(user._id)
             .then((forms) => this.forms = forms);
 
+        this.currentForm = null;
         name.value = "";
     }
 
@@ -65,7 +68,7 @@ export class FormsList {
     }
 
     selectForm(form: IForm, name) {
-        this._formService.currentForm = form;
-        name.value = this._formService.currentForm.name;
+        this.currentForm = form;
+        name.value = this.currentForm.name;
     }
 }

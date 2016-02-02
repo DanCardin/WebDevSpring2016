@@ -24,13 +24,6 @@ export class Form implements IForm {
 @Injectable()
 export class FormService {
     private _forms: Map<string, IForm>;
-    private _currentForm: IForm;
-    get currentForm() {
-        return this._currentForm;
-    }
-    set currentForm(form: IForm) {
-        this._currentForm = form;
-    }
 
     constructor() {
         this._forms = new Map<string, IForm>();
