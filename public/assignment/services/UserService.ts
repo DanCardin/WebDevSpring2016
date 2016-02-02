@@ -104,7 +104,9 @@ export class UserService {
     updateUser(guid: string, user: User): Promise<User> {
         return new Promise<User>((resolve, reject) => {
             if (this._users.has(guid)) {
-                this._users.set(user._id, user);
+                user._id = guid;
+                this._users.set(guid, user);
+                this.currentUser = user;
                 return resolve(this._users.get(user._id));
             }
             return reject("User doesn't exist");

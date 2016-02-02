@@ -12,6 +12,7 @@
         id="username"
         class="form-control"
         placeholder="Enter Username"
+        [value]="userService.currentUser.name"
       >
     </div>
   </div>
@@ -26,6 +27,7 @@
         id="password"
         class="form-control"
         placeholder="*******"
+        [value]="userService.currentUser.password"
       >
     </div>
   </div>
@@ -40,6 +42,7 @@
         id="firstname"
         class="form-control"
         placeholder="First"
+        [value]="userService.currentUser.firstName"
       >
     </div>
   </div>
@@ -54,6 +57,7 @@
         id="lastname"
         class="form-control"
         placeholder="Last"
+        [value]="userService.currentUser.lastName"
       >
     </div>
   </div>
@@ -68,6 +72,7 @@
         id="email"
         class="form-control"
         placeholder="example@example.com"
+        [value]="userService.currentUser.email"
       >
     </div>
   </div>

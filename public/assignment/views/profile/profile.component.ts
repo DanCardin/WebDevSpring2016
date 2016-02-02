@@ -8,10 +8,12 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "app/views/profile/profile.view.html",
 })
 export class Profile {
+    userService: UserService;
     constructor(
         private _router: Router,
-        private _userService: UserService
+        userService: UserService
     ) {
+        this.userService = userService;
     }
 
     update(username: string,
@@ -22,8 +24,8 @@ export class Profile {
     ) {
         console.log('updating')
         let update = new User(username, password, email, firstName, lastName);
-        this._userService
-            .updateUser(this._userService.currentUser._id, update)
+        this.userService
+            .updateUser(this.userService.currentUser._id, update)
             .then(user => console.log("Updated"))
             .catch(error => console.log(error));
         this._router.navigate(["/Profile"]);
