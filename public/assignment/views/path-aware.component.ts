@@ -1,7 +1,7 @@
 import {Router} from "angular2/router";
 
 export class PathAware {
-    constructor(private router: Router) {
+    constructor(protected router: Router) {
         this.router = router;
     }
 

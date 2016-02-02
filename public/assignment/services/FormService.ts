@@ -1,20 +1,21 @@
-// import {Guid} from "guid";
 import {Injectable} from "angular2/core";
 
 export interface IForm {
-    id: string;
+    _id: string;
     userId: string;
     name: string;
 }
 
 export class Form implements IForm {
-    id: string;
+    _id: string;
     name: string;
     userId: string;
 
-    constructor(name: string, userId: string) {
-        // form.id = Guid.raw();
-        this.id = 'asdfsadf';
+    constructor(name: string, userId: string, id: string=null) {
+        if (id === null) {
+            id = (new Date).getTime().toString();
+        }
+        this._id = id;
         this.name = name;
         this.userId = userId;
     }
@@ -33,13 +34,19 @@ export class FormService {
 
     constructor() {
         this._forms = new Map<string, IForm>();
-        let form = new Form("SomeForm", "asdflaskdjfasldkfj");
-        this._forms.set(form.id, form);
+        let forms = [
+            {_id: "000", title: "Contacts", userId: "123"},
+            {_id: "010", title: "ToDo",     userId: "123"},
+            {_id: "020", title: "CDs",      userId: "234"},
+        ]
+        for (let form of forms) {
+            this._forms.set(form._id, new Form(form.title, form.userId, form._id));
+        }
     }
 
     createFormForUser(form: IForm): Promise<IForm> {
         return new Promise<IForm>((resolve, reject) => {
-            this._forms.set(form.id, form);
+            this._forms.set(form._id, form);
             return resolve(form);
         });
     }

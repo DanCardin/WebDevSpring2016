@@ -1,8 +1,7 @@
-// import {Guid} from "Guid";
 import {Injectable} from "angular2/core";
 
 export interface IUser {
-    id: string;
+    _id: string;
     name: string;
     password: string;
     email: string;
@@ -12,7 +11,7 @@ export interface IUser {
 }
 
 export class User implements IUser {
-    id: string;
+    _id: string;
     name: string;
     password: string;
     email: string;
@@ -22,15 +21,23 @@ export class User implements IUser {
 
     constructor(
         name: string, password: string, email: string,
-        firstName: string = "", lastName: string = ""
+        firstName: string="", lastName: string="",
+        id: string=null
     ) {
-        this.id = "asdflaskdjfasldkfj";
+        if (id === null) {
+            id = (new Date).getTime().toString();
+        }
+        this._id = id;
         this.name = name;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = "Student";
+        this.role = "admin";
+    }
+
+    get isAdmin(): boolean {
+        return this.role === "admin";
     }
 }
 
@@ -47,9 +54,20 @@ export class UserService {
 
     constructor() {
         this._users = new Map<string, User>();
-        let user = new User("Dan", "dan", "email", "Dan", "Cardin");
-        this._currentUser = user;
-        this._users.set(user.id, user);
+        let users = [
+            {_id: "123", firstName: "Alice",  lastName: "Wonderland",username: "alice",  password: "alice"},
+            {_id: "234", firstName: "Bob",    lastName: "Hope",      username: "bob",    password: "bob"},
+            {_id: "345", firstName: "Charlie",lastName: "Brown",     username: "charlie",password: "charlie"},
+            {_id: "456", firstName: "Dan",    lastName: "Craig",     username: "dan",    password: "dan"},
+            {_id: "567", firstName: "Edward", lastName: "Norton",    username: "ed",     password: "ed"}
+        ]
+        for (let user of users) {
+            this._users.set(
+                user._id,
+                new User(user.username, user.password, "", user.firstName, user.lastName, user._id)
+            );
+        }
+        this._currentUser = this._users.get("123");
     }
 
     findUserByUsernameAndPassword(username: string, password: string): Promise<User> {
@@ -71,9 +89,7 @@ export class UserService {
 
     createUser(user: User): Promise<User> {
         return new Promise<User>((resolve, reject) => {
-            // user.id = Guid.raw();
-            user.id = "asldkfjasdfjslkd";
-            this._users.set(user.id, user);
+            this._users.set(user._id, user);
             return resolve(user);
         });
     }
@@ -85,11 +101,11 @@ export class UserService {
         });
     }
 
-    updateUser(guid: string, user: User): Promise<Array<User>> {
-        return new Promise<Array<User>>((resolve, reject) => {
+    updateUser(guid: string, user: User): Promise<User> {
+        return new Promise<User>((resolve, reject) => {
             if (this._users.has(guid)) {
-                this._users.set(user.id, user);
-                return resolve(this._users.get(user.id));
+                this._users.set(user._id, user);
+                return resolve(this._users.get(user._id));
             }
             return reject("User doesn't exist");
         });

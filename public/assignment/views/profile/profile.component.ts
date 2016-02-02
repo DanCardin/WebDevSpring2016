@@ -23,7 +23,7 @@ export class Profile {
         console.log('updating')
         let update = new User(username, password, email, firstName, lastName);
         this._userService
-            .updateUser(this._userService.currentUser.id, update)
+            .updateUser(this._userService.currentUser._id, update)
             .then(user => console.log("Updated"))
             .catch(error => console.log(error));
         this._router.navigate(["/Profile"]);
