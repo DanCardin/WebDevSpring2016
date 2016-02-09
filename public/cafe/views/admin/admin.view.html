@@ -1,0 +1,44 @@
+<h1>Admin</h1>
+
+<h2>Users</h2>
+
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tr>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Username
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Password
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Role
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Action
+      </a></th>
+    </tr>
+    <tr>
+      <td><input type="text" placeholder="Username"></td>
+      <td><input type="text" placeholder="Password"></td>
+      <td><input type="text" placeholder="role1, role2"></td>
+      <td>
+        <a><span class="fa fa-medsize fa-plus" aria-hidden="true"></span></a>
+        <a><span class="fa fa-medsize fa-ok" aria-hidden="true"></span></a>
+      </td>
+    </tr>
+    <tr *ngFor="#user of users">
+      <td>{{user?.name}}</td>
+      <td></td>
+      <td>{{user?.role}}</td>
+      <td>
+        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
+        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -1,0 +1,70 @@
+<h1>Register</h1>
+
+<div role="form">
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="username">
+      Username:
+    </label>
+    <div class="col-sm-9">
+      <input
+        #username
+        type="text"
+        id="username"
+        class="form-control"
+        placeholder="Enter Username"
+      >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="password">
+      Password:
+    </label>
+    <div class="col-sm-9">
+      <input
+        #password
+        type="password"
+        id="password"
+        class="form-control"
+        placeholder="*******"
+      >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="verifypassword">
+      Verify:
+    </label>
+    <div class="col-sm-9">
+      <input
+        #verify
+        type="password"
+        id="verifypassword"
+        class="form-control"
+        placeholder="*******"
+      >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="email">
+      Email:
+    </label>
+    <div class="col-sm-9">
+      <input
+        #email
+        type="email"
+        id="email"
+        class="form-control"
+        placeholder="example@example.com"
+      >
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-9 col-sm-offset-3">
+      <a
+        (click)="login(username.value, password.value, verify.value, email.value)"
+        class="btn btn-primary col-sm-12"
+      >
+        Register
+      </a>
+    </div>
+  </div>
+</div>
