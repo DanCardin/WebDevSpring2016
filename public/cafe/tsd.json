@@ -2,8 +2,8 @@
   "version": "v4",
   "repo": "borisyankov/DefinitelyTyped",
   "ref": "master",
-  "path": "typings",
-  "bundle": "typings/tsd.d.ts",
+  "path": "release/typings",
+  "bundle": "release/typings/tsd.d.ts",
   "installed": {
     "mime/mime.d.ts": {
       "commit": "138ad74b9e8e6c08af7633964962835add4c91e2"

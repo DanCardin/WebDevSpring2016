@@ -3,19 +3,19 @@ import {Router} from "angular2/router";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
 
-import {Form, IForm, FormService} from "../../../services/FormService";
+import {Form, IForm, RoomService} from "../../../services/RoomService";
 import {User, UserService} from "../../../services/UserService";
 
 @Component({
     selector: "forms-list",
-    templateUrl: "app/views/forms/forms/forms.view.html",
+    templateUrl: "cafe/views/forms/forms/forms.view.html",
 })
 export class FormsList {
     forms: Array<IForm> = [];
     currentForm: IForm;
 
     constructor(
-        private _formService: FormService,
+        private _formService: RoomService,
         private _userService: UserService,
         private router: Router
     ) {

@@ -23,8 +23,8 @@ import {UserService} from "../../services/UserService";
 ])
 @Component({
     selector: "cafe",
-    templateUrl: "cafe/views/cafe.view.html",
-    directives: [RouterOutlet, Register, Header, Sidebar],
+    templateUrl: "cafe/views/cafe/cafe.view.html",
+    directives: [RouterOutlet, Register, Header],
     providers: [RoomService, UserService],
 })
 export class CafeComponent {}

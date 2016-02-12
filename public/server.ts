@@ -16,7 +16,7 @@ let cafe = (req: express.Request, res: express.Response) => {
     res.sendFile(path.resolve(__dirname, "./cafe/index.html"));
 };
 
-app.get("/cafe", cafe);
+app.get("/cafe/*", cafe);
 app.get("/*", assignment);
 
 let server = app.listen(port, ipaddress, function() {

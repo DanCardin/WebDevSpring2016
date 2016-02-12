@@ -8,6 +8,6 @@
         }
     });
     System
-        .import('app/bootstrap')
+        .import('app/release/bootstrap')
         .then(null, console.error.bind(console));
 })();

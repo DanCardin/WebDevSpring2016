@@ -10,9 +10,10 @@
   "keywords": [],
   "main": "public/server.js",
   "scripts": {
-    "server": "cd public; tsc; true",
-    "client": "cd public/assignment; tsc; true",
-    "start": "npm run server; npm run client; node public/server.js"
+    "cafe": "gulp cafe",
+    "assignment": "gulp assignment",
+    "server": "gulp server",
+    "start": "gulp run; node public/server.js"
   },
   "dependencies": {
     "angular2": "2.0.0-beta.1",
@@ -20,7 +21,10 @@
     "es6-shim": "0.33.3",
     "express": "4.13.3",
     "guid": "0.0.12",
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^2.11.0",
     "lil-uuid": "^0.1.1",
+    "merge2": "^1.0.1",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.0",
     "systemjs": "0.19.6",
