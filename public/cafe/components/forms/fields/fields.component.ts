@@ -5,7 +5,7 @@ import {User, UserService} from "../../../services/UserService";
 
 @Component({
     selector: "fields-list",
-    templateUrl: "cafe/views/forms/fields/fields.view.html",
+    templateUrl: "cafe/components/forms/fields/fields.view.html",
 })
 export class FieldsList {
     shown: boolean = false;

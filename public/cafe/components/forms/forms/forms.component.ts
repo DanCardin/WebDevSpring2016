@@ -8,7 +8,7 @@ import {User, UserService} from "../../../services/UserService";
 
 @Component({
     selector: "forms-list",
-    templateUrl: "cafe/views/forms/forms/forms.view.html",
+    templateUrl: "cafe/components/forms/forms/forms.view.html",
 })
 export class FormsList {
     forms: Array<IForm> = [];
@@ -19,7 +19,7 @@ export class FormsList {
         private _userService: UserService,
         private router: Router
     ) {
-        this._currentForm = null;
+        this.currentForm = null;
         Observable
             .fromPromise(
                 this._formService.findAllFormsForUser(this._userService.currentUser._id)

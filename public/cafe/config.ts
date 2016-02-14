@@ -1,4 +1,4 @@
-(function () {
+(function() {
     System.config({
         packages: {
             app: {
@@ -8,7 +8,6 @@
         }
     });
     System
-        .import('/app/release/bootstrap')
+        .import('cafe/bootstrap')
         .then(null, console.error.bind(console));
 })();
-//# sourceMappingURL=config.js.map

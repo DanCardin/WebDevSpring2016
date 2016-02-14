@@ -10,7 +10,7 @@ import {FieldsList} from "./fields/fields.component";
 ])
 @Component({
     selector: "forms",
-    templateUrl: "cafe/views/forms/forms.view.html",
+    templateUrl: "cafe/components/forms/forms.view.html",
     directives: [ROUTER_DIRECTIVES],
 })
 export class Forms {

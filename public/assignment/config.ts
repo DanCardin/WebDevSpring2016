@@ -1,4 +1,4 @@
-(function () {
+(function() {
     System.config({
         packages: {
             app: {
@@ -11,4 +11,3 @@
         .import('/app/release/bootstrap')
         .then(null, console.error.bind(console));
 })();
-//# sourceMappingURL=config.js.map

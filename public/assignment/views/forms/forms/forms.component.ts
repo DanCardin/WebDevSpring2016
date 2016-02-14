@@ -19,7 +19,7 @@ export class FormsList {
         private _userService: UserService,
         private router: Router
     ) {
-        this._currentForm = null;
+        this.currentForm = null;
         Observable
             .fromPromise(
                 this._formService.findAllFormsForUser(this._userService.currentUser._id)

@@ -14,7 +14,7 @@ import {FormService} from "./services/FormService";
 import {UserService} from "./services/UserService";
 
 @RouteConfig([
-    {path: "/admin", component: Admin, name: "Admin"},
+    {path: '/admin', component: Admin, name: "Admin"},
     {path: "/forms/...", component: Forms, name: "Forms"},
     {path: "/home", component: Home, name: "Home", useAsDefault: true},
     {path: "/login", component: Login, name: "Login"},
