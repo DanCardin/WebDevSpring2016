@@ -12,8 +12,20 @@ import {SearchService} from "../../services/SearchService";
   selector: 'search',
   template: `
     <div role="search" class="dropdown form-group">
-      <input [ngFormControl]="term" type="text" placeholder="Search" class="form-control">
-      <div>
+      <input
+        [ngFormControl]="term"
+        type="text"
+        placeholder="Search"
+        class="form-control dropdown-toggle"
+        id="searchDropdown"
+        data-toggle="dropdown"
+      >
+      <div
+        class="dropdown-menu"
+        aria-labelledby="searchDropdown"
+        [hidden]="!hasResults(items | async)"
+      >
+        {{ numItems }} Results:
         <ul>
           <li *ngFor="#item of items | async">{{ item }}</li>
         </ul>
@@ -24,11 +36,18 @@ import {SearchService} from "../../services/SearchService";
 export class Search {
     items: Observable<Array<string>>;
     term = new Control();
+    numItems = 0;
 
     constructor(private searchService: SearchService) {
-        this.items = this.term.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap(term => this.searchService.search(term))
+        this.items = searchService.search(this.term.valueChanges)
+    }
+
+    hasResults(results) {
+        if (results) {
+            this.numItems = results.length;
+            return this.numItems > 0;
+        }
+        this.numItems = 0;
+        return false;
     }
 }
