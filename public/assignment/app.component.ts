@@ -23,7 +23,7 @@ import {UserService} from "./services/UserService";
 ])
 @Component({
     selector: "app",
-    templateUrl: "app/app.view.html",
+    templateUrl: "assignment/app.view.html",
     directives: [RouterOutlet, Register, Header, Sidebar],
     providers: [FormService, UserService],
 })

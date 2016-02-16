@@ -1,7 +1,7 @@
 (function() {
     System.config({
         packages: {
-            app: {
+            cafe: {
                 format: 'register',
                 defaultExtension: 'js'
             }

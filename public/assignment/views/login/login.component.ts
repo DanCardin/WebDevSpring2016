@@ -5,7 +5,7 @@ import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "login",
-    templateUrl: "app/views/login/login.view.html",
+    templateUrl: "assignment/views/login/login.view.html",
 })
 export class Login {
     constructor(

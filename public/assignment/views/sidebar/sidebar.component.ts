@@ -8,7 +8,7 @@ import {User, UserService} from "../../services/UserService";
 @Component({
     directives: [RouterLink, RouterOutlet],
     selector: "sidebar",
-    templateUrl: "app/views/sidebar/sidebar.view.html",
+    templateUrl: "assignment/views/sidebar/sidebar.view.html",
 })
 export class Sidebar extends PathAware {
     userService: UserService;

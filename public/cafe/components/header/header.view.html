@@ -11,10 +11,7 @@
   <div class="collapse navbar-toggleable-xs" id="navbar">
     <ul class="nav navbar-nav pull-sm-right">
       <li class="nav-item">
-        <a
-          class="nav-link"
-          href="https://docs.google.com/document/d/1ERVFsCgidFdScutxyoZHJXFIUIWYr4aqjgJw28eoV1w/edit?usp=sharing"
-        >Project Idea</a>
+        <search></search>
       </li>
       <li class="nav-item" [class.active]="linkActive('/Register')" [hidden]="!!(userService?.currentUser)">
         <a class="nav-link" [routerLink]="['Register']">Register</a>

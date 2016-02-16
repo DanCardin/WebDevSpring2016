@@ -5,7 +5,7 @@ import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "profile",
-    templateUrl: "app/views/profile/profile.view.html",
+    templateUrl: "assignment/views/profile/profile.view.html",
 })
 export class Profile {
     userService: UserService;

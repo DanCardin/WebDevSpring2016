@@ -5,7 +5,7 @@ import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "register",
-    templateUrl: "app/views/register/register.view.html",
+    templateUrl: "assignment/views/register/register.view.html",
 })
 export class Register {
     constructor(

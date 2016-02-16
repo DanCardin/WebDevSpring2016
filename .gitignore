@@ -4,5 +4,4 @@ node_modules
 **/*.component.js
 **/*.js.map
 **/*.js
-!public/assignment/config.js
-release
+dist

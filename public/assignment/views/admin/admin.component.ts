@@ -6,7 +6,7 @@ import {User, UserService} from "../../services/UserService";
 
 @Component({
     selector: "admin",
-    templateUrl: "app/views/admin/admin.view.html",
+    templateUrl: "assignment/views/admin/admin.view.html",
 })
 export class Admin {
     private users: Array<User> = [];

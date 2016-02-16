@@ -8,7 +8,7 @@ import {User, UserService} from "../../../services/UserService";
 
 @Component({
     selector: "forms-list",
-    templateUrl: "app/views/forms/forms/forms.view.html",
+    templateUrl: "assignment/views/forms/forms/forms.view.html",
 })
 export class FormsList {
     forms: Array<IForm> = [];

@@ -1,11 +1,12 @@
 import {Injectable} from 'angular2/core';
 import {URLSearchParams, Jsonp} from 'angular2/http';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class SearchService {
   constructor(private jsonp: Jsonp) {}
 
-  search (term: string) {
+  search (term: string): Observable<Array<string>> {
     var search = new URLSearchParams()
     search.set('action', 'opensearch');
     search.set('search', term);

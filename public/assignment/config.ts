@@ -1,13 +1,13 @@
 (function() {
     System.config({
         packages: {
-            app: {
+            assignment: {
                 format: 'register',
                 defaultExtension: 'js'
             }
         }
     });
     System
-        .import('/app/release/bootstrap')
+        .import('assignment/bootstrap')
         .then(null, console.error.bind(console));
 })();
