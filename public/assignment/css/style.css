@@ -58,3 +58,10 @@ body {
 span.fa-medsize {
   font-size: 1.2em;
 }
+
+img.face {
+  float: right;
+  width: 200px;
+  height: 200px;
+  clear: right;
+}
