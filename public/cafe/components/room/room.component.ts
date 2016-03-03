@@ -4,8 +4,8 @@ import {Router} from "angular2/router";
 import {User, UserService} from "../../services/UserService";
 
 @Component({
-    selector: "profile",
-    templateUrl: "cafe/components/profile/profile.view.html",
+    selector: "room",
+    templateUrl: "cafe/components/room/room.view.html",
 })
 export class Profile {
     userService: UserService;
