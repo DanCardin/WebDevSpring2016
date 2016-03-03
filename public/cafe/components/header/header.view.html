@@ -1,6 +1,6 @@
 <nav class="navbar navbar-fixed-top navbar-light bg-faded">
   <div class="navbar-header">
-    <a class="navbar-brand"  [routerLink]="['Home']">Form Maker</a>
+    <a class="navbar-brand"  [routerLink]="['Home']">Café</a>
   </div>
   <a class="navbar-toggler hidden-sm-up pull-xs-right"
           type="button"
@@ -16,11 +16,11 @@
       <li class="nav-item" [class.active]="linkActive('/Register')" [hidden]="!!(userService?.currentUser)">
         <a class="nav-link" [routerLink]="['Register']">Register</a>
       </li>
-      <li class="nav-item"[class.active]="linkActive('/Login')" [hidden]="!!(userService?.currentUser)">
+      <li class="nav-item" [class.active]="linkActive('/Login')" [hidden]="!!(userService?.currentUser)">
         <a class="nav-link" [routerLink]="['Login']">Login</a>
       </li>
-      <li class="nav-item" [hidden]="!(userService?.currentUser)">
-        <a class="nav-link">{{ userService?.currentUser?.firstName }}</a>
+      <li class="nav-item" [class.active]="linkActive('/Profile')" [hidden]="!(userService?.currentUser)">
+        <a class="nav-link" [routerLink]="['Profile']">{{ userService?.currentUser?.name }}</a>
       </li>
       <li class="nav-item" [hidden]="!(userService?.currentUser)">
         <a class="nav-link" (click)="logout()">Logout</a>

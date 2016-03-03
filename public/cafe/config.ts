@@ -5,7 +5,7 @@
                 format: 'register',
                 defaultExtension: 'js'
             }
-        }
+        },
     });
     System
         .import('cafe/bootstrap')

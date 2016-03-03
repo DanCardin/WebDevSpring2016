@@ -32,36 +32,6 @@
     </div>
   </div>
   <div class="form-group">
-    <label class="control-label col-sm-3" for="firstname">
-      First Name:
-    </label>
-    <div class="col-sm-9">
-      <input
-        #firstname
-        type="text"
-        id="firstname"
-        class="form-control"
-        placeholder="First"
-        [value]="userService.currentUser.firstName"
-      >
-    </div>
-  </div>
-  <div class="form-group">
-    <label class="control-label col-sm-3" for="lastname">
-      Last Name:
-    </label>
-    <div class="col-sm-9">
-      <input
-        #lastname
-        type="text"
-        id="lastname"
-        class="form-control"
-        placeholder="Last"
-        [value]="userService.currentUser.lastName"
-      >
-    </div>
-  </div>
-  <div class="form-group">
     <label class="control-label col-sm-3" for="email">
       Email:
     </label>
@@ -74,6 +44,16 @@
         placeholder="example@example.com"
         [value]="userService.currentUser.email"
       >
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-3" for="lastname">
+      University:
+    </label>
+    <div class="col-sm-9">
+      <select class="whole-width" [(ngModel)]="selectedUniversitiesName" (ngModelChange)="onUniversitySelected()">
+        <option *ngFor="#uni of universities" [value]="uni.name">{{uni.name}}</option>
+      </select>
     </div>
   </div>
   <div class="form-group">

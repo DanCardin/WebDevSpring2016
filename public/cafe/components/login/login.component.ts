@@ -26,4 +26,21 @@ export class Login {
                 console.log(error);
             });
     }
+
+    register(username: string, password: string, verify: string, email: string) {
+        if (password === verify) {
+            let user: User = new User(
+                username,
+                password,
+                email
+            );
+            this._userService
+                .createUser(user)
+                .then((user) => {
+                    this._userService.currentUser = user;
+                    this._router.navigate(["/Profile"]);
+                })
+                .catch(error => console.log(error));
+        }
+    }
 }

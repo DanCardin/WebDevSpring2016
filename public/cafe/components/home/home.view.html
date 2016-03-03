@@ -1,11 +1,231 @@
-<h1>Welcome!</h1>
+<div class="fluid-container">
+  <ul class="nav nav-tabs row centered">
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">&lt;</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">10:30</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">11:30</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link  text-xs-center active" href="#">12:30</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">1:30</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">2:30</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-xs-center" href="#">&gt;</a>
+    </li>
+  </ul>
 
-<p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-  nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-  in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-  nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-  sunt in culpa qui officia deserunt mollit anim id est laborum.
-</p>
+  <!-- <accordion [closeOthers]="oneAtATime"> -->
+  <!--   <accordion&#45;group heading="Static Header, initially expanded" -->
+  <!--                    [isOpen]="status.isFirstOpen" -->
+  <!--                    [isDisabled]="status.isFirstDisabled"> -->
+  <!--     This content is straight in the template. -->
+  <!--   </accordion&#45;group> -->
+  <!--   <accordion&#45;group *ngFor="#group of groups" [heading]="group.title"> -->
+  <!--      {{ group?.content }} -->
+  <!--   </accordion&#45;group> -->
+  <!--   <accordion&#45;group heading="Dynamic Body Content"> -->
+  <!--     <p>The body of the accordion group grows to fit the contents</p> -->
+  <!--     <button type="button" class="btn btn&#45;primary btn&#45;sm" (click)="addItem()">Add Item</button> -->
+  <!--     <div *ngFor="#item of items">{{item}}</div> -->
+  <!--   </accordion&#45;group> -->
+  <!--   <accordion&#45;group #group [isOpen]="status.open"> -->
+  <!--     <div accordion&#45;heading> -->
+  <!--       I can have markup, too! -->
+  <!--       <i class="pull&#45;right glyphicon" -->
+  <!--          [ngClass]="{'glyphicon&#45;chevron&#45;down': group?.isOpen, 'glyphicon&#45;chevron&#45;right': !group?.isOpen}"></i> -->
+  <!--     </div> -->
+  <!--     This is just some content to illustrate fancy headings. -->
+  <!--   </accordion&#45;group> -->
+  <!-- </accordion> -->
+
+
+
+  <div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingOne">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Shillman
+          </a>
+        </h4>
+      </div>
+      <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+        <div class="row">
+          <div class="col-xs-3">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-item">
+                <a class="nav-link active">110</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">220</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">310</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">440</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-2">
+            <p>
+              <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#myModal">
+                Report Problem
+              </a>
+            </p>
+            <p><a class="btn btn-block btn-danger">Room is Full</a></p>
+            <br />
+            <p><span class="">Open Seats: 30</span></p>
+            <p><a class="btn btn-block btn-success">Claim</a></p>
+            <p>
+              <a class="btn btn-block btn-primary" [routerLink]="['Room']">
+                Details...
+              </a>
+            </p>
+          </div>
+          <div class="col-xs-7">
+            <img src="http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingTwo">
+        <h4 class="panel-title">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Lake Hall
+          </a>
+        </h4>
+      </div>
+      <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+        <div class="row">
+          <div class="col-xs-3">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-item">
+                <a class="nav-link active">110</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">220</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">310</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">440</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-2">
+            <p>
+              <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#myModal">
+                Report Problem
+              </a>
+            </p>
+            <p><a class="btn btn-block btn-danger">Room is Full</a></p>
+            <br />
+            <p><span class="">Open Seats: 30</span></p>
+            <p><a class="btn btn-block btn-success">Claim</a></p>
+            <p>
+              <a class="btn btn-block btn-primary" [routerLink]="['Room']">
+                Details...
+              </a>
+            </p>
+          </div>
+          <div class="col-xs-7">
+            <img src="http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading" role="tab" id="headingThree">
+        <h4 class="panel-title">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Richards
+          </a>
+        </h4>
+      </div>
+      <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+        <div class="row">
+          <div class="col-xs-3">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="nav-item">
+                <a class="nav-link active">110</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">220</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">310</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link">440</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-2">
+            <p>
+              <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#myModal">
+                Report Problem
+              </a>
+            </p>
+            <p><a class="btn btn-block btn-danger">Room is Full</a></p>
+            <br />
+            <p><span class="">Open Seats: 30</span></p>
+            <p><a class="btn btn-block btn-success">Claim</a></p>
+            <p>
+              <a class="btn btn-block btn-primary" [routerLink]="['Room']">
+                Details...
+              </a>
+            </p>
+          </div>
+          <div class="col-xs-7">
+            <img src="http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Report Problem</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <input type="radio" name="reportOption" value="yesClass" id="reportOptionYes">
+            <label for="reportOptionsYes">This room has class in it at this time</label>
+          </div>
+          <div class="row">
+            <input type="radio" name="reportOption" value="noClass" id="reportOptionNo">
+            <label for="reportOptionsYes">There isn't class in this room at this time!</label>
+          </div>
+          <div class="row">
+            <textarea type="text" class="form-control whole-width" placeholder="Addional info..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

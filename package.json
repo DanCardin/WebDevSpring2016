@@ -16,7 +16,8 @@
     "start": "gulp run; node public/dist/server.js"
   },
   "dependencies": {
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "moment": "^2.11.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
