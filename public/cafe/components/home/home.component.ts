@@ -49,14 +49,6 @@ export class Home {
     moveTime() {
     }
 
-    // get lat(): Number {
-    //     return this.centerLat;
-    // }
-    //
-    // get lng(): Number {
-    //     return this.centerLng;
-    // }
-
     private getCoords() {
         let address = encodeURIComponent('Shillman Hall, Boston, MA');
         console.log(address);

@@ -6,8 +6,8 @@ export class RoomService {
     constructor() {
     }
 
-    private buildings: Array<any> = [
-        {
+    private buildings: Array<any> = {
+        'Shillman': {
             title: 'Shillman',
             rooms: [
                 {number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
@@ -16,7 +16,7 @@ export class RoomService {
                 {number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
             ],
         },
-        {
+        'Forsyth': {
             title: 'Forsyth',
             rooms: [
                 {number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
@@ -25,7 +25,7 @@ export class RoomService {
                 {number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
             ],
         },
-        {
+        'Snell': {
             title: 'Snell',
             rooms: [
                 {number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
@@ -34,7 +34,7 @@ export class RoomService {
                 {number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
             ],
         },
-        {
+        'Ryder': {
             title: 'Ryder',
             rooms: [
                 {number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png'},
@@ -58,5 +58,18 @@ export class RoomService {
 
     getBuildingsAtTime(time) {
         return Observable.of(this.buildings);
+    }
+
+    getBuildings() {
+        return Observable.of(this.buildings);
+    }
+
+    addBuilding(name: string) {
+        this.buildings.push({title: name, rooms: []})
+        return Observable.of(this.buildings);
+    }
+
+    addRoom(buildingName: string, roomNumber: number) {
+        return Observable.of(this.buildings[buildingName]);
     }
 }

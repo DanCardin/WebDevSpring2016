@@ -1,3 +1,5 @@
+/// <reference path="../dist/typings/es6-shim/es6-shim.d.ts"/>
+
 import {Injectable} from "angular2/core";
 
 export interface IUser {

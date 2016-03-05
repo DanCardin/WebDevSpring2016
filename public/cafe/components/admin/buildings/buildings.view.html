@@ -1,0 +1,47 @@
+<div class="table-responsive">
+  <table class="table table-bordered table-striped table-hover">
+    <tr>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Remove
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Building
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Room
+      </a></th>
+      <th><a>
+        <span class="fa fa-chevron-down" aria-hidden="true"></span>
+        Times
+      </a></th>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <input #buildingName type="text" placeholder="Building">
+        <a class="btn btn-primary" (click)="addBuilding(buildingName)">Add</a>
+      </td>
+      <td>
+        <select #buildingSelect placeholder="Builing">
+          <option *ngFor="#building of buildings">{{ building.title }}</option>
+        </select>
+        <input #roomNumber type="text" placeholder="Room">
+        <a class="btn btn-primary" (click)="addRoom(buildingSelect, roomNumber)">Add</a>
+      </td>
+      <td></td>
+    </tr>
+    <tr *ngFor="#building of buildings">
+      <td><a class="btn btn-danger">X</a></td>
+      <td>{{ building?.name }}</td>
+      <td>{{ building?.number }}</td>
+      <td>{{ building?.number }}</td>
+      <td>
+        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
+        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
+      </td>
+    </tr>
+  </table>
+</div>

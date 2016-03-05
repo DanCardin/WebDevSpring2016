@@ -6,11 +6,11 @@ import {Observable} from 'rxjs/Observable';
 export class SearchService {
     constructor(private jsonp: Jsonp) {}
 
-    search(terms: Observable<string>, debounceDuration=400) {
+    search(terms: Observable<string>, debounceDuration=400): Observable<Array<string>> {
         return terms
             .debounceTime(debounceDuration)
             .distinctUntilChanged()
-            .switchMap(term => this.rawSearch(term));
+            .switchMap((term: string) => this.rawSearch(term));
     }
 
     rawSearch (term: string): Observable<Array<string>> {

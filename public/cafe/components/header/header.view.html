@@ -10,6 +10,9 @@
   </a>
   <div class="collapse navbar-toggleable-xs" id="navbar">
     <ul class="nav navbar-nav pull-sm-right">
+      <li class="nav-item" [class.active]="linkActive('/Admin')" [hidden]="!(userService?.currentUser)">
+        <a class="nav-link" [routerLink]="['Admin']">Admin</a>
+      </li>
       <li class="nav-item">
         <search></search>
       </li>
@@ -25,34 +28,6 @@
       <li class="nav-item" [hidden]="!(userService?.currentUser)">
         <a class="nav-link" (click)="logout()">Logout</a>
       </li>
-
-      <div class="hidden-sm-up">
-        <br>
-        <li class="nav-item" [class.active]="linkActive('/Home')">
-          <a class="nav-link" [routerLink]="['Home']">Home</a>
-        </li>
-        <li
-          class="nav-item"
-          [class.active]="linkActive('/Profile')"
-          [hidden]="!(userService?.currentUser)"
-        >
-          <a class="nav-link" [routerLink]="['Profile']">Profile</a>
-        </li>
-        <li
-          class="nav-item"
-          [class.active]="linkActive('/Admin')"
-          [hidden]="!(userService?.currentUser) || !(userService?.currentUser?.isAdmin)"
-        >
-          <a class="nav-link" [routerLink]="['Admin']">Admin</a>
-        </li>
-        <li
-          class="nav-item"
-          [class.active]="linkActive('/Forms')"
-          [hidden]="!(userService?.currentUser)"
-        >
-          <a class="nav-link" [routerLink]="['Forms']">Forms</a>
-        </li>
-      </div>
     </ul>
   </div>
 </nav>

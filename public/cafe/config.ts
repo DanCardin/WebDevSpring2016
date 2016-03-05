@@ -1,3 +1,5 @@
+/// <reference path="dist/typings/systemjs/systemjs.d.ts"/>
+
 (function() {
     System.config({
         packages: {
