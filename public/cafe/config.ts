@@ -6,6 +6,9 @@
                 defaultExtension: 'js'
             }
         },
+        map: {
+            moment: 'node_modules/moment/moment.js'
+        }
     });
     System
         .import('cafe/bootstrap')

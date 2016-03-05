@@ -7,6 +7,7 @@ let app = express();
 
 app.use("/assignment", express.static(path.resolve(__dirname, "./assignment")));
 app.use("/cafe", express.static(path.resolve(__dirname, "./cafe")));
+app.use("/node_modules", express.static(path.resolve(__dirname, "../../node_modules")));
 
 let assignment = (req: express.Request, res: express.Response) => {
     res.sendFile(path.resolve(__dirname, "./assignment/index.html"));

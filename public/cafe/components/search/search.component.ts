@@ -39,7 +39,7 @@ export class Search {
     numItems = 0;
 
     constructor(private searchService: SearchService) {
-        this.items = searchService.search(this.term.valueChanges)
+        this.items = searchService.search(this.term.valueChanges);
     }
 
     hasResults(results) {
