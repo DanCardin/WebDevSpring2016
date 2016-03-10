@@ -6,20 +6,55 @@ import {Observable} from 'rxjs/Observable';
 export class SearchService {
     constructor(private jsonp: Jsonp) {}
 
-    search(terms: Observable<string>, debounceDuration=400): Observable<Array<string>> {
+    search(terms: Observable<string>, rooms: boolean=true, debounceDuration=400): Observable<Array<string>> {
+        let searchFunc;
+        if (rooms) {
+            searchFunc = this.rawRoomSearch;
+        } else {
+            searchFunc = this.rawUserSearch;
+        }
+
         return terms
             .debounceTime(debounceDuration)
             .distinctUntilChanged()
-            .switchMap((term: string) => this.rawSearch(term));
+            .switchMap((term: string) => searchFunc(term));
     }
 
-    rawSearch (term: string): Observable<Array<string>> {
-        var search = new URLSearchParams()
-        search.set('action', 'opensearch');
-        search.set('search', term);
-        search.set('format', 'json');
-        return this.jsonp
-            .get('http://en.wikipedia.org/w/api.php?callback=JSONP_CALLBACK', { search })
-            .map((response) => response.json()[1]);
+    rawRoomSearch(term: string): Observable<Array<string>> {
+        let result = {
+            'Shillman': ['Shillman', '101 Shillman', '201 Shillman'],
+            '101 Snell': ['Snell'],
+            '201 Snell': ['Snell'],
+        }
+        let starts = Object.keys(result);
+        let results = [];
+        for (var i = 0; i < starts.length; i++) {
+            let key: string = starts[i];
+            if (key.toLowerCase().startsWith(term.toLowerCase())) {
+                results.push.apply(results, result[starts[i]]);
+            }
+        }
+        for (var r = 0; r < results.length; r++) {
+            results[r] = results[r].replace(/\s+/g, '');
+        }
+        return Observable.of(results);
+    }
+
+    rawUserSearch(term: string): Observable<Array<string>> {
+        let result = {
+            'alice': ['alice'],
+            'bob': ['bob'],
+            'dan': ['dan'],
+            'snape': ['snape'],
+        }
+        let starts = Object.keys(result);
+        let results = [];
+        for (var i = 0; i < starts.length; i++) {
+            let key: string = starts[i];
+            if (key.toLowerCase().startsWith(term.toLowerCase())) {
+                results.push.apply(results, result[starts[i]]);
+            }
+        }
+        return Observable.of(results);
     }
 }

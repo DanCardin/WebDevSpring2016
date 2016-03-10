@@ -3,7 +3,7 @@
     <li class="nav-item">
       <a class="nav-link btn-primary text-xs-center" (click)="moveTime(-1)">&lt;</a>
     </li>
-    <li class="nav-item" *ngFor="#time of times">
+    <li class="nav-item" *ngFor="#time of times | async">
       <a class="btn text-xs-center" [class.active]="index == midway" (click)="selectTime(time)">
         {{ time | date:"h:mm" }}
       </a>
@@ -14,11 +14,20 @@
   </ul>
 
   <accordion [closeOthers]="oneAtATime">
-    <accordion-group *ngFor="#building of buildings" [heading]="building.title">
+    <accordion-group
+      *ngFor="#building of buildings | async"
+      [heading]="building.name"
+      [attr.id]="'building_' + building.name"
+    >
       <tabset [vertical]="true" type="pills">
-        <tab class="row" *ngFor="#room of building.rooms">
+        <tab
+          class="row"
+          *ngFor="#room of building.rooms"
+        >
           <template tab-heading class="col-xs-3">
-            {{ room.number }}
+            <span [attr.id]="'building_' + room.number + building.name">
+              {{ room.number }}
+            </span>
           </template>
           <div class="col-xs-12">
             <div class="row">

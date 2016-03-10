@@ -17,7 +17,7 @@ import {Buildings} from "./buildings/buildings.component";
 })
 export class Admin {
     public tabs: Array<any> = [
-        {title: 'Manage Reports', route: 'Buildings'},
+        // {title: 'Manage Reports', route: 'Buildings'},
         {title: 'Manage Buildings', route: 'Buildings'},
         {title: 'Manage Users', route: 'Users'},
     ];

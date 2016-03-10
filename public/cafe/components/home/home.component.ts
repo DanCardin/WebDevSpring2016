@@ -17,7 +17,7 @@ import {RoomService} from "../../services/RoomService";
     `],
 })
 export class Home {
-    private times = [];//new Control();
+    public times;
     public buildings;
     public midway;
     public oneAtATime: boolean = true;
@@ -28,14 +28,10 @@ export class Home {
     constructor(private http: Http, private roomService: RoomService) {
         let numTimes = 5;
         this.times = [];
-        this.roomService
-            .getTimesSurroundingTime(new Date(), numTimes)
-            .subscribe(result => this.times = result);
         this.midway = Math.floor(numTimes / 2);
 
-        this.roomService
-            .getBuildingsAtTime(this.times[this.midway])
-            .subscribe(result => this.buildings = result);
+        this.times = this.roomService.getTimesSurroundingTime(new Date(), numTimes);
+        this.buildings = this.roomService.getBuildingsAtTime(this.times[this.midway]);
     }
 
     public status: Object = {

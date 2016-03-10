@@ -1,38 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6">
+      <input
+        #buildingName
+        (keyup.enter)="addBuilding(buildingName)"
+        type="text"
+        placeholder="Building">
+      <a class="btn btn-primary" (click)="addBuilding(buildingName)">Add</a>
+    </div>
+    <div class="col-xs-6">
+      <select #buildingSelect placeholder="Building">
+        <option *ngFor="#building of buildings | async">{{ building.name }}</option>
+      </select>
+      <a class="btn btn-danger" (click)="deleteBuilding(buildingSelect)">Delete</a>
+    </div>
+  </div>
+</div>
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
-    <tr>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Remove
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Building
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Room
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Times
-      </a></th>
-    </tr>
-    <tr>
-      <td></td>
-      <td>
-        <input #buildingName type="text" placeholder="Building">
-        <a class="btn btn-primary" (click)="addBuilding(buildingName)">Add</a>
-      </td>
-      <td>
-        <select #buildingSelect placeholder="Building">
-          <option *ngFor="#building of buildings">{{ building.title }}</option>
-        </select>
-        <input #roomNumber type="text" placeholder="Room">
-        <a class="btn btn-primary" (click)="addRoom(buildingSelect, roomNumber)">Add</a>
-      </td>
-      <td></td>
-    </tr>
-    <tr *ngFor="#room of rooms" [room]="room"></tr>
+    <thead></thead>
+    <tr *ngFor="#room of rooms | async" [room]="room" [buildings]="buildings"></tr>
   </table>
 </div>

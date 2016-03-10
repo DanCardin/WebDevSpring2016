@@ -23,31 +23,59 @@ import {SearchService} from "../../services/SearchService";
       <div
         class="dropdown-menu"
         aria-labelledby="searchDropdown"
-        [hidden]="!hasResults(items | async)"
+        [hidden]="!hasResults(rooms | async, true) && !hasResults(users | async, false)"
       >
-        {{ numItems }} Results:
+        {{ numRooms }} Results:
         <ul>
-          <li *ngFor="#item of items | async">{{ item }}</li>
+          <li *ngFor="#room of rooms | async" (click)="selectBuilding(room)">
+            {{ room }}
+           </li>
+        </ul>
+
+        {{ numUsers }} Results:
+        <ul>
+          <li *ngFor="#user of users | async" (click)="selectBuilding(user)">
+            {{ user }}
+           </li>
         </ul>
       </div>
     </div>
   `
 })
 export class Search {
-    items: Observable<Array<string>>;
+    rooms: Observable<Array<string>>;
+    users: Observable<Array<string>>;
     term = new Control();
-    numItems = 0;
+    numRooms = 0;
+    numUsers = 0;
 
     constructor(private searchService: SearchService) {
-        this.items = searchService.search(this.term.valueChanges);
+        this.rooms = searchService.search(this.term.valueChanges, true);
+        this.users = searchService.search(this.term.valueChanges, false);
     }
 
-    hasResults(results) {
-        if (results) {
-            this.numItems = results.length;
-            return this.numItems > 0;
+    hasResults(results, room: boolean) {
+        if (room) {
+            this.numRooms = results && results.length;
+            return this.numRooms > 0;
+        } else {
+            this.numUsers = results && results.length;
+            return this.numUsers > 0;
         }
-        this.numItems = 0;
-        return false;
+    }
+
+    selectBuilding(item: string) {
+        if (!isNaN(+item.charAt(0))) {
+            let i = 2;
+            let str = item.substring(0, 1);
+            while (!isNaN(+str)) {
+                str = item.substring(0, i++);
+            }
+            i -= 2;
+            $('#building_' + item.substring(i, item.length).replace(/\s+/g, '')).children().children().click();
+            $('#building_' + item.replace(/\s+/g, '')).click();
+        } else {
+            $('#building_' + item.replace(/\s+/g, '')).children().children().click();
+        }
     }
 }

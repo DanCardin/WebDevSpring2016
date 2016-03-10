@@ -1,8 +1,9 @@
-/// <reference path="../typings/main.d.ts"/>
+// <reference path="../typings/main.d.ts"/>
 
 import {Injectable} from 'angular2/core';
 import {Observable} from 'rxjs/Rx';
-import {moment} from 'moment';
+// import {moment} from 'moment/moment';
+declare var moment: any;
 
 export class Building {
     public name;
@@ -100,6 +101,14 @@ export class RoomService {
 
     constructor() {}
 
+    private findBuildingIndex(name: string) {
+        for (var i = 0; i < this._buildings.length; i++) {
+            if (this._buildings[i].name === name) {
+                return i;
+            }
+        }
+    }
+
     getTimesSurroundingTime(time: Date, numTimes) {
         let result = [];
         let half = Math.floor(numTimes / 2);
@@ -130,14 +139,6 @@ export class RoomService {
         return Observable.of(result);
     }
 
-    findBuildingIndex(name: string) {
-        for (var i = 0; i < this._buildings.length; i++) {
-            if (this._buildings[i].name === name) {
-                return i;
-            }
-        }
-    }
-
     addBuilding(name: string) {
         this._buildings.push(new Building(name, []))
         return Observable.of(this._buildings);
@@ -165,16 +166,15 @@ export class RoomService {
     }
 
     convertTimeToDateString(time: string): string {
-        let format = ''
-        debugger
-        return '';
+        let format = 'hh:mm'
+        return moment(time, format);
     }
 
     addTime(room, startTime: string, endTime: string, days) {
         room.times.push({
             start: new Date(this.convertTimeToDateString(startTime)),
             end: new Date(this.convertTimeToDateString(endTime)),
-            dates: days,
+            days: days,
         });
     }
 
