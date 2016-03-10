@@ -60,10 +60,10 @@ span.fa-medsize {
 }
 
 .nav-tabs.centered > li, .nav-pills.centered > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-     zoom:1; /* hasLayout ie7 trigger */
+  float: none;
+  display: inline-block;
+  *display: inline; /* ie7 fix */
+  zoom: 1; /* hasLayout ie7 trigger */
 }
 
 .nav-tabs.centered, .nav-pills.centered {
@@ -72,4 +72,22 @@ span.fa-medsize {
 
 .full-width {
   width: 100%;
+}
+
+.half-height {
+  height: 50%;
+}
+
+.card-size {
+  width: 115px;
+}
+
+.card-block-ov {
+  padding: inherit;
+  height: 3.25rem;
+}
+
+.card-footer-ov {
+  padding-top: .1rem;
+  padding-bottom: .4rem;
 }

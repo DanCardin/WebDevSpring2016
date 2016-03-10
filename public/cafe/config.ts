@@ -1,4 +1,4 @@
-/// <reference path="dist/typings/systemjs/systemjs.d.ts"/>
+/// <reference path="typings/main.d.ts"/>
 
 (function() {
     System.config({

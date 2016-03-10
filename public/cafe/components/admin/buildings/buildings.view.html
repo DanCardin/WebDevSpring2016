@@ -25,7 +25,7 @@
         <a class="btn btn-primary" (click)="addBuilding(buildingName)">Add</a>
       </td>
       <td>
-        <select #buildingSelect placeholder="Builing">
+        <select #buildingSelect placeholder="Building">
           <option *ngFor="#building of buildings">{{ building.title }}</option>
         </select>
         <input #roomNumber type="text" placeholder="Room">
@@ -33,15 +33,6 @@
       </td>
       <td></td>
     </tr>
-    <tr *ngFor="#building of buildings">
-      <td><a class="btn btn-danger">X</a></td>
-      <td>{{ building?.name }}</td>
-      <td>{{ building?.number }}</td>
-      <td>{{ building?.number }}</td>
-      <td>
-        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
-      </td>
-    </tr>
+    <tr *ngFor="#room of rooms" [room]="room"></tr>
   </table>
 </div>
