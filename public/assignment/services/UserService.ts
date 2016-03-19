@@ -1,4 +1,10 @@
-import {Injectable} from "angular2/core";
+// <reference path="../typings/main.d.ts"/>
+
+import {Injectable} from 'angular2/core';
+import {Http, Headers} from 'angular2/http';
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+
 
 export interface IUser {
     _id: string;
@@ -25,7 +31,7 @@ export class User implements IUser {
         id: string=null
     ) {
         if (id === null) {
-            id = (new Date).getTime().toString();
+            id = Number((new Date).getTime().toString());
         }
         this._id = id;
         this.name = name;
@@ -39,12 +45,25 @@ export class User implements IUser {
     get isAdmin(): boolean {
         return this.role === "admin";
     }
+
+    toJson() {
+        return {
+            _id: this._id,
+            username: this.name,
+            password: this.password,
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            role: this.role,
+        };
+    }
 }
 
 @Injectable()
 export class UserService {
-    private _users: Map<string, User>;
     private _currentUser: User;
+    private headers;
+
     get currentUser(): User {
         return this._currentUser;
     }
@@ -52,64 +71,75 @@ export class UserService {
         this._currentUser = user;
     }
 
-    constructor() {
-        this._users = new Map<string, User>();
-        let users = [
-            {_id: "123", firstName: "Alice",  lastName: "Wonderland",username: "alice",  password: "alice"},
-            {_id: "234", firstName: "Bob",    lastName: "Hope",      username: "bob",    password: "bob"},
-            {_id: "345", firstName: "Charlie",lastName: "Brown",     username: "charlie",password: "charlie"},
-            {_id: "456", firstName: "Dan",    lastName: "Craig",     username: "dan",    password: "dan"},
-            {_id: "567", firstName: "Edward", lastName: "Norton",    username: "ed",     password: "ed"}
-        ]
-        for (let user of users) {
-            this._users.set(
-                user._id,
-                new User(user.username, user.password, "", user.firstName, user.lastName, user._id)
-            );
-        }
-        this._currentUser = this._users.get("123");
+    constructor(public http: Http) {
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
     }
 
-    findUserByUsernameAndPassword(username: string, password: string): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            this._users.forEach(function(user) {
-                if (user.name === username && user.password === password) {
-                    return resolve(user);
+    findUserByUsernameAndPassword(username: string, password: string) {
+        let creds = '?username=' + username + '&password=' + password;
+        return this.http
+            .get('/api/assignment/user/' + creds)
+            .map(res => res.json())
+            .map(res => {
+                console.log('res', res);
+                if (!res) {
+                    Observable.throw(new Error('error!'))
+                } else {
+                    this.currentUser = res;
+                    return res;
                 }
             });
-            return reject("No user");
-        });
     }
 
-    findAllUsers(): Promise<Array<User>> {
-        return new Promise<Array<User>>((resolve, reject) => {
-            return resolve(Array.from(this._users.values()));
-        });
+    findAllUsers(): Observable<Array<{}>> {
+        return this.http
+            .get('/api/assignment/user')
+            .map(res => res.json())
+            .map(res => {
+                let result = [];
+                for (let i = 0; i < res.length; i++) {
+                    let r = res[i];
+                    result.push(new User(r.username, r.password, '', r.firstName, r.lastName, r._id));
+                }
+                return result;
+            });
     }
 
-    createUser(user: User): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            this._users.set(user._id, user);
-            return resolve(user);
-        });
+    createUser(user: User) {
+        return this.http
+            .post('/api/assignment/user', JSON.stringify(user.toJson()), {headers: this.headers})
+            .map(res => res.json())
+            .map(res => {
+                console.log('res', res)
+                if (!res) {
+                    Observable.throw(new Error('error!'))
+                } else {
+                    this.currentUser = res;
+                    return res;
+                }
+            });
     }
 
-    deleteUserById(guid: string): Promise<Array<User>> {
-        return new Promise<Array<User>>((resolve, reject) => {
-            this._users.delete(guid);
-            return resolve(Array.from(this._users.values()));
-        });
+    deleteUserById(guid: string) {
+        return this.http
+            .delete('/api/assignment/user/' + guid)
+            .map(res => res.json());
     }
 
-    updateUser(guid: string, user: User): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            if (this._users.has(guid)) {
-                user._id = guid;
-                this._users.set(guid, user);
-                this.currentUser = user;
-                return resolve(this._users.get(user._id));
-            }
-            return reject("User doesn't exist");
-        });
+    updateUser(guid: string, user: User) {
+        console.log('asdf', JSON.stringify(user.toJson()));
+        return this.http
+            .put('/api/assignment/user/' + guid, JSON.stringify(user.toJson()))
+            .map(res => res.json())
+            .map(res => {
+                console.log(res);
+                let result = [];
+                for (let i = 0; i < res.length; i++) {
+                    let r = res[i];
+                    result.push(new User(r.username, r.password, '', r.firstName, r.lastName, r._id));
+                }
+                return result;
+            });
     }
 }

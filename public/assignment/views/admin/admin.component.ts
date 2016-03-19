@@ -1,6 +1,5 @@
 import {Component} from "angular2/core";
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
 
 import {User, UserService} from "../../services/UserService";
 
@@ -9,13 +8,10 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "assignment/views/admin/admin.view.html",
 })
 export class Admin {
-    private users: Array<User> = [];
+    private users: Observable<Array<{}>>;
     constructor(
-        private _userService: UserService
+        private userService: UserService
     ) {
-        this.users = [];
-        Observable
-            .fromPromise(this._userService.findAllUsers())
-            .subscribe(users => this.users = users);
+        this.users = this.userService.findAllUsers();
     }
 }

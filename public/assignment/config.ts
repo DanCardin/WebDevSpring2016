@@ -4,7 +4,11 @@
             assignment: {
                 format: 'register',
                 defaultExtension: 'js'
-            }
+            },
+            rxjs: {defaultExtension: 'js'}
+        },
+        map: {
+            'rxjs': 'node_modules/rxjs'
         }
     });
     System

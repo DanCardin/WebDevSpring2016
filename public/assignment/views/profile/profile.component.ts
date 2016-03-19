@@ -8,13 +8,7 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "assignment/views/profile/profile.view.html",
 })
 export class Profile {
-    userService: UserService;
-    constructor(
-        private _router: Router,
-        userService: UserService
-    ) {
-        this.userService = userService;
-    }
+    constructor(private _router: Router, private userService: UserService) {}
 
     update(username: string,
            password: string,
@@ -22,12 +16,15 @@ export class Profile {
            lastName: string,
            email: string
     ) {
-        console.log('updating')
         let update = new User(username, password, email, firstName, lastName);
-        this.userService
-            .updateUser(this.userService.currentUser._id, update)
-            .then(user => console.log("Updated"))
-            .catch(error => console.log(error));
-        this._router.navigate(["/Profile"]);
+        if (this.userService.currentUser) {
+            this.userService
+                .updateUser(this.userService.currentUser._id, update)
+                .subscribe(res => {
+                    if (res) {
+                        this._router.navigate(["/Profile"]);
+                    }
+                })
+        }
     }
 }

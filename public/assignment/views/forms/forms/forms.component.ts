@@ -1,7 +1,6 @@
 import {Component, OnInit} from "angular2/core";
 import {Router} from "angular2/router";
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/fromPromise';
 
 import {Form, IForm, FormService} from "../../../services/FormService";
 import {User, UserService} from "../../../services/UserService";
@@ -11,7 +10,7 @@ import {User, UserService} from "../../../services/UserService";
     templateUrl: "assignment/views/forms/forms/forms.view.html",
 })
 export class FormsList {
-    forms: Array<IForm> = [];
+    forms: Observable<Array<IForm>> = [];
     currentForm: IForm;
 
     constructor(
@@ -20,11 +19,7 @@ export class FormsList {
         private router: Router
     ) {
         this.currentForm = null;
-        Observable
-            .fromPromise(
-                this._formService.findAllFormsForUser(this._userService.currentUser._id)
-            )
-            .subscribe(forms => this.forms = forms);
+        this.forms = this._formService.findAllFormsForUser(this._userService.currentUser._id)
     }
 
     addForm(name) {

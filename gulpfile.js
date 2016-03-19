@@ -4,6 +4,7 @@ var merge = require('merge2');
 
 var assignmentFiles = ['public/assignment/**/*.ts'];
 var cafeFiles = ['public/cafe/**/*.ts'];
+var serverFolderFiles = ['public/server/**/*.ts'];
 var serverFiles = ['public/server.ts'];
 
 var assignment = ts.createProject('public/assignment/tsconfig.json', {typescript: require('typescript')});
@@ -24,7 +25,7 @@ gulp.task('cafe', function() {
     ]);
 });
 
-var serverProject = ts.createProject('public/server/tsconfig.json', {typescript: require('typescript')});
+var serverProject = ts.createProject('public/tsconfig.json', {typescript: require('typescript')});
 gulp.task('server', function() {
     var tsResult = serverProject.src().pipe(ts(serverProject));
 
@@ -34,13 +35,13 @@ gulp.task('server', function() {
     ]);
 });
 
-var serverFolderProject = ts.createProject('public/tsconfig.json', {typescript: require('typescript')});
+var serverFolderProject = ts.createProject('public/server/tsconfig.json', {typescript: require('typescript')});
 gulp.task('serverfolder', function() {
     var tsResult = serverFolderProject.src().pipe(ts(serverFolderProject));
 
     return merge([
-        tsResult.dts.pipe(gulp.dest('public/dist')),
-        tsResult.js.pipe(gulp.dest('public/dist'))
+        tsResult.dts.pipe(gulp.dest('public/dist/server')),
+        tsResult.js.pipe(gulp.dest('public/dist/server'))
     ]);
 });
 
@@ -60,10 +61,11 @@ gulp.task('watch', function() {
     gulp.watch(assignmentFiles, ['assignment']);
     gulp.watch(cafeFiles, ['cafe']);
     gulp.watch(serverFiles, ['server']);
-    gulp.watch(serverFiles, ['serverfolder']);
+    gulp.watch(serverFolderFiles, ['serverfolder']);
 
     gulp.watch(htmlFiles, ['html']);
     gulp.watch(cssFiles, ['css']);
 });
 
-gulp.task('run', ['assignment', 'cafe', 'server', 'serverfolder', 'html', 'css']);
+gulp.task('run', ['assignment', 'cafe', 'serverfolder', 'server', 'html', 'css']);
+gulp.task('default', ['serverfolder']);

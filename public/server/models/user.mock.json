@@ -1,4 +1,4 @@
-let users = [
+[
     {"_id": 123, "firstName": "Alice",  "lastName": "Wonderland", "username": "alice",   "password": "alice"},
     {"_id": 234, "firstName": "Bob",    "lastName": "Hope",       "username": "bob",     "password": "bob"},
     {"_id": 345, "firstName": "Charlie","lastName": "Brown",      "username": "charlie", "password": "charlie"},

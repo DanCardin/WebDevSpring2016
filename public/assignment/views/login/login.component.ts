@@ -17,13 +17,12 @@ export class Login {
     login(username: string, password: string) {
         this._userService
             .findUserByUsernameAndPassword(username, password)
-            .then((user) => {
-                console.log("logged in", user);
-                this._userService.currentUser = user;
-                this._router.navigate(["/Profile"]);
-            })
-            .catch((error) => {
-                console.log(error);
+            .subscribe((user) => {
+                console.log('asdflli', user)
+                if (user) {
+                    console.log("logged in", user);
+                    this._router.navigate(["/Profile"]);
+                }
             });
     }
 }

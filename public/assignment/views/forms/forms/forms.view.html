@@ -27,7 +27,7 @@
         </a>
       </td>
     </tr>
-    <tr *ngFor="#form of forms">
+    <tr *ngFor="#form of forms | async">
       <td><a (click)="router.navigate(['/Forms/FieldsList'])">{{form.name}}</a></td>
       <td>
         <a (click)="deleteForm(form)">

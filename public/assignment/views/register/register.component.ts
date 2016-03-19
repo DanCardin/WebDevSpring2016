@@ -9,25 +9,25 @@ import {User, UserService} from "../../services/UserService";
 })
 export class Register {
     constructor(
-        private _router: Router,
-        private _userService: UserService
+        private router: Router,
+        private userService: UserService
     ) {
     }
 
     login(username: string, password: string, verify: string, email: string) {
-        if (password === verify) {
+        if (password && verify && password === verify) {
             let user: User = new User(
                 username,
                 password,
                 email
             );
-            this._userService
+            this.userService
                 .createUser(user)
-                .then((user) => {
-                    this._userService.currentUser = user;
-                    this._router.navigate(["/Profile"]);
+                .subscribe((user) => {
+                    if (user) {
+                        this.router.navigate(["/Profile"]);
+                    }
                 })
-                .catch(error => console.log(error));
         }
     }
 }
