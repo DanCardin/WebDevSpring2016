@@ -82,7 +82,7 @@ export class FormService {
 
     updateFormById(formId: number, newForm: Form) {
         return this.http
-            .put('/api/assignment/form/' + formId, JSON.stringify(newForm), {headers: this.headers})
+            .put('/api/assignment/form/' + formId, JSON.stringify(newForm.toJson()), {headers: this.headers})
             .map(res => res.json());
     }
 }

@@ -35,8 +35,8 @@ export class FormService {
 
     updateForm(req, res) {
         console.log('updateForm', Number(req.params.formId));
-        let result = FormModel.FormModel.updateForm(Number(req.params.formId), req.body);
-        res.json(result);
+        FormModel.FormModel.updateForm(Number(req.params.formId), req.body);
+        res.json({});
     }
 
     deleteForm(req, res) {
