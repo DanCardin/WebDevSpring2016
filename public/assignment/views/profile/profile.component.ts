@@ -19,7 +19,7 @@ export class Profile {
         let update = new User(username, password, email, firstName, lastName);
         if (this.userService.currentUser) {
             this.userService
-                .updateUser(this.userService.currentUser._id, update)
+                .updateUser(Number(this.userService.currentUser._id), update)
                 .subscribe(res => {
                     if (res) {
                         this._router.navigate(["/Profile"]);

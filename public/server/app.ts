@@ -10,6 +10,6 @@ export class App {
 
     constructor(private app) {
         this.userService = new UserService(app);
-        this.formService = new FormService(app, new FormModel());
+        this.formService = new FormService(app);
     }
 }

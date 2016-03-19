@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 
 export interface IUser {
-    _id: string;
+    _id: number;
     name: string;
     password: string;
     email: string;
@@ -17,7 +17,7 @@ export interface IUser {
 }
 
 export class User implements IUser {
-    _id: string;
+    _id: number;
     name: string;
     password: string;
     email: string;
@@ -28,7 +28,7 @@ export class User implements IUser {
     constructor(
         name: string, password: string, email: string,
         firstName: string="", lastName: string="",
-        id: string=null
+        id: number=null
     ) {
         if (id === null) {
             id = Number((new Date).getTime().toString());
@@ -127,10 +127,10 @@ export class UserService {
             .map(res => res.json());
     }
 
-    updateUser(guid: string, user: User) {
+    updateUser(guid: number, user: User) {
         console.log('asdf', JSON.stringify(user.toJson()));
         return this.http
-            .put('/api/assignment/user/' + guid, JSON.stringify(user.toJson()))
+            .put('/api/assignment/user/' + guid.toString(), JSON.stringify(user.toJson()))
             .map(res => res.json())
             .map(res => {
                 console.log(res);

@@ -42,8 +42,8 @@ export module UserModel {
     }
 
     export function findUserById(id) {
-        for (let i = 0; i < mock.users.length; i++) {
-            let user = mock.users[i];
+        for (var i = 0; i < mock.users.length; i++) {
+            var user = mock.users[i];
             if (user._id === id) {
                 return user;
             }
@@ -52,8 +52,8 @@ export module UserModel {
     }
 
     export function updateUser(id, newUser) {
-        for (let i = 0; i < mock.users.length; i++) {
-            let user = mock.users[i];
+        for (var i = 0; i < mock.users.length; i++) {
+            var user = mock.users[i];
             if (user._id === id) {
                 console.log('update', user, id)
                 newUser.foreach(prop => user[prop] = prop);
@@ -63,8 +63,8 @@ export module UserModel {
     }
 
     export function deleteUser(id) {
-        for (let i = 0; i < mock.users.length; i++) {
-            let user = mock.users[i];
+        for (var i = 0; i < mock.users.length; i++) {
+            var user = mock.users[i];
             if (user._id === id) {
                 mock.users.splice(i, 1);
                 return;

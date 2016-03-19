@@ -20,29 +20,37 @@ let mock = {forms: [
     ]},
 ]};
 
-export class FormModel {
-    findFormByTitle(title) {
+export module FormModel {
+    export function findFormByTitle(title) {
         for (let i = 0; i < mock.forms.length; i++) {
             let form = mock.forms[i];
             if (form.title === title) {
-                return user;
+                return form;
             }
         }
         return null;
     }
 
-    createform(form) {
+    export function createForm(userId: number, form) {
+        form.userId = userId;
         mock.forms.push(form);
         return mock.forms;
     }
 
-    getAllForms() {
-        return mock.forms;
+    export function getAllForms(userId: number) {
+        let result = [];
+        for (var i = 0; i < mock.forms.length; i++) {
+            var form = mock.forms[i];
+            if (form.userId === userId) {
+                result.push(form);
+            }
+        }
+        return result;
     }
 
-    findFormById(id) {
-        for (let i = 0; i < mock.forms.length; i++) {
-            let form = mock.forms[i];
+    export function findFormById(id) {
+        for (var i = 0; i < mock.forms.length; i++) {
+            var form = mock.forms[i];
             if (form._id === id) {
                 return form;
             }
@@ -50,20 +58,25 @@ export class FormModel {
         return null;
     }
 
-    updateForm(id, newForm) {
-        for (let i = 0; i < mock.forms.length; i++) {
-            let form = mock.forms[i];
-            if (form._id === id) {
-                newForm.foreach(prop => form[prop] = prop);
+    export function updateForm(formId, newForm) {
+        for (var i = 0; i < mock.forms.length; i++) {
+            var form = mock.forms[i];
+            if (form._id === formId) {
+                console.log('asdfl', form, newForm);
+                for (var prop in newForm) {
+                    console.log(' - ', prop, newForm[prop]);
+                    form[prop] = newForm[prop];
+                }
+                console.log('new', form);
                 return;
             }
         }
     }
 
-    deleteForm(id) {
-        for (let i = 0; i < mock.forms.length; i++) {
-            let form = mock.forms[i];
-            if (form._id === id) {
+    export function deleteForm(formId) {
+        for (var i = 0; i < mock.forms.length; i++) {
+            var form = mock.forms[i];
+            if (form._id === formId) {
                 mock.forms.splice(i, 1);
                 return;
             }
