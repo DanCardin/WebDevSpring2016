@@ -38,6 +38,7 @@ export class Form implements IForm {
 @Injectable()
 export class FormService {
     private headers;
+    public currentForm;
 
     constructor(private http: Http) {
         this.headers = new Headers();

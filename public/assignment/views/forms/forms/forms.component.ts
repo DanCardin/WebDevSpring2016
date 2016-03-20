@@ -11,14 +11,12 @@ import {User, UserService} from "../../../services/UserService";
 })
 export class FormsList {
     forms: Observable<Array<IForm>> = Observable.of([]);
-    currentForm: IForm;
 
     constructor(
         private formService: FormService,
         private userService: UserService,
         private router: Router
     ) {
-        this.currentForm = null;
         if (this.userService.currentUser) {
             console.log('im logged in')
             let currentUser = this.userService.currentUser._id;
@@ -38,12 +36,12 @@ export class FormsList {
     updateForm(name) {
         let currentUser = this.userService.currentUser;
         this.formService.updateFormById(
-            this.currentForm._id,
+            this.formService.currentForm._id,
             new Form(name.value, currentUser._id)
         ).subscribe();
         this.forms = this.formService.findAllFormsForUser(currentUser._id);
 
-        this.currentForm = null;
+        this.formService.currentForm = null;
         name.value = "";
     }
 
@@ -53,8 +51,13 @@ export class FormsList {
         this.forms = this.formService.findAllFormsForUser(currentUser._id);
     }
 
-    selectForm(form: IForm, name) {
-        this.currentForm = form;
-        name.value = this.currentForm.name;
+    selectForm(form: IForm, name, go=false) {
+        this.formService.currentForm = form;
+        console.log('currentForm', this.formService.currentForm);
+        if (!go) {
+            name.value = this.formService.currentForm.name;
+        } else {
+            this.router.navigate(['/Forms/FieldsList'])
+        }
     }
 }

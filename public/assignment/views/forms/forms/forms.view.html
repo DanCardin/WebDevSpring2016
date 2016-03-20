@@ -28,7 +28,7 @@
       </td>
     </tr>
     <tr *ngFor="#form of forms | async">
-      <td><a (click)="router.navigate(['/Forms/FieldsList'])">{{form.name}}</a></td>
+      <td><a (click)="selectForm(form, name, true)">{{form.name}}</a></td>
       <td>
         <a (click)="deleteForm(form)">
           <span class="fa fa-medsize fa-remove" aria-hidden="true"></span>

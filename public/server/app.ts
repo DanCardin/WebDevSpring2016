@@ -1,15 +1,15 @@
-// import {UserModel} from './models/user.model';
+import {FieldService} from './services/field.service';
+import {FormService} from './services/form.service';
 import {UserService} from './services/user.service';
 
-import {FormModel} from './models/form.model';
-import {FormService} from './services/form.service';
-
 export class App {
-    private userService: UserService;
+    private fieldService: FieldService;
     private formService: FormService;
+    private userService: UserService;
 
     constructor(private app) {
-        this.userService = new UserService(app);
+        this.fieldService = new FieldService(app);
         this.formService = new FormService(app);
+        this.userService = new UserService(app);
     }
 }

@@ -4,6 +4,7 @@ import {ROUTER_PROVIDERS} from "angular2/router";
 import {HTTP_PROVIDERS} from "angular2/http";
 
 import {FormBuilderApp} from "./app.component";
+import {FieldService} from "./services/FieldService";
 import {FormService} from "./services/FormService";
 import {UserService} from "./services/UserService";
 
@@ -13,4 +14,5 @@ bootstrap(FormBuilderApp, [
     HTTP_PROVIDERS,
     UserService,
     FormService,
+    FieldService,
 ]);

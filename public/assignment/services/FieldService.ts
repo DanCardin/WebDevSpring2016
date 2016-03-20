@@ -44,6 +44,7 @@ export class FieldService {
             .get('/api/assignment/form/' + uid + '/field/' + fieldId)
             .map(res => res.json());
     }
+
     deleteFormById(formId: number, fieldId: number) {
         return this.http
             .delete('/api/assignment/form/' + formId + '/field/' + fieldId)
