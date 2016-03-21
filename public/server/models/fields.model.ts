@@ -14,14 +14,17 @@ export module FieldModel {
     }
 
     export function getFieldForForm(formId: number, fieldId: number) {
-        let result = [];
-        for (var i = 0; i < mock.fields.length; i++) {
-            var form = mock.forms[i];
-            if (form.userId === userId) {
-                result.push(form);
+        let fields = mock.fields[formId];
+        if (!fields) {
+            return [];
+        }
+        for (var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            if (field._id === fieldId) {
+                return field;
             }
         }
-        return result;
+        return [];
     }
 
     export function createField(formId: number, field) {
@@ -34,17 +37,22 @@ export module FieldModel {
         return mock.fields[formId];
     }
 
-    export function updateField(formId: number, fieldId: number, field: number) {
-        for (var i = 0; i < mock.fields.length; i++) {
-            var field = mock.fields[i];
-            if (field._id === formId) {
-                console.log('asdfl', form, newForm);
-                for (var prop in newForm) {
-                    console.log(' - ', prop, newForm[prop]);
-                    form[prop] = newForm[prop];
+    export function updateField(formId: number, fieldId: number, newField) {
+        console.log('uapdstaisn')
+        let fields = mock.fields[formId];
+        if (!fields) {
+            return [];
+        }
+        for (var i = 0; i < fields.length; i++) {
+            var field = fields[i];
+            console.log('old', field, formId, field._id === formId)
+            if (field._id === fieldId) {
+                console.log('new', newField)
+                for (var prop in newField) {
+                    field[prop] = newField[prop];
                 }
-                console.log('new', form);
-                return;
+                console.log('asdf', field)
+                return [];
             }
         }
     }
@@ -52,13 +60,13 @@ export module FieldModel {
     export function deleteField(formId: number, fieldId: number) {
         let fields = mock.fields[formId];
         if (!fields) {
-            return;
+            return [];
         }
         for (var i = 0; i < fields.length; i++) {
             var field = fields[i];
             if (field._id === fieldId) {
                 fields.splice(i, 1);
-                return;
+                return [];
             }
         }
     }

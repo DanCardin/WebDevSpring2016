@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class FieldService {
+    public selectedField = null;
     private headers;
 
     constructor(private http: Http) {
@@ -55,7 +56,7 @@ export class FieldService {
         return this.http
             .put(
                 '/api/assignment/form/' + formId + '/field/' + fieldId,
-                JSON.stringify(newForm.toJson()),
+                JSON.stringify(newForm),
                 {headers: this.headers}
             )
             .map(res => res.json());

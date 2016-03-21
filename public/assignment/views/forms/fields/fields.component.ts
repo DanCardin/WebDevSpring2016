@@ -30,12 +30,26 @@ export class FieldsList {
         this.selectedFieldType = value;
     }
 
+    updateField(field, fieldSelect, labelField, placeholderField, optionsField) {
+        this.fieldService.selectedField = field;
+        this.selectedFieldType = field.type;
+        console.log('asdf', field.type)
+
+        fieldSelect.value = field.type;
+        labelField.value = field.label;
+        placeholderField.value = field.placeholder;
+        let options = '';
+        field.options.forEach(option => {
+            options += option.label + ':' + option.value + '\n';
+        });
+        optionsField.value = options;
+    }
+
     addField(select, label, placeholder, options) {
         if (!this.formService.currentForm) {
             return;
         }
         let field = {
-            '_id': null,
             'type': select.value,
             'label': label.value,
             'options': [],
@@ -46,31 +60,34 @@ export class FieldsList {
             field['placeholder'] = placeholder.value;
         } else if (this.fieldTypes[1] == select.value) {
             // Date
-        } else if (this.fieldTypes[2] == select.value) {
+        } else if (this.fieldTypes[2] == select.value ||
+                   this.fieldTypes[3] == select.value ||
+                   this.fieldTypes[4] == select.value) {
             // Dropdown
-            field['options'] = [
-                {'label': 'Option 1', 'value': 'OPTION_1'},
-                {'label': 'Option 2', 'value': 'OPTION_2'},
-                {'label': 'Option 3', 'value': 'OPTION_3'}
-            ];
-        } else if (this.fieldTypes[3] == select.value) {
-            // Checkboxes Field
-            field['options'] = [
-                {'label': 'Option 1', 'value': 'OPTION_1'},
-                {'label': 'Option 2', 'value': 'OPTION_2'},
-                {'label': 'Option 3', 'value': 'OPTION_3'}
-            ];
-        } else if (this.fieldTypes[4] == select.value) {
-            // Radio Buttons Field
-            field['options'] = [
-                {'label': 'Option 1', 'value': 'OPTION_1'},
-                {'label': 'Option 2', 'value': 'OPTION_2'},
-            ];
+            field['options'] = [];
+            options.value.split('\n').forEach(line => {
+                let kv = line.split(':');
+                field['options'].push({
+                    'label': kv[0],
+                    'value': kv[1],
+                });
+            });
         } else if (this.fieldTypes[5] == select.value) {
             // Multi Line Text Field
             field['placeholder'] = placeholder.value;
         }
-        this.fieldService.createFieldForForm(this.formService.currentForm._id, field).subscribe();
+
+        if (this.fieldService.selectedField) {
+            let selectedField = this.fieldService.selectedField._id;
+            this.fieldService.selectedField = null;
+            this.fieldService.updateFormById(
+                this.formService.currentForm._id,
+                selectedField,
+                field
+            ).subscribe();
+        } else {
+            this.fieldService.createFieldForForm(this.formService.currentForm._id, field).subscribe();
+        }
         this.fields = this.fieldService.getFieldsForForm(this.formService.currentForm._id);
     }
 
