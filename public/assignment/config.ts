@@ -5,10 +5,13 @@
                 format: 'register',
                 defaultExtension: 'js'
             },
-            rxjs: {defaultExtension: 'js'}
+            rxjs: {defaultExtension: 'js'},
+            'ng2-dragula': {defaultExtension: 'js'}
         },
         map: {
-            'rxjs': 'node_modules/rxjs'
+            rxjs: 'node_modules/rxjs',
+            dragula: 'node_modules/dragula/dist/dragula.min.js',
+            'ng2-dragula': 'node_modules/ng2-dragula'
         }
     });
     System

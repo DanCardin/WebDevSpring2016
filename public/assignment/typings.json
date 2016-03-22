@@ -1,0 +1,5 @@
+{
+  "ambientDependencies": {
+    "dragula": "registry:dt/dragula#2.1.2+20160317120654"
+  }
+}

@@ -1,4 +1,5 @@
-import {Component, OnInit} from "angular2/core";
+import {Component, OnInit} from 'angular2/core';
+import {Dragula, DragulaService} from 'ng2-dragula/ng2-dragula';
 
 import {FieldService} from "../../../services/FieldService";
 import {FormService} from "../../../services/FormService";
@@ -6,6 +7,8 @@ import {User, UserService} from "../../../services/UserService";
 
 @Component({
     selector: "fields-list",
+    directives: [Dragula],
+    viewProviders: [DragulaService],
     templateUrl: "assignment/views/forms/fields/fields.view.html",
 })
 export class FieldsList {
