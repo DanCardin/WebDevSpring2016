@@ -14,14 +14,8 @@ import {SearchService} from "../../services/SearchService";
     providers: [SearchService],
 })
 export class Header extends PathAware {
-    userService: UserService;
-    constructor(
-        router: Router,
-        userService: UserService
-    ) {
+    constructor(router: Router, private userService: UserService) {
         super(router);
-
-        this.userService = userService;
     }
 
     logout() {

@@ -2,7 +2,7 @@ import express = require("express");
 import bodyParser = require("body-parser");
 import path = require("path");
 import {App} from './server/app';
-import {Cafe} from './server/cafe';
+import {Cafe} from './server/cafe/cafe';
 
 let ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 let port: number = process.env.OPENSHIFT_NODEJS_PORT || 3000;
@@ -30,8 +30,8 @@ let index = (req: express.Request, res: express.Response) => {
 
 app.get("/assignment/*", assignment);
 app.get("/cafe/*", cafe);
-let asdf = new App(app);
-asdf = new Cafe(app);
+new App(app);
+new Cafe(app);
 app.get("/*", index);
 
 let server = app.listen(port, ipaddress, function() {

@@ -7,23 +7,23 @@ import 'rxjs/add/operator/map';
 
 
 export interface IUser {
-    name: string;
+    username: string;
     password: string;
     email: string;
 }
 
 export class User implements IUser {
     _id: number;
-    name: string;
+    username: string;
     password: string;
     email: string;
 
-    constructor(name: string, password: string, email: string, id: number=null) {
+    constructor(username: string, password: string, email: string, id: number=null) {
         if (id === null) {
             id = Number((new Date).getTime().toString());
         }
         this._id = id;
-        this.name = name;
+        this.username = username;
         this.password = password;
         this.email = email;
     }
@@ -35,7 +35,7 @@ export class User implements IUser {
     toJson() {
         return {
             _id: this._id,
-            username: this.name,
+            username: this.username,
             password: this.password,
             email: this.email,
         };
@@ -44,15 +44,8 @@ export class User implements IUser {
 
 @Injectable()
 export class UserService {
-    private _currentUser: User;
+    public currentUser: User;
     private headers;
-
-    get currentUser(): User {
-        return this._currentUser;
-    }
-    set currentUser(user: User) {
-        this._currentUser = user;
-    }
 
     constructor(public http: Http) {
         this.headers = new Headers();
@@ -67,9 +60,11 @@ export class UserService {
             .map(res => {
                 console.log('res', res);
                 if (!res) {
+                    console.log('not this.curre', this.currentUser)
                     Observable.throw(new Error('error!'))
                 } else {
                     this.currentUser = res;
+                    console.log('this.curre', this.currentUser)
                     return res;
                 }
             });
@@ -83,7 +78,7 @@ export class UserService {
                 let result = [];
                 for (let i = 0; i < res.length; i++) {
                     let r = res[i];
-                    result.push(new User(r.username, r.password, r._id));
+                    result.push(new User(r.username, r.password, r.email, r._id));
                 }
                 return result;
             });
@@ -111,18 +106,18 @@ export class UserService {
     }
 
     updateUser(guid: number, user: User) {
-        console.log('asdf', JSON.stringify(user.toJson()));
+        console.log('qwerqwerqwer', guid, JSON.stringify(user.toJson()));
         return this.http
-            .put('/api/cafe/user/' + guid.toString(), JSON.stringify(user.toJson()))
+            .put('/api/cafe/user/' + guid, JSON.stringify(user.toJson()), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
-                console.log(res);
-                let result = [];
-                for (let i = 0; i < res.length; i++) {
-                    let r = res[i];
-                    result.push(new User(r.username, r.password, r._id));
+                console.log('res', res)
+                if (!res) {
+                    Observable.throw(new Error('error!'))
+                } else {
+                    this.currentUser = res;
+                    return res;
                 }
-                return result;
             });
     }
 }

@@ -1,8 +1,8 @@
-import UserModel = require('../models/user.model');
+import RoomModel = require('../models/room.model');
 
-export class UserService {
+export class RoomService {
     constructor (private app) {
-        this.app.post('/api/cafe/user', this.createUser);
+        this.app.post('/api/cafe/room', this.createRoom);
         this.app.get('/api/cafe/user', this.findUserByCredentials);
         this.app.get('/api/cafe/user/:userId', this.findUserById);
         this.app.put('/api/cafe/user/:userId', this.updateUser);

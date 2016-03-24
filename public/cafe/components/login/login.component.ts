@@ -8,39 +8,28 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "cafe/components/login/login.view.html",
 })
 export class Login {
-    constructor(
-        private _router: Router,
-        private _userService: UserService
-    ) {
-    }
+    constructor(private router: Router, private userService: UserService) {}
 
     login(username: string, password: string) {
-        this._userService
+        this.userService
             .findUserByUsernameAndPassword(username, password)
-            .then((user) => {
-                console.log("logged in", user);
-                this._userService.currentUser = user;
-                this._router.navigate(["/Profile"]);
-            })
-            .catch((error) => {
-                console.log(error);
+            .subscribe((user) => {
+                if (user) {
+                    this.router.navigate(["/Profile"]);
+                }
             });
     }
 
     register(username: string, password: string, verify: string, email: string) {
-        if (password === verify) {
-            let user: User = new User(
-                username,
-                password,
-                email
-            );
-            this._userService
+        if (password && verify && password === verify) {
+            let user: User = new User(username, password, email);
+            this.userService
                 .createUser(user)
-                .then((user) => {
-                    this._userService.currentUser = user;
-                    this._router.navigate(["/Profile"]);
+                .subscribe((user) => {
+                    if (user) {
+                        this.router.navigate(["/Profile"]);
+                    }
                 })
-                .catch(error => console.log(error));
         }
     }
 }

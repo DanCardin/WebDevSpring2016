@@ -1,6 +1,5 @@
 declare function require(name:string);
 
-// var mock = require('./form.mock.json');
 let mock = {forms: [
     {"_id": "000", "title": "Contacts", "userId": 123, "fields": [
         {"_id": "111", "label": "First Name", "type": "TEXT", "placeholder": "First Name"},

@@ -48,18 +48,24 @@ export module UserModel {
                 return user;
             }
         }
-        return null;
+        return [];
     }
 
     export function updateUser(id, newUser) {
+        console.log('userl', newUser)
         for (var i = 0; i < mock.users.length; i++) {
             var user = mock.users[i];
             if (user._id === id) {
                 console.log('update', user, id)
-                newUser.foreach(prop => user[prop] = prop);
-                return;
+                for (var prop of newUser) {
+                    if (user._id !== id) {
+                        user[prop] = prop;
+                    }
+                }
+                return mock.users;
             }
         }
+        return [];
     }
 
     export function deleteUser(id) {
@@ -67,7 +73,7 @@ export module UserModel {
             var user = mock.users[i];
             if (user._id === id) {
                 mock.users.splice(i, 1);
-                return;
+                return [];
             }
         }
     }
