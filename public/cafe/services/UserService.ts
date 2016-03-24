@@ -1,52 +1,52 @@
-/// <reference path="../typings/main.d.ts"/>
+// <reference path="../typings/main.d.ts"/>
 
-import {Injectable} from "angular2/core";
+import {Injectable} from 'angular2/core';
+import {Http, Headers} from 'angular2/http';
+import {Observable} from 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+
 
 export interface IUser {
-    _id: string;
     name: string;
     password: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    role: string;
 }
 
 export class User implements IUser {
-    _id: string;
+    _id: number;
     name: string;
     password: string;
     email: string;
-    firstName: string;
-    lastName: string;
-    role: string;
 
-    constructor(
-        name: string, password: string, email: string,
-        firstName: string="", lastName: string="",
-        id: string=null
-    ) {
+    constructor(name: string, password: string, email: string, id: number=null) {
         if (id === null) {
-            id = (new Date).getTime().toString();
+            id = Number((new Date).getTime().toString());
         }
         this._id = id;
         this.name = name;
         this.password = password;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = "admin";
     }
 
     get isAdmin(): boolean {
-        return this.role === "admin";
+        return true;
+    }
+
+    toJson() {
+        return {
+            _id: this._id,
+            username: this.name,
+            password: this.password,
+            email: this.email,
+        };
     }
 }
 
 @Injectable()
 export class UserService {
-    private _users: Map<string, User>;
     private _currentUser: User;
+    private headers;
+
     get currentUser(): User {
         return this._currentUser;
     }
@@ -54,64 +54,75 @@ export class UserService {
         this._currentUser = user;
     }
 
-    constructor() {
-        this._users = new Map<string, User>();
-        let users = [
-            {_id: "123", firstName: "Alice",  lastName: "Wonderland",username: "alice",  password: "alice"},
-            {_id: "234", firstName: "Bob",    lastName: "Hope",      username: "bob",    password: "bob"},
-            {_id: "345", firstName: "Charlie",lastName: "Brown",     username: "charlie",password: "charlie"},
-            {_id: "456", firstName: "Dan",    lastName: "Craig",     username: "dan",    password: "dan"},
-            {_id: "567", firstName: "Edward", lastName: "Norton",    username: "ed",     password: "ed"}
-        ]
-        for (let user of users) {
-            this._users.set(
-                user._id,
-                new User(user.username, user.password, "", user.firstName, user.lastName, user._id)
-            );
-        }
-        this._currentUser = this._users.get("123");
+    constructor(public http: Http) {
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
     }
 
-    findUserByUsernameAndPassword(username: string, password: string): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            this._users.forEach(function(user) {
-                if (user.name === username && user.password === password) {
-                    return resolve(user);
+    findUserByUsernameAndPassword(username: string, password: string) {
+        let creds = '?username=' + username + '&password=' + password;
+        return this.http
+            .get('/api/cafe/user/' + creds)
+            .map(res => res.json())
+            .map(res => {
+                console.log('res', res);
+                if (!res) {
+                    Observable.throw(new Error('error!'))
+                } else {
+                    this.currentUser = res;
+                    return res;
                 }
             });
-            return reject("No user");
-        });
     }
 
-    findAllUsers(): Promise<Array<User>> {
-        return new Promise<Array<User>>((resolve, reject) => {
-            return resolve(Array.from(this._users.values()));
-        });
+    findAllUsers(): Observable<Array<{}>> {
+        return this.http
+            .get('/api/cafe/user')
+            .map(res => res.json())
+            .map(res => {
+                let result = [];
+                for (let i = 0; i < res.length; i++) {
+                    let r = res[i];
+                    result.push(new User(r.username, r.password, r._id));
+                }
+                return result;
+            });
     }
 
-    createUser(user: User): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            this._users.set(user._id, user);
-            return resolve(user);
-        });
+    createUser(user: User) {
+        return this.http
+            .post('/api/cafe/user', JSON.stringify(user.toJson()), {headers: this.headers})
+            .map(res => res.json())
+            .map(res => {
+                console.log('res', res)
+                if (!res) {
+                    Observable.throw(new Error('error!'))
+                } else {
+                    this.currentUser = res;
+                    return res;
+                }
+            });
     }
 
-    deleteUserById(guid: string): Promise<Array<User>> {
-        return new Promise<Array<User>>((resolve, reject) => {
-            this._users.delete(guid);
-            return resolve(Array.from(this._users.values()));
-        });
+    deleteUserById(guid: string) {
+        return this.http
+            .delete('/api/cafe/user/' + guid)
+            .map(res => res.json());
     }
 
-    updateUser(guid: string, user: User): Promise<User> {
-        return new Promise<User>((resolve, reject) => {
-            if (this._users.has(guid)) {
-                user._id = guid;
-                this._users.set(guid, user);
-                this.currentUser = user;
-                return resolve(this._users.get(user._id));
-            }
-            return reject("User doesn't exist");
-        });
+    updateUser(guid: number, user: User) {
+        console.log('asdf', JSON.stringify(user.toJson()));
+        return this.http
+            .put('/api/cafe/user/' + guid.toString(), JSON.stringify(user.toJson()))
+            .map(res => res.json())
+            .map(res => {
+                console.log(res);
+                let result = [];
+                for (let i = 0; i < res.length; i++) {
+                    let r = res[i];
+                    result.push(new User(r.username, r.password, r._id));
+                }
+                return result;
+            });
     }
 }

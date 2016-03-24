@@ -8,35 +8,11 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "cafe/components/profile/profile.view.html",
 })
 export class Profile {
-    userService: UserService;
+    constructor(private router: Router, private userService: UserService) {}
 
-    private universities = [{name: 'Northeastern'}];
-    private selectedUniversityName: string;
-    private selectedUniversity;
-
-    constructor(
-        private _router: Router,
-        userService: UserService
-    ) {
-        this.userService = userService;
-    }
-
-    update(username: string,
-           password: string,
-           firstName: string,
-           lastName: string,
-           email: string
-    ) {
-        console.log('updating')
-        let update = new User(username, password, email, firstName, lastName);
-        this.userService
-            .updateUser(this.userService.currentUser._id, update)
-            .then(user => console.log("Updated"))
-            .catch(error => console.log(error));
-        this._router.navigate(["/Profile"]);
-    }
-
-    private onUniversitySelected() {
-        // this.selectedRepository = this.repositories.find(repository => repository.name === this.selectedRepositoryName);
+    update(username: string, password: string, email: string) {
+        let update = new User(username, password, email);
+        this.userService.updateUser(this.userService.currentUser._id, update).subscribe();
+        this.router.navigate(["/Profile"]);
     }
 }
