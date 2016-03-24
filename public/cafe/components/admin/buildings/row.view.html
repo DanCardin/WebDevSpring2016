@@ -3,7 +3,7 @@
 </td>
 <td (dblclick)="enterEditBuildingMode(buildingSelect)">
   <span [hidden]="editBuildingMode">
-    {{ room.building.name }}
+    {{ room.building }}
   </span>
   <div [hidden]="!editBuildingMode">
     <select

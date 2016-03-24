@@ -63,11 +63,10 @@ export class Row {
         return this.dayOfWeekMap[day];
     }
 
-    commitEdit(buildingSelect, roomSelect) {
+    commitEdit(newBuilding, newRoom) {
         this.editBuildingMode = false;
         this.editRoomMode = false;
-        this.room.building = buildingSelect;
-        this.room.number = roomSelect;
+        this.roomService.updateRoom(this.room, newBuilding, newRoom);
     }
 
     cancelEdit() {

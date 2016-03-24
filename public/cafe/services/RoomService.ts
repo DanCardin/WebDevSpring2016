@@ -16,6 +16,20 @@ export class Building {
     }
 }
 
+export class Room {
+    public number: string;
+    public seats: string;
+    public src = '';
+    public times = [];
+    constructor(_number: string, seats: string, times=null) {
+        this.number = _number;
+        this.seats = seats;
+        if (times) {
+            this.times = times;
+        }
+    }
+}
+
 @Injectable()
 export class RoomService {
     private _buildings = [
@@ -132,7 +146,7 @@ export class RoomService {
         let result = [];
         this._buildings.forEach(function(building) {
             building.rooms.forEach(function(room) {
-                room.building = building;
+                room.building = building.name;
                 result.push(room);
             });
         });
@@ -151,6 +165,24 @@ export class RoomService {
 
     addRoom(buildingName: string, roomNumber: number) {
         this._buildings[this.findBuildingIndex(name)].rooms.push(roomNumber);
+        return Observable.of(this._buildings[this.findBuildingIndex(name)]);
+    }
+
+    updateRoom(room, newBuilding: string, newNumber: string) {
+        if (newBuilding !== room.building) {
+            let originalBuilding = this._buildings[this.findBuildingIndex(room.building)];
+            for (var i = 0; i < originalBuilding.rooms.length; i++) {
+                let currentRoom = originalBuilding.rooms[i];
+                if (currentRoom.number == room.number) {
+                    originalBuilding.rooms.splice(i, 1);
+                    break;
+                }
+            }
+            this._buildings[this.findBuildingIndex(newBuilding)].rooms.push(room);
+            room.building = newBuilding;
+        }
+        room.number = newNumber;
+
         return Observable.of(this._buildings[this.findBuildingIndex(name)]);
     }
 

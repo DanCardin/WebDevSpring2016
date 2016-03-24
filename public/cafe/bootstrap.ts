@@ -1,3 +1,5 @@
+/// <reference path="typings/main.d.ts"/>
+
 import {bootstrap} from "angular2/platform/browser";
 import {CORE_DIRECTIVES} from "angular2/common";
 import {ROUTER_PROVIDERS} from "angular2/router";
