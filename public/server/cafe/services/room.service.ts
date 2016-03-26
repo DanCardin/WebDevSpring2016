@@ -2,49 +2,86 @@ import RoomModel = require('../models/room.model');
 
 export class RoomService {
     constructor (private app) {
-        this.app.post('/api/cafe/room', this.createRoom);
-        this.app.get('/api/cafe/user', this.findUserByCredentials);
-        this.app.get('/api/cafe/user/:userId', this.findUserById);
-        this.app.put('/api/cafe/user/:userId', this.updateUser);
-        this.app.delete('/api/cafe/user/:userId', this.deleteUser);
+        this.app.get('/api/cafe/building', this.getBuildings);
+        this.app.post('/api/cafe/building', this.addBuilding);
+        this.app.delete('/api/cafe/building/:buildingId', this.deleteBuilding);
+
+        this.app.get('/api/cafe/room', this.getRooms);
+        this.app.post('/api/cafe/room', this.addRoom);
+        this.app.put('/api/cafe/room/:roomId', this.editRoom);
+        this.app.delete('/api/cafe/room/:roomId', this.deleteRoom);
+
+        this.app.get('/api/cafe/room/:roomId/time', this.getTimesForRoom);
+        this.app.get('/api/cafe/room/time', this.getSurroundingTimes);
+        // this.app.put('/api/cafe/user/:userId', this.updateUser);
+        // this.app.delete('/api/cafe/user/:userId', this.deleteUser);
     }
 
-    createUser(req, res) {
-        console.log('createUser', req.body);
-        let result = UserModel.UserModel.createUser(req.body);
-        res.json(result);
-    }
-
-    findUserByCredentials(req, res) {
-        console.log('findUserByCredentials');
+    getBuildings(req, res) {
+        console.log('getBuildings', req.query.time);
         let result;
-        console.log(' - ', req.query)
-        if (req.query.hasOwnProperty('username') && req.query.hasOwnProperty('password')) {
-            console.log(' - findUserByCredentials');
-            result = UserModel.UserModel.findUserByCredentials(req.query);
-
+        if (req.query.time) {
+            result = RoomModel.RoomModel.getBuildingsAtTime(new Date(req.query.time));
         } else {
-            result = UserModel.UserModel.getAllUsers();
-            console.log(' - getAllUsers');
+            result = RoomModel.RoomModel.getBuildings();
         }
+        // console.log('  Result: ', result);
         res.json(result);
     }
 
-    findUserById(req, res) {
-        console.log('findUserById');
-        let result = UserModel.UserModel.findUserById(Number(req.params.userId));
+    getRooms(req, res) {
+        console.log('getRooms');
+        let result = RoomModel.RoomModel.getRooms();
+        // console.log('  Result: ', result);
         res.json(result);
     }
 
-    updateUser(req, res) {
-        console.log('updateUser', req.params.userId, req.body, "asdf");
-        let result = UserModel.UserModel.updateUser(Number(req.params.userId), req.body);
+    getTimesForRoom(req, res) {
+        console.log('getTimesForRoom', req.params.roomId);
+        let result = RoomModel.RoomModel.getTimesForRoom(Number(req.params.roomId));
+        // console.log('  Result: ', result);
         res.json(result);
     }
 
-    deleteUser(req, res) {
-        console.log('deleteUser');
-        let result = UserModel.UserModel.deleteUser(Number(req.params.userId));
+    getSurroundingTimes(req, res) {
+        console.log('getSurroundingTimes', req.query.time, req.query._number);
+        let result = RoomModel.RoomModel.getSurroundingTimes(new Date(req.query.time), Number(req.query._number));
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    addBuilding(req, res) {
+        console.log('addBuilding', req.body.name);
+        let result = RoomModel.RoomModel.addBuilding(req.body.name);
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    deleteBuilding(req, res) {
+        console.log('deleteBuilding', req.params.buildingId);
+        let result = RoomModel.RoomModel.deleteBuilding(Number(req.params.buildingId));
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    addRoom(req, res) {
+        console.log('addRoom');
+        let result = RoomModel.RoomModel.addRoom();
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    deleteRoom(req, res) {
+        console.log('deleteRoom');
+        let result = RoomModel.RoomModel.deleteRoom(Number(req.params.roomId));
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    editRoom(req, res) {
+        console.log('editRoom', req.params.roomId, req.body);
+        let result = RoomModel.RoomModel.editRoom(Number(req.params.roomId), req.body);
+        // console.log('  Result: ', result);
         res.json(result);
     }
 }

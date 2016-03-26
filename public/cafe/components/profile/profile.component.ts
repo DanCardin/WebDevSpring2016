@@ -12,7 +12,7 @@ export class Profile {
 
     update(username: string, password: string, email: string) {
         let update = new User(username, password, email);
-        this.userService.updateUser(this.userService.currentUser._id, update);
+        this.userService.updateUser(this.userService.currentUser._id, update).subscribe();
         this.router.navigate(["/Profile"]);
     }
 }

@@ -1,0 +1,13 @@
+.card-size {
+  width: 115px;
+}
+
+.card-block-ov {
+  padding: inherit;
+  height: 3.25rem;
+}
+
+.card-footer-ov {
+  padding-top: .1rem;
+  padding-bottom: .4rem;
+}

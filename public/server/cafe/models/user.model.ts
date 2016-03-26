@@ -48,7 +48,7 @@ export module UserModel {
                 return user;
             }
         }
-        return [];
+        return {};
     }
 
     export function updateUser(id, newUser) {
@@ -57,12 +57,12 @@ export module UserModel {
             var user = mock.users[i];
             if (user._id === id) {
                 console.log('update', user, id)
-                for (var prop of newUser) {
-                    if (user._id !== id) {
-                        user[prop] = prop;
+                for (var prop in newUser) {
+                    if (prop !== '_id') {
+                        user[prop] = newUser[prop];
                     }
                 }
-                return mock.users;
+                return user;
             }
         }
         return [];

@@ -32,7 +32,7 @@ app.get("/assignment/*", assignment);
 app.get("/cafe/*", cafe);
 new App(app);
 new Cafe(app);
-app.get("/*", index);
+app.get("/", index);
 
 let server = app.listen(port, ipaddress, function() {
     console.log("Listening on " + ipaddress + ", server_port " + port);

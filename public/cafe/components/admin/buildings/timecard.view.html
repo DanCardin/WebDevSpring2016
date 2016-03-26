@@ -1,0 +1,16 @@
+<li class="nav-item">
+  <div class="card text-xs-center card-size">
+    <div class="card-header card-block-ov">
+      <span class="label label-pill" [ngClass]="dayOfWeekClass(time.days, day)" *ngFor="#day of time.days">
+        {{ day }}
+      </span>
+    </div>
+    <div class="card-block card-block-ov">
+      <span class="label label-primary">{{ time.start | date: "h:mm" }}</span>
+      <span class="label label-info">{{ time.end | date: "h:mm" }}</span>
+    </div>
+    <div class="card-footer card-danger card-footer-ov">
+      <a class="label label-danger" (click)="deleteTime()">Remove</a>
+    </div>
+  </div>
+</li>

@@ -1,32 +1,88 @@
-import {Component, Input} from 'angular2/core';
+import {Component, Input, SimpleChange, Output, EventEmitter} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router} from 'angular2/router';
 
 import {RoomService} from '../../../services/RoomService';
 
 
+class Time {
+    private dayOfWeekMap = {
+        'M': 'label-primary', 'T': 'label-success', 'W': 'label-info', 'R': 'label-warning', 'F': 'label-danger'
+    }
+
+    daysOfTheWeek() {
+        return Object.keys(this.dayOfWeekMap);
+    }
+
+    dayOfWeekSelected(days, day) {
+        if (days.indexOf(day) !== -1) {
+            return this.dayOfWeekMap[day];
+        }
+        return 'label-default';
+    }
+
+    dayOfWeekClass(day) {
+        return this.dayOfWeekMap[day];
+    }
+}
+
+@Component({
+    selector: 'timecard',
+    templateUrl: 'cafe/components/admin/buildings/timecard.view.html',
+    styleUrls: ['cafe/components/admin/buildings/timecard.css'],
+    directives: [NgClass],
+})
+export class TimeCard extends Time {
+    @Input()
+    public time;
+
+    @Output()
+    public deleted = new EventEmitter();
+
+    constructor(private roomService: RoomService) {
+        super();
+    }
+
+    deleteTime() {
+        this.deleted.emit(this.time._id);
+    }
+}
+
 @Component({
     selector: 'tr',
     templateUrl: 'cafe/components/admin/buildings/row.view.html',
+    styleUrls: ['cafe/components/admin/buildings/timecard.css'],
     directives: [NgClass],
 })
-export class Row {
+export class Row extends Time {
     @Input()
     public room;
 
     @Input()
     public buildings;
 
+    @Output()
+    public deleted = new EventEmitter();
+
+    @Output()
+    public edited = new EventEmitter();
+
+    private times;
+    public days = [];
     private previousSelection = null;
 
     public editBuildingMode = false;
     public editRoomMode = false;
-    private dayOfWeekMap = {
-        'M': 'label-primary', 'T': 'label-success', 'W': 'label-info', 'R': 'label-warning', 'F': 'label-danger'
-    }
-    public days = [];
 
-    constructor(private roomService: RoomService) {}
+    constructor(private roomService: RoomService) {
+        super();
+    }
+
+    ngOnChanges(changes: {[propName: string]: SimpleChange}) {
+        if (changes['room']) {
+            this.times = this.roomService.getTimesForRoom(this.room._id);
+        }
+    }
 
     enterEditBuildingMode(element) {
         this.editBuildingMode = true;
@@ -39,34 +95,10 @@ export class Row {
         }
     }
 
-    daysOfTheWeek() {
-        return Object.keys(this.dayOfWeekMap);
-    }
-
-    dayOfWeekSelected(day) {
-        if (this.days.indexOf(day) !== -1) {
-            return this.dayOfWeekMap[day];
-        }
-        return 'label-default';
-    }
-
-    selectDay(day) {
-        let index = this.days.indexOf(day);
-        if (index !== -1) {
-            this.days.splice(index, 1);
-        } else {
-            this.days.push(day);
-        }
-    }
-
-    dayOfWeekClass(day) {
-        return this.dayOfWeekMap[day];
-    }
-
     commitEdit(newBuilding, newRoom) {
         this.editBuildingMode = false;
         this.editRoomMode = false;
-        this.roomService.updateRoom(this.room, newBuilding, newRoom);
+        this.edited.emit([this.room._id, newBuilding, newRoom]);
     }
 
     cancelEdit() {
@@ -78,11 +110,24 @@ export class Row {
         if (!startTime || !endTime || this.days.length == 0) {
             return;
         }
-        this.roomService.addTime(this.room, startTime, endTime, this.days);
+        this.times = this.roomService.addTime(this.room._id, startTime, endTime, this.days);
+    }
+
+    selectDay(day) {
+        let index = this.days.indexOf(day);
+        if (index !== -1) {
+            this.days.splice(index, 1);
+        } else {
+            this.days.push(day);
+        }
     }
 
     deleteTime(start, end) {
-        this.roomService.deleteTime(this.room, start, end);
+        this.times = this.roomService.deleteTime(this.room, 0);
+    }
+
+    deleteRoom(roomId) {
+        this.deleted.emit(roomId);
     }
 }
 
@@ -90,7 +135,16 @@ export class Row {
     selector: 'thead',
     templateUrl: 'cafe/components/admin/buildings/thead.view.html',
 })
-export class THead {}
+export class THead {
+    @Output()
+    public added = new EventEmitter();
+
+    constructor(private roomService: RoomService) {}
+
+    addRoom() {
+        this.added.emit(null);
+    }
+}
 
 @Component({
     selector: 'profile',
@@ -100,20 +154,29 @@ export class THead {}
 export class Buildings {
     public buildings;
     public rooms;
-    constructor(
-        private _router: Router,
-        private roomService: RoomService
-    ) {
+    constructor(private router: Router, private roomService: RoomService) {
         this.buildings = this.roomService.getBuildings();
         this.rooms = this.roomService.getRooms();
     }
 
+    addRoom() {
+        this.rooms = this.roomService.addRoom();
+    }
+
+    editRoom(update) {
+        this.rooms = this.roomService.editRoom(update[0], update[1], update[2]);
+    }
+
+    deleteRoom(roomId) {
+        this.rooms = this.roomService.deleteRoom(roomId);
+    }
+
     addBuilding(buildingName) {
-        this.roomService.addBuilding(buildingName.value);
+        this.buildings = this.roomService.addBuilding(buildingName.value);
         buildingName.value = '';
     }
 
     deleteBuilding(buildingName) {
-        this.roomService.deleteBuilding(buildingName.value);
+        this.buildings = this.roomService.deleteBuilding(buildingName.value);
     }
 }

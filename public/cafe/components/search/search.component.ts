@@ -1,4 +1,5 @@
 import {Component} from "angular2/core";
+import {Router} from "angular2/router";
 import {Control} from "angular2/common";
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -7,6 +8,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 
 import {SearchService} from "../../services/SearchService";
+
 
 @Component({
   selector: 'search',
@@ -34,7 +36,7 @@ import {SearchService} from "../../services/SearchService";
 
         {{ numUsers }} Results:
         <ul>
-          <li *ngFor="#user of users | async" (click)="selectBuilding(user)">
+          <li *ngFor="#user of users | async" (click)="selectUser(user)">
             {{ user }}
            </li>
         </ul>
@@ -49,7 +51,7 @@ export class Search {
     numRooms = 0;
     numUsers = 0;
 
-    constructor(private searchService: SearchService) {
+    constructor(private searchService: SearchService, private router: Router) {
         this.rooms = searchService.search(this.term.valueChanges, true);
         this.users = searchService.search(this.term.valueChanges, false);
     }
@@ -65,6 +67,7 @@ export class Search {
     }
 
     selectBuilding(item: string) {
+        this.router.navigate(['/Home']);
         if (!isNaN(+item.charAt(0))) {
             let i = 2;
             let str = item.substring(0, 1);
@@ -77,5 +80,9 @@ export class Search {
         } else {
             $('#building_' + item.replace(/\s+/g, '')).children().children().click();
         }
+    }
+
+    selectUser(user) {
+        this.router.navigate(['/Admin/Users']);
     }
 }

@@ -30,8 +30,8 @@ export class Home {
         this.times = [];
         this.midway = Math.floor(numTimes / 2);
 
-        this.times = this.roomService.getTimesSurroundingTime(new Date(), numTimes);
-        this.buildings = this.roomService.getBuildingsAtTime(this.times[this.midway]);
+        this.times = this.roomService.getSurroundingTimes(new Date(), numTimes);
+        this.buildings = this.roomService.getBuildingsAtTime(new Date());
     }
 
     public status: Object = {
