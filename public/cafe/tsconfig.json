@@ -8,11 +8,8 @@
     "noImplicitAny": false,
     "removeComments": false,
     "sourceMap": true,
+    "outFile": "../dist/cafe/out.js",
     "target": "ES5"
   },
-  "exclude": [
-    "typings/browser.d.ts",
-    "typings/browser",
-    "node_modules"
-  ]
+  "files": ["bootstrap.ts"]
 }

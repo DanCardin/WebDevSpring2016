@@ -13,6 +13,6 @@
         }
     });
     System
-        .import('cafe/bootstrap')
+        .import('cafe/out/bootstrap')
         .then(null, console.error.bind(console));
 })();

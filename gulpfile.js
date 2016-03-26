@@ -59,7 +59,6 @@ gulp.task('css', function() {
 
 gulp.task('watch', function() {
     gulp.watch(assignmentFiles, ['assignment']);
-    gulp.watch(cafeFiles, ['cafe']);
     gulp.watch(serverFiles, ['server']);
     gulp.watch(serverFolderFiles, ['serverfolder']);
 
