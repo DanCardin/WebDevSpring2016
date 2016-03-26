@@ -1,32 +1,7 @@
-// <reference path="../typings/main.d.ts"/>
-
 import {Injectable} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Rx';
 declare var moment: any;
-//
-// export class Building {
-//     public name;
-//     public rooms;
-//     constructor(name: string, rooms: Array<any>) {
-//         this.name = name;
-//         this.rooms = rooms;
-//     }
-// }
-//
-// export class Room {
-//     public number: string;
-//     public seats: string;
-//     public src = '';
-//     public times = [];
-//     constructor(_number: string, seats: string, times=null) {
-//         this.number = _number;
-//         this.seats = seats;
-//         if (times) {
-//             this.times = times;
-//         }
-//     }
-// }
 
 @Injectable()
 export class RoomService {

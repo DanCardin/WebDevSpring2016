@@ -1,14 +1,3 @@
-declare function require(name:string);
-
-// var mock = require('./user.mock.json');
-let mock = {users: [
-    {"_id": 123, "firstName": "Alice",  "lastName": "Wonderland", "username": "alice",   "password": "alice"},
-    {"_id": 234, "firstName": "Bob",    "lastName": "Hope",       "username": "bob",     "password": "bob"},
-    {"_id": 345, "firstName": "Charlie","lastName": "Brown",      "username": "charlie", "password": "charlie"},
-    {"_id": 456, "firstName": "Dan",    "lastName": "Craig",      "username": "dan",     "password": "dan"},
-    {"_id": 567, "firstName": "Edward", "lastName": "Norton",     "username": "ed",      "password": "ed"},
-]};
-
 export module UserModel {
     export function findUserByUsername(username: string) {
         for (let i = 0; i < mock.users.length; i++) {
@@ -65,7 +54,7 @@ export module UserModel {
                 return user;
             }
         }
-        return [];
+        return {};
     }
 
     export function deleteUser(id) {
@@ -77,4 +66,16 @@ export module UserModel {
             }
         }
     }
+
+    export function getData() {
+        return mock;
+    }
+
+    var mock = {users: [
+        {"_id": 123, "firstName": "Alice",  "lastName": "Wonderland", "username": "alice",   "password": "alice"},
+        {"_id": 234, "firstName": "Bob",    "lastName": "Hope",       "username": "bob",     "password": "bob"},
+        {"_id": 345, "firstName": "Charlie","lastName": "Brown",      "username": "charlie", "password": "charlie"},
+        {"_id": 456, "firstName": "Dan",    "lastName": "Craig",      "username": "dan",     "password": "dan"},
+        {"_id": 567, "firstName": "Edward", "lastName": "Norton",     "username": "ed",      "password": "ed"},
+    ]};
 }

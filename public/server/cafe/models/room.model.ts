@@ -115,10 +115,12 @@ export module RoomModel {
             }
         }
     }
-}
 
-let mock = {
-    buildings: [
+    export function getData() {
+        return mock;
+    }
+
+    var mock = { buildings: [
     {
         _id: 1,
         name: 'Shillman',
@@ -209,5 +211,5 @@ let mock = {
             },
         ],
     },
-    ]
-};
+    ]};
+}

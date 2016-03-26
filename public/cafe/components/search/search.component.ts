@@ -12,6 +12,7 @@ import {SearchService} from "../../services/SearchService";
 
 @Component({
   selector: 'search',
+  providers: [SearchService],
   template: `
     <div role="search" class="dropdown form-group">
       <input
@@ -52,8 +53,8 @@ export class Search {
     numUsers = 0;
 
     constructor(private searchService: SearchService, private router: Router) {
-        this.rooms = searchService.search(this.term.valueChanges, true);
-        this.users = searchService.search(this.term.valueChanges, false);
+        this.rooms = this.searchService.search(this.term.valueChanges, this.searchService.roomFunc);
+        this.users = this.searchService.search(this.term.valueChanges, this.searchService.userFunc);
     }
 
     hasResults(results, room: boolean) {

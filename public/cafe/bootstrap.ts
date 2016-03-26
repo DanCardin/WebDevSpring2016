@@ -9,7 +9,6 @@ import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from 'angular2-google-maps/core';
 import {CafeComponent} from "./components/cafe/cafe.component";
 import {UserService} from "./services/UserService";
 import {RoomService} from "./services/RoomService";
-import {SearchService} from "./services/SearchService";
 
 bootstrap(CafeComponent, [
     ROUTER_PROVIDERS,
@@ -19,5 +18,4 @@ bootstrap(CafeComponent, [
     ANGULAR2_GOOGLE_MAPS_PROVIDERS,
     UserService,
     RoomService,
-    SearchService
 ]);
