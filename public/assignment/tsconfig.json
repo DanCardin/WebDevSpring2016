@@ -10,5 +10,9 @@
     "sourceMap": true,
     "target": "ES5"
   },
-  "files": ["bootstrap.ts"]
+  "exclude": [
+    "typings/browser.d.ts",
+    "typings/browser",
+    "node_modules"
+  ]
 }

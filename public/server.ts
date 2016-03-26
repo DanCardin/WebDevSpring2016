@@ -1,7 +1,7 @@
 import express = require("express");
 import bodyParser = require("body-parser");
 import path = require("path");
-import {App} from './server/app';
+import {App} from './server/assignment/app';
 import {Cafe} from './server/cafe/cafe';
 
 let ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
