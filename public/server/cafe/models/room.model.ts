@@ -100,20 +100,40 @@ export module RoomModel {
         return getRooms();
     }
 
-    function addTime(room, startTime: string, endTime: string, days) {
-        room.times.push({
-            start: new Date(this.convertTimeToDateString(startTime)),
-            end: new Date(this.convertTimeToDateString(endTime)),
-            days: days,
-        });
-    }
-
-    function deleteTime(room, startTime, endTime) {
-        for (var i = 0; i < room.times.length; i++) {
-            if (room.times[i].start === startTime && room.times[i].end === endTime) {
-                room.time.splice(i, 1);
+    export function addTime(roomId, time) {
+        let result = [];
+        for (var building of mock.buildings) {
+            for (var room of building.rooms) {
+                if (room._id === roomId) {
+                    let newTime = {
+                        _id: (new Date()).getTime(),
+                        start: new Date(time.start).getTime(),
+                        end: new Date(time.end).getTime(),
+                        days: time.days,
+                    }
+                    room.times.push(newTime);
+                    result = room.times;
+                }
             }
         }
+        return result;
+    }
+
+    export function deleteTime(roomId, timeId) {
+        let result = [];
+        for (var building of mock.buildings) {
+            for (var room of building.rooms) {
+                if (room._id === roomId) {
+                    for (var i = 0; i < room.times.length; i++) {
+                        if (room.times[i]._id === timeId) {
+                            room.times.splice(i, 1);
+                            result = room.times;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     export function getData() {

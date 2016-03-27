@@ -33,11 +33,8 @@ class Time {
     directives: [NgClass],
 })
 export class TimeCard extends Time {
-    @Input()
-    public time;
-
-    @Output()
-    public deleted = new EventEmitter();
+    @Input() public time;
+    @Output() public deleted = new EventEmitter();
 
     constructor(private roomService: RoomService) {
         super();
@@ -52,20 +49,13 @@ export class TimeCard extends Time {
     selector: 'tr',
     templateUrl: 'cafe/components/admin/buildings/row.view.html',
     styleUrls: ['cafe/components/admin/buildings/timecard.css'],
-    directives: [NgClass],
+    directives: [NgClass, TimeCard],
 })
 export class Row extends Time {
-    @Input()
-    public room;
-
-    @Input()
-    public buildings;
-
-    @Output()
-    public deleted = new EventEmitter();
-
-    @Output()
-    public edited = new EventEmitter();
+    @Input() public room;
+    @Input() public buildings;
+    @Output() public deleted = new EventEmitter();
+    @Output() public edited = new EventEmitter();
 
     private times;
     public days = [];
@@ -122,8 +112,8 @@ export class Row extends Time {
         }
     }
 
-    deleteTime(start, end) {
-        this.times = this.roomService.deleteTime(this.room, 0);
+    deleteTime(timeId) {
+        this.times = this.roomService.deleteTime(this.room._id, timeId);
     }
 
     deleteRoom(roomId) {
@@ -136,8 +126,7 @@ export class Row extends Time {
     templateUrl: 'cafe/components/admin/buildings/thead.view.html',
 })
 export class THead {
-    @Output()
-    public added = new EventEmitter();
+    @Output() public added = new EventEmitter();
 
     constructor(private roomService: RoomService) {}
 

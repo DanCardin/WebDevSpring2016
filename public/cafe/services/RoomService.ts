@@ -11,9 +11,9 @@ export class RoomService {
         this.headers.append('Content-Type', 'application/json');
     }
 
-    convertTimeToDateString(time: string): string {
+    getTimeFromString(time: string) {
         let format = 'hh:mm'
-        return moment(time, format);
+        return moment(time, format).valueOf();
     }
 
     getSurroundingTimes(time: Date, numTimes): Observable<Array<Date>> {
@@ -83,8 +83,12 @@ export class RoomService {
 
     addTime(roomId, startTime: string, endTime: string, days) {
         return this.http
-            .post('/api/cafe/building',
-                JSON.stringify({'startTime': startTime, 'endTime': endTime, 'days': days}),
+            .post('/api/cafe/room/' + roomId + '/time',
+                JSON.stringify({
+                    'start': this.getTimeFromString(startTime),
+                    'end': this.getTimeFromString(endTime),
+                    'days': days}
+                ),
                 {headers: this.headers}
             )
             .map(res => res.json());

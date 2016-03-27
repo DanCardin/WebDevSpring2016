@@ -13,8 +13,8 @@ export class RoomService {
 
         this.app.get('/api/cafe/room/:roomId/time', this.getTimesForRoom);
         this.app.get('/api/cafe/room/time', this.getSurroundingTimes);
-        // this.app.put('/api/cafe/user/:userId', this.updateUser);
-        // this.app.delete('/api/cafe/user/:userId', this.deleteUser);
+        this.app.post('/api/cafe/room/:roomId/time', this.addTime);
+        this.app.delete('/api/cafe/room/:roomId/time/:timeId', this.deleteTime);
     }
 
     getBuildings(req, res) {
@@ -81,6 +81,20 @@ export class RoomService {
     editRoom(req, res) {
         console.log('editRoom', req.params.roomId, req.body);
         let result = RoomModel.RoomModel.editRoom(Number(req.params.roomId), req.body);
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    addTime(req, res) {
+        console.log('addRoom', req.params.roomId, req.body);
+        let result = RoomModel.RoomModel.addTime(Number(req.params.roomId), req.body);
+        // console.log('  Result: ', result);
+        res.json(result);
+    }
+
+    deleteTime(req, res) {
+        console.log('deleteRoom', req.params.roomId, req.params.timeId);
+        let result = RoomModel.RoomModel.deleteTime(Number(req.params.roomId), Number(req.params.timeId));
         // console.log('  Result: ', result);
         res.json(result);
     }

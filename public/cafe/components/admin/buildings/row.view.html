@@ -47,7 +47,7 @@
           <div class="card-header card-block-ov">
             <span
               class="label label-pill"
-              [ngClass]="dayOfWeekSelected(this.days, day)"
+              [ngClass]="dayOfWeekSelected(days, day)"
               (click)="selectDay(day)"
               *ngFor="#day of daysOfTheWeek()"
             >
