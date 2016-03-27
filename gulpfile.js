@@ -3,7 +3,6 @@ var ts = require('gulp-typescript');
 var merge = require('merge2');
 
 var assignmentFiles = ['public/assignment/**/*.ts'];
-var cafeFiles = ['public/cafe/**/*.ts'];
 var serverFolderFiles = ['public/server/**/*.ts'];
 var serverFiles = ['public/server.ts'];
 
@@ -13,15 +12,6 @@ gulp.task('assignment', function() {
     return merge([
         tsResult.dts.pipe(gulp.dest('public/dist/assignment')),
         tsResult.js.pipe(gulp.dest('public/dist/assignment'))
-    ]);
-});
-
-var cafe = ts.createProject('public/cafe/tsconfig.json', {typescript: require('typescript')});
-gulp.task('cafe', function() {
-    var tsResult = cafe.src().pipe(ts(cafe));
-    return merge([
-        tsResult.dts.pipe(gulp.dest('public/dist/cafe')),
-        tsResult.js.pipe(gulp.dest('public/dist/cafe'))
     ]);
 });
 
@@ -66,5 +56,5 @@ gulp.task('watch', function() {
     gulp.watch(cssFiles, ['css']);
 });
 
-gulp.task('run', ['assignment', 'cafe', 'serverfolder', 'server', 'html', 'css']);
+gulp.task('run', ['assignment', 'serverfolder', 'server', 'html', 'css']);
 gulp.task('default', ['serverfolder']);
