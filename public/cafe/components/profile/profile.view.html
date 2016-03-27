@@ -12,17 +12,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th><a class="btn btn-danger">X</a></th>
-            <td>Today</td>
-            <td>10:30 AM</td>
-            <td>430 Shillman</td>
-          </tr>
-          <tr>
-            <th><a class="btn btn-danger">X</a></th>
-            <td>Tuesday</td>
-            <td>11:45 AM</td>
-            <td>40 Forsyth</td>
+          <tr *ngFor="#claim of claims | async">
+            <th>
+              <a (click)="deleteClaim(claim)" class="btn btn-danger">X</a>
+            </th>
+            <td>{{ claim.day }}</td>
+            <td>{{ claim.start | date: "h:mm" }} - {{ claim.end | date: "h:mm" }}</td>
+            <td>{{ claim.place }}</td>
           </tr>
         </tbody>
       </table>
