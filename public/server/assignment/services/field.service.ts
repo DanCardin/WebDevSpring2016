@@ -1,4 +1,4 @@
-import FieldModel = require('../models/fields.model');
+import {FieldModel} from '../models/fields.model';
 
 export class FieldService {
     constructor (private app) {
@@ -11,39 +11,46 @@ export class FieldService {
 
     getFieldsForForm(req, res) {
         console.log('getFieldsForForm');
-        let result = FieldModel.FieldModel.getFieldsForForm(Number(req.params.formId));
+        let result = FieldModel
+            .getFieldsForForm(req.params.formId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     getFieldForForm(req, res) {
         console.log('getFieldForForm');
-        let result = FieldModel.FieldModel.getFieldForForm(
-            Number(req.params.formId),
-            Number(req.params.fieldId));
+        let result = FieldModel
+            .getFieldForForm(req.params.formId, req.params.fieldId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     deleteField(req, res) {
         console.log('deleteField');
-        let result = FieldModel.FieldModel.deleteField(
-            Number(req.params.formId),
-            Number(req.params.fieldId));
+        let result = FieldModel
+            .deleteField(req.params.formId, req.params.fieldId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     createField(req, res) {
         console.log('createField');
-        let result = FieldModel.FieldModel.createField(Number(req.params.formId), req.body);
+        let result = FieldModel
+            .createField(req.params.formId, req.body)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     updateField(req, res) {
         console.log('updateField');
-        let result = FieldModel.FieldModel.updateField(
-            Number(req.params.formId),
-            Number(req.params.fieldId),
-            req.body
-        );
+        let result = FieldModel
+            .updateField(req.params.formId, req.params.fieldId, req.body)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 }

@@ -16,49 +16,44 @@ export class FieldService {
         this.headers.append('Content-Type', 'application/json');
     }
 
-    createFieldForForm(uid: number, field) {
+    createFieldForForm(formId, field) {
         return this.http
             .post(
-                '/api/assignment/form/' + uid + '/field',
-                JSON.stringify(field),
-                {headers: this.headers}
+                '/api/assignment/form/' + formId + '/field',
+                JSON.stringify(field), {headers: this.headers}
             )
-            .map(res => res.json());
-    }
-
-    getFieldsForForm(uid: number) {
-        return this.http
-            .get('/api/assignment/form/' + uid + '/field')
             .map(res => res.json())
-            .map(res => {
-                let result = [];
-                console.log('res', res)
-                for (let i = 0; i < res.length; i++) {
-                    result.push(res[i]);
-                }
-                return result;
-            });
+            .map(res => res.result);
     }
 
-    getFieldForForm(uid: number, fieldId: number) {
+    getFieldsForForm(formId) {
         return this.http
-            .get('/api/assignment/form/' + uid + '/field/' + fieldId)
-            .map(res => res.json());
+            .get('/api/assignment/form/' + formId + '/field')
+            .map(res => res.json())
+            .map(res => res.result);
     }
 
-    deleteFormById(formId: number, fieldId: number) {
+    getFieldForForm(formId, fieldId) {
+        return this.http
+            .get('/api/assignment/form/' + formId + '/field/' + fieldId)
+            .map(res => res.json())
+            .map(res => res.result);
+    }
+
+    deleteFormById(formId, fieldId) {
         return this.http
             .delete('/api/assignment/form/' + formId + '/field/' + fieldId)
-            .map(res => res.json());
+            .map(res => res.json())
+            .map(res => res.result);
     }
 
-    updateFormById(formId: number, fieldId: number, newForm) {
+    updateFormById(formId, fieldId, newForm) {
         return this.http
             .put(
                 '/api/assignment/form/' + formId + '/field/' + fieldId,
-                JSON.stringify(newForm),
-                {headers: this.headers}
+                JSON.stringify(newForm), {headers: this.headers}
             )
-            .map(res => res.json());
+            .map(res => res.json())
+            .map(res => res.result);
     }
 }

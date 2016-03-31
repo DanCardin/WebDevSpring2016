@@ -47,7 +47,6 @@ export class FormsList {
 
     selectForm(form, title, go=false) {
         this.formService.currentForm = form;
-        console.log('currentForm', this.formService.currentForm);
         if (!go) {
             title.value = this.formService.currentForm.title;
         } else {

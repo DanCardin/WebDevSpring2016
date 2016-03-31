@@ -3,6 +3,7 @@
 import mongoose = require('mongoose');
 
 export interface IField {
+    formId: String,
     label: String,
     type: String,
     placeholder: String,
@@ -10,8 +11,9 @@ export interface IField {
 }
 
 export let FieldSchema = new mongoose.Schema({
+    formId: String,
     label: String,
     type: String,
     placeholder: String,
     options: [{label: String, value: String}]
-}, {collection: 'assignment.user'});
+}, {collection: 'assignment.field'});

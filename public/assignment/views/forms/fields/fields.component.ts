@@ -3,7 +3,7 @@ import {Dragula, DragulaService} from 'ng2-dragula/ng2-dragula';
 
 import {FieldService} from "../../../services/FieldService";
 import {FormService} from "../../../services/FormService";
-import {User, UserService} from "../../../services/UserService";
+import {UserService} from "../../../services/UserService";
 
 @Component({
     selector: "fields-list",
@@ -45,6 +45,7 @@ export class FieldsList {
         field.options.forEach(option => {
             options += option.label + ':' + option.value + '\n';
         });
+        options = options.replace(/\n$/, '');
         optionsField.value = options;
     }
 
