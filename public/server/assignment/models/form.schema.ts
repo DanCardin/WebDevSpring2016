@@ -4,6 +4,8 @@ import mongoose = require('mongoose');
 
 import {FieldSchema} from './field.schema';
 
+let appName = process.env.OPENSHIFT_APP_NAME;
+
 export interface IForm {
     userId: String,
     title: String,
@@ -17,4 +19,4 @@ export let FormSchema = new mongoose.Schema({
     fields: {type: [FieldSchema], default: []},
     created: Date,
     updated: Date,
-}, {collection: 'assignment.form'});
+}, {collection: appName + '.form'});

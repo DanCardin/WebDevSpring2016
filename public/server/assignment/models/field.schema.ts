@@ -2,6 +2,11 @@
 
 import mongoose = require('mongoose');
 
+let appName = 'webdevelopment';
+if (process && process.env) {
+    appName = process.env.OPENSHIFT_APP_NAME;
+}
+
 export interface IField {
     formId: String,
     label: String,
@@ -16,4 +21,4 @@ export let FieldSchema = new mongoose.Schema({
     type: String,
     placeholder: String,
     options: [{label: String, value: String}]
-}, {collection: 'assignment.field'});
+}, {collection: appName + '.field'});

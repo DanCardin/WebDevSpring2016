@@ -9,7 +9,7 @@ import express_promise = require('express-promise');
 import {App} from './server/assignment/app';
 import {Cafe} from './server/cafe/cafe';
 
-let connectionString = 'mongodb://127.0.0.1:27017/assignment';
+let connectionString = 'mongodb://127.0.0.1:27017/webdevelopment';
 let ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
 let port: number = process.env.OPENSHIFT_NODEJS_PORT || 3000;
 let app = express();

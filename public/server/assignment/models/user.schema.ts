@@ -2,6 +2,11 @@
 
 import mongoose = require('mongoose');
 
+let appName = 'webdevelopment';
+if (process && process.env) {
+    appName = process.env.OPENSHIFT_APP_NAME;
+}
+
 export interface IUser {
     username: String,
     password: String,
@@ -24,4 +29,4 @@ export let UserSchema = new mongoose.Schema({
     lastName: {type: String},
     isAdmin: {type: String, default: true},
     phones: [String],
-}, {collection: 'assignment.user'});
+}, {collection: appName + 'assignment.user'});
