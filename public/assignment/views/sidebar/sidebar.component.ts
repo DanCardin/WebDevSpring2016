@@ -3,7 +3,7 @@ import {RouteConfig, Router, RouterLink, RouterOutlet} from "angular2/router";
 
 import {PathAware} from "../path-aware.component";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     directives: [RouterLink, RouterOutlet],

@@ -6,17 +6,17 @@ export module ClaimModel {
         let result = [];
         for (var claim of mock.claims) {
             let claimResult = {_id: claim._id};
-            claimResult.day = 'today';
+            claimResult['day'] = 'today';
             if (userId === claim.userId) {
                 for (var building of RoomModel.RoomModel.getData().buildings) {
                     if (building._id === claim.buildingId) {
                         for (var room of building.rooms) {
                             if (room._id === claim.roomId) {
-                                claimResult.place = room.number + ' ' + building.name;
+                                claimResult['place'] = room.number + ' ' + building.name;
                                 for (var time of room.times) {
                                     if (time._id === claim.timeId) {
-                                        claimResult.start = time.start;
-                                        claimResult.end = time.end;
+                                        claimResult['start'] = time.start;
+                                        claimResult['end'] = time.end;
                                     }
                                 }
                             }

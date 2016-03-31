@@ -18,7 +18,7 @@ export module RoomModel {
     }
 
     function findRoom(roomId) {
-        let result = {};
+        let result = {times: []};
         mock.buildings.forEach((building) => {
             building.rooms.forEach((room) => {
                 if (room._id === roomId) {
@@ -69,7 +69,7 @@ export module RoomModel {
 
     export function addRoom() {
         let building = mock.buildings[0];
-        let room = {_id: (new Date()).getTime(), building: building.name, number: 0, times: []}
+        let room = {_id: (new Date()).getTime(), building: building.name, number: 0, times: [], seats: 0, src: ''}
         mock.buildings[findBuildingIndex(building._id)].rooms.push(room);
         return getRooms();
     }

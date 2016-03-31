@@ -3,7 +3,7 @@ import {RouteConfig, Router, RouterLink, RouterOutlet} from "angular2/router";
 
 import {PathAware} from "../path-aware.component";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     directives: [RouterLink, RouterOutlet],
@@ -11,14 +11,9 @@ import {User, UserService} from "../../services/UserService";
     templateUrl: "assignment/views/header/header.view.html",
 })
 export class Header extends PathAware {
-    userService: UserService;
-    constructor(
-        router: Router,
-        userService: UserService
-    ) {
+    constructor(router: Router, private userService: UserService) {
         super(router);
-
-        this.userService = userService;
+        this.router = router;
     }
 
     logout() {

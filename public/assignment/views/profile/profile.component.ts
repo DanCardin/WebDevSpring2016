@@ -1,14 +1,19 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     selector: "profile",
     templateUrl: "assignment/views/profile/profile.view.html",
 })
 export class Profile {
-    constructor(private _router: Router, private userService: UserService) {}
+    private user;
+    constructor(private _router: Router, private userService: UserService) {
+        if (this.userService.currentUser) {
+            this.userService.findUserById(this.userService.currentUser._id).subscribe(res => this.user = res);
+        }
+    }
 
     update(username: string,
            password: string,
@@ -16,15 +21,22 @@ export class Profile {
            lastName: string,
            email: string
     ) {
-        let update = new User(username, password, email, firstName, lastName);
         if (this.userService.currentUser) {
+            let update = {
+                username: username,
+                password: password,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+            };
             this.userService
-                .updateUser(Number(this.userService.currentUser._id), update)
+                .updateUser(this.userService.currentUser._id, update)
                 .subscribe(res => {
                     if (res) {
+                        this.user = res;
                         this._router.navigate(["/Profile"]);
                     }
-                })
+                });
         }
     }
 }

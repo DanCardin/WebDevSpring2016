@@ -29,7 +29,7 @@ export module FieldModel {
 
     export function createField(formId: number, field) {
         field._id = (new Date()).getTime();
-        if (mock.fields.hasOwnProperty(formId)) {
+        if (mock.fields.hasOwnProperty(formId.toString())) {
             mock.fields[formId].push(field);
         } else {
             mock.fields[formId] = [field];

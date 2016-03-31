@@ -1,7 +1,7 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     selector: "register",
@@ -16,11 +16,11 @@ export class Register {
 
     login(username: string, password: string, verify: string, email: string) {
         if (password && verify && password === verify) {
-            let user: User = new User(
-                username,
-                password,
-                email
-            );
+            let user = {
+                username: username,
+                password: password,
+                email: email,
+            };
             this.userService
                 .createUser(user)
                 .subscribe((user) => {

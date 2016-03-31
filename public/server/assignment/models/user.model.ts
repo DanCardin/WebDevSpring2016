@@ -1,74 +1,67 @@
-declare function require(name:string);
+/// <reference path="../../../typings/main.d.ts"/>
 
-// var mock = require('./user.mock.json');
-let mock = {users: [
-    {"_id": 123, "firstName": "Alice",  "lastName": "Wonderland", "username": "alice",   "password": "alice"},
-    {"_id": 234, "firstName": "Bob",    "lastName": "Hope",       "username": "bob",     "password": "bob"},
-    {"_id": 345, "firstName": "Charlie","lastName": "Brown",      "username": "charlie", "password": "charlie"},
-    {"_id": 456, "firstName": "Dan",    "lastName": "Craig",      "username": "dan",     "password": "dan"},
-    {"_id": 567, "firstName": "Edward", "lastName": "Norton",     "username": "ed",      "password": "ed"},
-]};
+import q = require('q');
+import mongoose = require('mongoose');
+
+import {IUser, UserSchema} from './user.schema';
+
+let User = mongoose.model('User', UserSchema);
+
+// mongoose.Promise = q.Promise;
 
 export module UserModel {
     export function findUserByUsername(username: string) {
-        for (let i = 0; i < mock.users.length; i++) {
-            let user = mock.users[i];
-            if (user.username === username) {
-                return user;
-            }
-        }
-        return null;
+        return User.findOne({username: username}).exec();
+    }
+
+    export function findUserById(userId: string) {
+        return User.findById(userId).exec();
     }
 
     export function findUserByCredentials(credentials) {
-        for (let i = 0; i < mock.users.length; i++) {
-            let user = mock.users[i];
-            console.log('all', user)
-            if (user.username === credentials.username && user.password === credentials.password) {
-                return user;
-            }
-        }
-        return null;
+        let deferred = q.defer();
+        findUserByUsername(credentials.username)
+            .then((doc) => {
+                if (doc['username'] === credentials.password) {
+                    deferred.resolve(doc);
+                } else {
+                    deferred.reject('Invalid Password');
+                }
+            });
+        return deferred.promise;
     }
 
-    export function createUser(user) {
-        mock.users.push(user);
-        console.log('er', user);
-        return user;
+    export function createUser(newUser) {
+        var deferred = q.defer();
+
+        let userObject: IUser = {
+            username: newUser.username,
+            password: newUser.password,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            email: newUser.email,
+        };
+        let user = new User(userObject);
+
+        user.save((err, doc) => {
+            if (err) {
+                deferred.reject(err)
+            } else {
+                deferred.resolve(doc);
+            }
+        });
+        return deferred.promise;
     }
 
     export function getAllUsers() {
-        return mock.users;
+        return User.find({}).exec();
     }
 
-    export function findUserById(id) {
-        for (var i = 0; i < mock.users.length; i++) {
-            var user = mock.users[i];
-            if (user._id === id) {
-                return user;
-            }
-        }
-        return null;
+    export function updateUser(userId: string, newUser) {
+        return User.findByIdAndUpdate(userId, newUser, {new: true}).exec();
     }
 
-    export function updateUser(id, newUser) {
-        for (var i = 0; i < mock.users.length; i++) {
-            var user = mock.users[i];
-            if (user._id === id) {
-                console.log('update', user, id)
-                newUser.foreach(prop => user[prop] = prop);
-                return;
-            }
-        }
-    }
-
-    export function deleteUser(id) {
-        for (var i = 0; i < mock.users.length; i++) {
-            var user = mock.users[i];
-            if (user._id === id) {
-                mock.users.splice(i, 1);
-                return;
-            }
-        }
+    export function deleteUser(userId: string) {
+        return User.findByIdAndRemove(userId).exec();
     }
 }

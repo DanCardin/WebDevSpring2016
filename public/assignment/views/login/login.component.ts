@@ -1,7 +1,7 @@
 import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     selector: "login",
@@ -18,7 +18,6 @@ export class Login {
         this._userService
             .findUserByUsernameAndPassword(username, password)
             .subscribe((user) => {
-                console.log('asdflli', user)
                 if (user) {
                     console.log("logged in", user);
                     this._router.navigate(["/Profile"]);
