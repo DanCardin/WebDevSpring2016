@@ -6,35 +6,6 @@ import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
 
-export interface IForm {
-    _id: number;
-    userId: number;
-    name: string;
-}
-
-export class Form implements IForm {
-    _id: number;
-    userId: number;
-    name: string;
-
-    constructor(name: string, userId: number, id: number=null) {
-        if (id === null) {
-            id = (new Date).getTime();
-        }
-        this._id = id;
-        this.name = name;
-        this.userId = userId;
-    }
-
-    toJson() {
-        return {
-            _id: this._id,
-            title: this.name,
-            userId: this.userId,
-        };
-    }
-}
-
 @Injectable()
 export class FormService {
     private headers;
@@ -45,45 +16,31 @@ export class FormService {
         this.headers.append('Content-Type', 'application/json');
     }
 
-    createFormForUser(uid: number, form: Form) {
+    createFormForUser(userId, form) {
         return this.http
-            .post('/api/assignment/user/' + uid + '/form', JSON.stringify(form.toJson()), {headers: this.headers})
+            .post('/api/assignment/user/' + userId + '/form', JSON.stringify(form), {headers: this.headers})
             .map(res => res.json())
-            .map(res => {
-                let result = [];
-                console.log('res', res)
-                for (let i = 0; i < res.length; i++) {
-                    let form = res[i];
-                    result.push(new Form(form.title, form.userId, form._id));
-                }
-                return result;
-            });
+            .map(res => res.result);
     }
 
-    findAllFormsForUser(uid: number) {
+    findAllFormsForUser(userId) {
         return this.http
-            .get('/api/assignment/user/' + uid + '/form')
+            .get('/api/assignment/user/' + userId + '/form')
             .map(res => res.json())
-            .map(res => {
-                let result = [];
-                console.log('res', res)
-                for (let i = 0; i < res.length; i++) {
-                    let form = res[i];
-                    result.push(new Form(form.title, form.userId, form._id));
-                }
-                return result;
-            });
+            .map(res => res.result);
     }
 
-    deleteFormById(formId: number) {
+    deleteFormById(formId) {
         return this.http
-            .delete('/api/assignment/user/' + formId)
-            .map(res => res.json());
+            .delete('/api/assignment/form/' + formId)
+            .map(res => res.json())
+            .map(res => res.result);
     }
 
-    updateFormById(formId: number, newForm: Form) {
+    updateFormById(formId, newForm) {
         return this.http
-            .put('/api/assignment/form/' + formId, JSON.stringify(newForm.toJson()), {headers: this.headers})
-            .map(res => res.json());
+            .put('/api/assignment/form/' + formId, JSON.stringify(newForm), {headers: this.headers})
+            .map(res => res.json())
+            .map(res => res.result);
     }
 }

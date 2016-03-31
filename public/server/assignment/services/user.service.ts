@@ -51,7 +51,7 @@ export class UserService {
     deleteUser(req, res) {
         console.log('deleteUser');
         let result = UserModel
-            .deleteUser(req.params.userId);
+            .deleteUser(req.params.userId)
             .then((res) => {return {result: res};})
             .catch((res) => {return {result: null, message: res};});
         res.json(result);

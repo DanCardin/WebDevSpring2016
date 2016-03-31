@@ -7,8 +7,6 @@ import {IUser, UserSchema} from './user.schema';
 
 let User = mongoose.model('User', UserSchema);
 
-// mongoose.Promise = q.Promise;
-
 export module UserModel {
     export function findUserByUsername(username: string) {
         return User.findOne({username: username}).exec();
@@ -32,8 +30,6 @@ export module UserModel {
     }
 
     export function createUser(newUser) {
-        var deferred = q.defer();
-
         let userObject: IUser = {
             username: newUser.username,
             password: newUser.password,
@@ -41,16 +37,7 @@ export module UserModel {
             lastName: newUser.lastName,
             email: newUser.email,
         };
-        let user = new User(userObject);
-
-        user.save((err, doc) => {
-            if (err) {
-                deferred.reject(err)
-            } else {
-                deferred.resolve(doc);
-            }
-        });
-        return deferred.promise;
+        return (new User(userObject)).save();
     }
 
     export function getAllUsers() {

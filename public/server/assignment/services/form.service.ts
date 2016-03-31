@@ -1,4 +1,4 @@
-import FormModel = require('../models/form.model');
+import {FormModel} from '../models/form.model';
 
 export class FormService {
     constructor (private app) {
@@ -11,37 +11,55 @@ export class FormService {
 
     findFormByTitle(req, res) {
         console.log('findFormByTitle')
-        var credentials = req.body;
-        let result = FormModel.FormModel.findFormByTitle(credentials);
+        let result = FormModel
+            .findFormByTitle(req.body)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
+        res.json(result);
     }
 
     createForm(req, res) {
         console.log('createForm', req.params);
-        let result = FormModel.FormModel.createForm(Number(req.params.userId), req.body);
+        let result = FormModel
+            .createForm(req.params.userId, req.body)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     getAllForms(req, res) {
         console.log('getAllForms', req.params.userId);
-        let result = FormModel.FormModel.getAllForms(Number(req.params.userId));
+        let result = FormModel
+            .getAllForms(req.params.userId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     findFormById(req, res) {
         console.log('findFormById');
-        let result = FormModel.FormModel.findFormById(Number(req.params.formId));
+        let result = FormModel
+            .findFormById(req.params.formId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
         res.json(result);
     }
 
     updateForm(req, res) {
-        console.log('updateForm', Number(req.params.formId));
-        FormModel.FormModel.updateForm(Number(req.params.formId), req.body);
-        res.json({});
+        console.log('updateForm', req.params.formId);
+        let result = FormModel
+            .updateForm(req.params.formId, req.body)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
+        res.json(result);
     }
 
     deleteForm(req, res) {
         console.log('deleteForm');
-        FormModel.FormModel.deleteForm(Number(req.params.formId));
-        res.json({});
+        let result = FormModel
+            .deleteForm(req.params.formId)
+            .then((res) => {return {result: res};})
+            .catch((res) => {return {result: null, message: res};});
+        res.json(result);
     }
 }

@@ -13,27 +13,27 @@
     <tr>
       <td>
         <input
-          #name
+          #title
           type="text"
           placeholder="name"
         >
       </td>
       <td>
-        <a (click)="addForm(name)" [hidden]="!!currentForm">
+        <a (click)="addForm(title)" [hidden]="!!formService.currentForm">
           <span class="fa fa-medsize fa-plus" aria-hidden="true"></span>
         </a>
-        <a (click)="updateForm(name)" [hidden]="!currentForm">
+        <a (click)="updateForm(title)" [hidden]="!formService.currentForm">
           <span class="fa fa-medsize fa-check" aria-hidden="true"></span>
         </a>
       </td>
     </tr>
     <tr *ngFor="#form of forms | async">
-      <td><a (click)="selectForm(form, name, true)">{{form.name}}</a></td>
+      <td><a (click)="selectForm(form, title, true)">{{form.title}}</a></td>
       <td>
         <a (click)="deleteForm(form)">
           <span class="fa fa-medsize fa-remove" aria-hidden="true"></span>
         </a>
-        <a (click)="selectForm(form, name)">
+        <a (click)="selectForm(form, title)">
           <span class="fa fa-medsize fa-pencil" aria-hidden="true"></span>
         </a>
       </td>

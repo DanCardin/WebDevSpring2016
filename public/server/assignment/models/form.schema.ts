@@ -5,16 +5,16 @@ import mongoose = require('mongoose');
 import {FieldSchema} from './field.schema';
 
 export interface IForm {
-    label: String,
-    type: String,
-    placeholder: String,
-    options: Array<{label: String, value: String}>,
+    userId: String,
+    title: String,
+    created: Date,
+    updated: Date,
 }
 
 export let FormSchema = new mongoose.Schema({
     userId: String,
     title: String,
-    fields: [FieldSchema],
+    fields: {type: [FieldSchema], default: []},
     created: Date,
     updated: Date,
-}, {collection: 'assignment.user'});
+}, {collection: 'assignment.form'});

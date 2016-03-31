@@ -7,15 +7,8 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class UserService {
-    private _currentUser;
+    public currentUser;
     private headers;
-
-    get currentUser() {
-        return this._currentUser;
-    }
-    set currentUser(user) {
-        this._currentUser = user;
-    }
 
     constructor(public http: Http) {
         this.headers = new Headers();
