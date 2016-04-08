@@ -4,7 +4,7 @@ import {RouteConfig, Router, RouterLink, RouterOutlet} from "angular2/router";
 import {PathAware} from "../path-aware.component";
 import {Search} from "../search/search.component";
 
-import {User, UserService} from "../../services/UserService";
+import {UserService} from "../../services/UserService";
 import {SearchService} from "../../services/SearchService";
 
 @Component({

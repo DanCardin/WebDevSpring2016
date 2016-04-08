@@ -8,14 +8,10 @@ import {UserService} from "../../services/UserService";
     templateUrl: "assignment/views/login/login.view.html",
 })
 export class Login {
-    constructor(
-        private _router: Router,
-        private _userService: UserService
-    ) {
-    }
+    constructor(private router: Router, private userService: UserService) {}
 
     login(username: string, password: string) {
-        this._userService
+        this.userService
             .findUserByUsernameAndPassword(username, password)
             .subscribe((user) => {
                 if (user) {

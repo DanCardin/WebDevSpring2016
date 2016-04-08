@@ -1,89 +1,62 @@
-export module RoomModel {
-    function findBuildingIndex(buildingId: number) {
-        for (var i = 0; i < mock.buildings.length; i++) {
-            if (mock.buildings[i]._id === buildingId) {
-                return i;
-            }
-        }
-    }
+/// <reference path="../../../typings/main.d.ts"/>
 
-    export function getSurroundingTimes(time: Date, numTimes) {
-        let result = [];
-        let half = Math.floor(numTimes / 2);
-        for (let i = -half; i <= half; i++) {
-            let cur = 1458923637117 + 1000;
-            result.push(cur);
-        }
-        return result;
+import q = require('q');
+import mongoose = require('mongoose');
+
+import {Building, Room, Time} from './room.schema';
+
+export module RoomModel {
+    export function getSurroundingTimes(time: number, numTimes: number) {
+        return Time
+            .find({ratio: {$lte: time}})
+            .sort({time: -1})
+            .limit(2)
+            .exec()
+            .then((res) => {
+                return res.push.apply(Time.find({ratio: {$gt: time}}).sort({ratio: 1}).limit(3));
+            });
     }
 
     function findRoom(roomId) {
-        let result = {times: []};
-        mock.buildings.forEach((building) => {
-            building.rooms.forEach((room) => {
-                if (room._id === roomId) {
-                    result = room;
-                    return;
-                }
-            });
-        });
-        return result;
+        return Room
+            .findById(roomId)
+            .exec();
     }
 
-    export function getBuildingsAtTime(time: Date) {
-        return mock.buildings;
-    }
-
-    export function getBuildings() {
-        return mock.buildings;
+    export function getBuildingsAtTime(time) {
+        if (time) {
+            time = Number(time);
+        }
+        return Building.find({}).exec();
     }
 
     export function getRooms() {
-        let rooms = [];
-        mock.buildings.forEach((building) => {
-            building.rooms.forEach((room) => {
-                rooms.push(room);
-            });
-        });
-        return rooms;
+        return Room.find({})
+            .populate('Building')
+            .exec();
     }
 
     export function getTimesForRoom(roomId) {
-        let room = findRoom(roomId);
-        if (room) {
-            return room.times;
-        }
-        return [];
+        return Time.findOne({roomId: roomId}).exec();
     }
 
     export function addBuilding(buildingName) {
-        let building = {_id: (new Date()).getTime(), name: buildingName, rooms: []};
-        mock.buildings.push(building);
-        return mock.buildings;
+        let newBuilding = {
+            name: buildingName,
+        };
+        return (new Building(newBuilding)).save();
     }
 
-    export function deleteBuilding(buildingId: number) {
-        mock.buildings.splice(findBuildingIndex(buildingId), 1);
-        return mock.buildings;
+    export function deleteBuilding(buildingId) {
+        return Building.findByIdAndRemove(buildingId).exec();
     }
 
     export function addRoom() {
-        let building = mock.buildings[0];
-        let room = {_id: (new Date()).getTime(), building: building.name, number: 0, times: [], seats: 0, src: ''}
-        mock.buildings[findBuildingIndex(building._id)].rooms.push(room);
-        return getRooms();
+        return (new Room()).save();
     }
 
-    export function deleteRoom(roomId: number) {
-        for (var building of mock.buildings) {
-            for (var i = 0; i < building.rooms.length; i++) {
-                if (building.rooms[i]._id === roomId) {
-                    building.rooms.splice(i, 1);
-                    break;
-                }
-            }
-        }
-        return getRooms();
+    export function deleteRoom(roomId) {
+        return Room.findByIdAndRemove(roomId);
     }
 
     export function editRoom(roomId: number, update) {
@@ -135,101 +108,4 @@ export module RoomModel {
         }
         return result;
     }
-
-    export function getData() {
-        return mock;
-    }
-
-    var mock = { buildings: [
-    {
-        _id: 1,
-        name: 'Shillman',
-        rooms: [
-            {
-                _id: 1, building: 'Shillman',
-                number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 2, building: 'Shillman',
-                number: 201, seats: 40, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [
-                    {_id: 1, start: 1458923637117, end: 1458923637117, days: ['M', 'W', 'R']},
-                ],
-            },
-            {
-                _id: 3, building: 'Shillman',
-                number: 301, seats: 100, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 4, building: 'Shillman',
-                number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [
-                    {_id: 2, start: 1458923637117, end: 1458923637117, days: ['M', 'T']},
-                    {_id: 3, start: 1458923637117, end: 1458923637117, days: ['T', 'F']},
-                ],
-            },
-        ],
-    },
-    {
-        _id: 2,
-        name: 'Snell',
-        rooms: [
-            {
-                _id: 5, building: 'Snell',
-                number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [
-                    {_id: 4, start: 1458923637117, end: 1458923637117, days: ['M', 'T']},
-                    {_id: 5, start: 1458923637117, end: 1458923637117, days: ['M', 'T']},
-                    {_id: 6, start: 1458923637117, end: 1458923637117, days: ['M', 'T']},
-                    {_id: 7, start: 1458923637117, end: 1458923637117, days: ['M', 'T']},
-                ],
-            },
-            {
-                _id: 6, building: 'Snell',
-                number: 201, seats: 40, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 7, building: 'Snell',
-                number: 301, seats: 100, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 8, building: 'Snell',
-                number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-        ],
-    },
-    {
-        _id: 3,
-        name: 'Ryder',
-        rooms: [
-            {
-                _id: 9, building: 'Ryder',
-                number: 101, seats: 30, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 10, building: 'Ryder',
-                number: 201, seats: 40, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 11, building: 'Ryder',
-                number: 301, seats: 100, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [],
-            },
-            {
-                _id: 12, building: 'Ryder',
-                number: 401, seats: 12, src: 'http://www.digicution.com/wp-content/uploads/2012/06/HTML5-Repsonsive-Google-Maps-Tutorial-1.png',
-                times: [
-                    {_id: 8, start: 1458923637117, end: 1458923637117},
-                ],
-            },
-        ],
-    },
-    ]};
 }

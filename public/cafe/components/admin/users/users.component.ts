@@ -2,7 +2,7 @@ import {Component} from "angular2/core";
 import {Router} from "angular2/router";
 import {Observable} from 'rxjs/Observable';
 
-import {User, UserService} from "../../../services/UserService";
+import {UserService} from "../../../services/UserService";
 
 @Component({
     selector: "profile",

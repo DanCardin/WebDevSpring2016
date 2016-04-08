@@ -10,28 +10,30 @@ export class ClaimService {
         this.headers.append('Content-Type', 'application/json');
     }
 
-    getClaimsForUser(userId: number) {
+    getClaimsForUser(userId) {
         return this.http
             .get('/api/cafe/user/' + userId + '/claim')
             .map(res => res.json())
             .map(res => {
-                for (var claim of res) {
+                for (var claim of res.result) {
                     claim.start = new Date(claim.start);
                     claim.end = new Date(claim.end);
                 }
-                return res;
-            });
+                return res.result;
+            })
     }
 
-    createClaimForUser(userId: number, claim) {
+    createClaimForUser(userId, claim) {
         return this.http
             .post('/api/cafe/user/' + userId + '/claim', JSON.stringify(claim), {headers: this.headers})
-            .map(res => res.json());
+            .map(res => res.json())
+            .map(res => res.result);
     }
 
-    deleteClaimForUser(userId: number, claimId: number) {
+    deleteClaimForUser(userId, claimId) {
         return this.http
             .delete('/api/cafe/user/' + userId + '/claim/' + claimId)
-            .map(res => res.json());
+            .map(res => res.json())
+            .map(res => res.result);
     }
 }

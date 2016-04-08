@@ -16,14 +16,14 @@
       <li class="nav-item">
         <search></search>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['Profile']">{{ userService?.currentUser?.username || 'Profile' }}</a>
+      </li>
       <li class="nav-item" [class.active]="linkActive('/Login')" [hidden]="!!(userService?.currentUser)">
         <a class="nav-link" [routerLink]="['Login']">Register</a>
       </li>
       <li class="nav-item" [class.active]="linkActive('/Login')" [hidden]="!!(userService?.currentUser)">
         <a class="nav-link" [routerLink]="['Login']">Login</a>
-      </li>
-      <li class="nav-item" [class.active]="linkActive('/Profile')" [hidden]="!(userService?.currentUser)">
-        <a class="nav-link" [routerLink]="['Profile']">{{ userService?.currentUser?.username }}</a>
       </li>
       <li class="nav-item" [hidden]="!(userService?.currentUser)">
         <a class="nav-link" (click)="logout()">Logout</a>

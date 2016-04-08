@@ -149,7 +149,8 @@ export class Buildings {
     }
 
     addRoom() {
-        this.rooms = this.roomService.addRoom();
+        this.roomService.addRoom().subscribe();
+        this.rooms = this.roomService.getRooms();
     }
 
     editRoom(update) {
@@ -157,15 +158,18 @@ export class Buildings {
     }
 
     deleteRoom(roomId) {
-        this.rooms = this.roomService.deleteRoom(roomId);
+        this.roomService.deleteRoom(roomId).subscribe();
+        this.rooms = this.romService.getRooms();
     }
 
     addBuilding(buildingName) {
-        this.buildings = this.roomService.addBuilding(buildingName.value);
+        this.roomService.addBuilding(buildingName.value).subscribe();
+        this.buildings = this.roomService.getBuildings();
         buildingName.value = '';
     }
 
     deleteBuilding(buildingName) {
-        this.buildings = this.roomService.deleteBuilding(buildingName.value);
+        this.roomService.deleteBuilding(buildingName.value).subscribe();
+        this.buildings = this.roomService.getBuildings();
     }
 }

@@ -12,7 +12,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="#claim of claims | async">
+          <tr *ngFor="#claim of claims">
             <th>
               <a (click)="deleteClaim(claim)" class="btn btn-danger">X</a>
             </th>
@@ -43,7 +43,7 @@
           id="username"
           class="form-control"
           placeholder="Enter Username"
-          [value]="userService.currentUser?.username || ''"
+          [value]="user?.username || ''"
         >
       </div>
     </div>
@@ -58,7 +58,7 @@
           id="password"
           class="form-control"
           placeholder="*******"
-          [value]="userService.currentUser?.password || ''"
+          [value]="user?.password || ''"
         >
       </div>
     </div>
@@ -73,7 +73,7 @@
           id="email"
           class="form-control"
           placeholder="example@example.com"
-          [value]="userService.currentUser?.email || ''"
+          [value]="user?.email || ''"
         >
       </div>
     </div>
