@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {Router} from "angular2/router";
 
 import {UserService} from "../../services/UserService";
@@ -7,9 +7,11 @@ import {UserService} from "../../services/UserService";
     selector: "profile",
     templateUrl: "assignment/views/profile/profile.view.html",
 })
-export class Profile {
+export class Profile implements OnInit {
     private user;
-    constructor(private _router: Router, private userService: UserService) {
+    constructor(private _router: Router, private userService: UserService) {}
+
+    ngOnInit() {
         if (this.userService.currentUser) {
             this.userService.findUserById(this.userService.currentUser._id).subscribe(res => this.user = res);
         }

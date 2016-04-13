@@ -27,19 +27,21 @@
 
     <script>
       System.config({
-          packages: {
-              'assignment': {
-                  format: 'register',
-                  defaultExtension: 'js'
-              },
-              'rxjs': {defaultExtension: 'js'},
-              'ng2-dragula': {defaultExtension: 'js'}
+        packages: {
+          'assignment': {
+            format: 'register',
+            defaultExtension: 'js',
           },
-          map: {
-              'rxjs': 'node_modules/rxjs',
-              'dragula': 'node_modules/dragula/dist/dragula.min.js',
-              'ng2-dragula': 'node_modules/ng2-dragula',
-          }
+          'rxjs': {defaultExtension: 'js'},
+          'ng2-dragula': {defaultExtension: 'js'},
+          'angular2-jwt': {defaultExtension: 'js'},
+        },
+        map: {
+          'rxjs': 'node_modules/rxjs',
+          'dragula': 'node_modules/dragula/dist/dragula.min.js',
+          'ng2-dragula': 'node_modules/ng2-dragula',
+          'angular2-jwt': 'node_modules/angular2-jwt',
+        }
       });
       System.import('assignment/bootstrap').then(null, console.error.bind(console));
     </script>

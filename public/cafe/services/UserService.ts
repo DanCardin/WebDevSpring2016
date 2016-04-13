@@ -2,6 +2,7 @@
 
 import {Injectable} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
+import {AuthHttp} from 'angular2-jwt';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
@@ -50,6 +51,7 @@ export class UserService {
     constructor(public http: Http) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
     }
 
     findUserByUsernameAndPassword(username: string, password: string) {
@@ -71,7 +73,7 @@ export class UserService {
     }
 
     findAllUsers(): Observable<Array<{}>> {
-        return this.http
+        return this.authHttp
             .get('/api/cafe/user')
             .map(res => res.json())
             .map(res => {
@@ -100,14 +102,14 @@ export class UserService {
     }
 
     deleteUserById(guid: string) {
-        return this.http
+        return this.authHttp
             .delete('/api/cafe/user/' + guid)
             .map(res => res.json());
     }
 
     updateUser(guid: number, user: User) {
         console.log('qwerqwerqwer', guid, JSON.stringify(user.toJson()));
-        return this.http
+        return this.authHttp
             .put('/api/cafe/user/' + guid, JSON.stringify(user.toJson()), {headers: this.headers})
             .map(res => res.json())
             .map(res => {

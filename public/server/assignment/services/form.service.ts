@@ -1,12 +1,37 @@
+let passport = require('passport');
+let JwtStrategy = require('passport-jwt').Strategy;
+let ExtractJwt = require('passport-jwt').ExtractJwt;
+let jwt = require('jsonwebtoken');
+
 import {FormModel} from '../models/form.model';
+import {UserModel} from '../models/user.model';
+
+let auth = () => {
+    return passport.authenticate('jwt', {session: false});
+}
 
 export class FormService {
     constructor (private app) {
-        this.app.get('/api/assignment/user/:userId/form', this.getAllForms);
-        this.app.get('/api/assignment/form/:formId', this.findFormById);
-        this.app.delete('/api/assignment/form/:formId', this.deleteForm);
-        this.app.post('/api/assignment/user/:userId/form', this.createForm);
-        this.app.put('/api/assignment/form/:formId', this.updateForm);
+        this.app.get('/api/assignment/user/:userId/form', auth, this.getAllForms);
+        this.app.get('/api/assignment/form/:formId', auth, this.findFormById);
+        this.app.delete('/api/assignment/form/:formId', auth, this.deleteForm);
+        this.app.post('/api/assignment/user/:userId/form', auth, this.createForm);
+        this.app.put('/api/assignment/form/:formId', auth, this.updateForm);
+
+        let opts = {
+            jwtFromRequest: ExtractJwt.fromAuthHeader(),
+            secretOrKey: 'secret',
+            issuer: 'dcardin.webdev.com',
+            audience: 'assignment.com',
+        };
+        passport.use(new JwtStrategy(
+            opts,
+            (jwt_payload, done) => {
+                UserModel.findUserById(jwt_payload)
+                .then((res) => {
+                    done(null, res);
+                })
+            }));
     }
 
     findFormByTitle(req, res) {

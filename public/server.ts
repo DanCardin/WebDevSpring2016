@@ -5,6 +5,7 @@ import bodyParser = require('body-parser');
 import path = require('path');
 import mongoose = require('mongoose');
 import express_promise = require('express-promise');
+import passport = require('passport');
 
 import {App} from './server/assignment/app';
 import {Cafe} from './server/cafe/cafe';
@@ -34,6 +35,7 @@ app.use("/node_modules", express.static(path.resolve(__dirname, "../../node_modu
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express_promise());
+app.use(passport.initialize());
 
 app.get("/assignment/*", (req: express.Request, res: express.Response) => {
     res.sendFile(path.resolve(__dirname, './assignment/index.html'));
