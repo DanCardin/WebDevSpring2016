@@ -69,8 +69,9 @@ export class UserService {
     }
 
     updateUser(userId, user) {
+        console.log('update', userId, user)
         return this.authHttp
-            .put('/api/assignment/user/' + userId.toString(), JSON.stringify(user), {headers: this.headers})
+            .put('/api/assignment/user/' + userId, JSON.stringify(user), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
                 this.currentUser = res.result;

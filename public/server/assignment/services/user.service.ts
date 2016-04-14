@@ -30,7 +30,6 @@ export class UserService {
         passport.use(new JwtStrategy(
             opts,
             (jwt_payload, done) => {
-                console.log('jwttting ', jwt_payload)
                 UserModel.findUserById(jwt_payload)
                 .then((res) => {
                     done(null, res);
@@ -92,6 +91,7 @@ export class UserService {
     }
 
     updateUser(req, res) {
+        console.log('asdfsdfasdfasdfadsf')
         let result = UserModel
             .updateUser(req.params.userId, req.body)
             .then((res) => {return {result: res};})

@@ -45,6 +45,7 @@ export module UserModel {
     }
 
     export function updateUser(userId: string, newUser) {
+        console.log('asdfsdfasdfasdfadsf')
         return User.findByIdAndUpdate(userId, newUser, {new: true}).exec();
     }
 
