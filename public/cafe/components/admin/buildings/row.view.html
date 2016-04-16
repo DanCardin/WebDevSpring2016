@@ -5,7 +5,7 @@
 </td>
 <td (dblclick)="enterEditBuildingMode(buildingSelect)">
   <span [hidden]="editBuildingMode">
-    {{ room.building }}
+    {{ buildingName }}
   </span>
   <div [hidden]="!editBuildingMode">
     <select
@@ -37,11 +37,11 @@
 <td>
   <div class="navbar-xs">
     <ul class="nav navbar-nav">
-      <timecard
-        *ngFor="#time of times | async"
-        (deleted)="deleteTime($event)"
-        [time]="time"
-      ></timecard>
+      <!-- <timecard -->
+      <!--   *ngFor="#time of times | async" -->
+      <!--   (deleted)="deleteTime($event)" -->
+      <!--   [time]="time" -->
+      <!-- ></timecard> -->
       <li class="nav-item">
         <div class="card text-xs-center card-size">
           <div class="card-header card-block-ov">

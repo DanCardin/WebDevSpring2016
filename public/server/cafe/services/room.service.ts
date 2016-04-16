@@ -2,6 +2,7 @@ import {RoomModel} from '../models/room.model';
 
 export class RoomService {
     constructor (private app) {
+        this.app.get('/api/cafe/buildings', this.queryApi);
         this.app.get('/api/cafe/building', this.getBuildings);
         this.app.post('/api/cafe/building', this.addBuilding);
         this.app.delete('/api/cafe/building/:buildingId', this.deleteBuilding);
@@ -17,12 +18,20 @@ export class RoomService {
         this.app.delete('/api/cafe/room/:roomId/time/:timeId', this.deleteTime);
     }
 
+    queryApi(req, res) {
+        console.log('query api');
+        // res.json(RoomModel.fillRoomsFromApi().toString());
+        res.json(RoomModel.fillRoomsFromApi().done());
+    }
+
     getBuildings(req, res) {
         console.log('getBuildings', req.query.time);
         res.json(
             RoomModel.getBuildingsAtTime(req.query.time)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -30,8 +39,10 @@ export class RoomService {
         console.log('getRooms');
         res.json(
             RoomModel.getRooms()
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -39,8 +50,10 @@ export class RoomService {
         console.log('getTimesForRoom', req.params.roomId);
         res.json(
             RoomModel.getTimesForRoom(req.params.roomId)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -48,8 +61,10 @@ export class RoomService {
         console.log('getSurroundingTimes', req.query.time, req.query._number);
         res.json(RoomModel
             .getSurroundingTimes(Number(req.query.time), Number(req.query._number))
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -57,8 +72,10 @@ export class RoomService {
         console.log('addBuilding', req.body.name);
         res.json(
             RoomModel.addBuilding(req.body.name)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -66,8 +83,10 @@ export class RoomService {
         console.log('deleteBuilding', req.params.buildingId);
         res.json(
             RoomModel.deleteBuilding(req.params.buildingId)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -75,8 +94,10 @@ export class RoomService {
         console.log('addRoom');
         res.json(
             RoomModel.addRoom()
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -84,8 +105,10 @@ export class RoomService {
         console.log('deleteRoom');
         res.json(
             RoomModel.deleteRoom(req.params.roomId)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -93,8 +116,10 @@ export class RoomService {
         console.log('editRoom', req.params.roomId, req.body);
         res.json(
             RoomModel.editRoom(req.params.roomId, req.body)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -102,8 +127,10 @@ export class RoomService {
         console.log('addRoom', req.params.roomId, req.body);
         res.json(
             RoomModel.addTime(req.params.roomId, req.body)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 
@@ -111,8 +138,10 @@ export class RoomService {
         console.log('deleteRoom', req.params.roomId, req.params.timeId);
         res.json(
             RoomModel.deleteTime(req.params.roomId, req.params.timeId)
-                .then((res) => {return {result: res};})
-                .catch((res) => {return {result: null, message: res};})
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
         );
     }
 }

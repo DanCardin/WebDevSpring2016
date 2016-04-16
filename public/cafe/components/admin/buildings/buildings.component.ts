@@ -1,4 +1,4 @@
-import {Component, Input, SimpleChange, Output, EventEmitter} from 'angular2/core';
+import {OnInit, Component, Input, SimpleChange, Output, EventEmitter} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router} from 'angular2/router';
 
@@ -51,7 +51,7 @@ export class TimeCard extends Time {
     styleUrls: ['cafe/components/admin/buildings/timecard.css'],
     directives: [NgClass, TimeCard],
 })
-export class Row extends Time {
+export class Row extends Time implements OnInit {
     @Input() public room;
     @Input() public buildings;
     @Output() public deleted = new EventEmitter();
@@ -64,6 +64,8 @@ export class Row extends Time {
     public editBuildingMode = false;
     public editRoomMode = false;
 
+    public buildingName;
+
     constructor(private roomService: RoomService) {
         super();
     }
@@ -72,6 +74,20 @@ export class Row extends Time {
         if (changes['room']) {
             this.times = this.roomService.getTimesForRoom(this.room._id);
         }
+    }
+
+    ngOnInit() {
+        this.buildingName = this.setBuildingName();
+    }
+
+    setBuildingName() {
+        for (var i = 0; i < this.buildings.length; i++) {
+            console.log('meow', this.buildings[i]._id, this.room.buildingId);
+            if (this.buildings[i]._id === this.room.buildingId) {
+                return this.buildings[i].name;
+            }
+        }
+        return '';
     }
 
     enterEditBuildingMode(element) {
@@ -89,6 +105,7 @@ export class Row extends Time {
         this.editBuildingMode = false;
         this.editRoomMode = false;
         this.edited.emit([this.room._id, newBuilding, newRoom]);
+        this.buildingName = this.setBuildingName();
     }
 
     cancelEdit() {
@@ -159,7 +176,7 @@ export class Buildings {
 
     deleteRoom(roomId) {
         this.roomService.deleteRoom(roomId).subscribe();
-        this.rooms = this.romService.getRooms();
+        this.rooms = this.roomService.getRooms();
     }
 
     addBuilding(buildingName) {

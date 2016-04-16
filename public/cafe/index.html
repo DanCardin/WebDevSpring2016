@@ -23,29 +23,32 @@
     <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
     <script src="node_modules/angular2/bundles/http.js"></script>
     <script src="node_modules/angular2/bundles/router.js"></script>
-    <!-- <script src="node_modules/ng2&#45;bootstrap/bundles/ng2&#45;bootstrap.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/1.0.7/ng2-bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng2-bootstrap/1.0.11/ng2-bootstrap.js"></script>
     <script src="node_modules/moment/min/moment.min.js"></script>
     <script src="node_modules/angular2-google-maps/bundles/angular2-google-maps.js"></script>
 
     <script type="text/javascript" src="cafe/out.js"></script>
     <script type="text/javascript">
-(function() {
-    System.config({
-        packages: {
-          'node_modules': {defaultExtension: 'js'}
-        },
-        paths: {
-          'angular2-google-maps/*': 'node_modules/angular2-google-maps/*'
-        },
-        map: {
-          moment: 'node_modules/moment/moment.js',
-        },
-    });
-    System
-        .import('public/cafe/bootstrap')
-        .then(null, console.error.bind(console));
-})();</script>
+      (function() {
+        System.config({
+          packages: {
+            'node_modules': {defaultExtension: 'js'},
+            'angular2-jwt': {defaultExtension: 'js'},
+          },
+          paths: {
+            'angular2-google-maps/*': 'node_modules/angular2-google-maps/*'
+          },
+          map: {
+            'angular2-jwt': 'node_modules/angular2-jwt',
+            'moment': 'node_modules/moment/moment.js',
+            'rxjs': 'node_modules/rxjs',
+          },
+        });
+        System
+          .import('public/cafe/bootstrap')
+          .then(null, console.error.bind(console));
+      })();
+    </script>
   </head>
 
   <body>

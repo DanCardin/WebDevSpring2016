@@ -63,7 +63,7 @@ export class UserService {
     }
 
     deleteUserById(guid: string) {
-        return this.http
+        return this.authHttp
             .delete('/api/assignment/user/' + guid, {headers: this.headers})
             .map(res => res.json());
     }

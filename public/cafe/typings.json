@@ -3,9 +3,11 @@
   "ambientDependencies": {
     "es6-shim": "github:DefinitelyTyped/DefinitelyTyped/es6-shim/es6-shim.d.ts#9f0f926a12026287b5a4a229e5672c01e7549313",
     "jquery": "registry:dt/jquery#2.0.0+20160303223636",
+    "request-promise": "registry:dt/request-promise#0.4.2+20160316155526",
     "systemjs": "github:DefinitelyTyped/DefinitelyTyped/systemjs/systemjs.d.ts#9f0f926a12026287b5a4a229e5672c01e7549313"
   },
   "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.3.4+20160411163813",
     "moment": "registry:npm/moment#2.10.5+20160211003958"
   }
 }

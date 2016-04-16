@@ -1,5 +1,8 @@
-import {Component} from "angular2/core";
-import {RouteConfig, Router, RouterOutlet} from "angular2/router";
+import {
+    Component, Directive, Attribute, ElementRef, DynamicComponentLoader, OnInit
+} from "angular2/core";
+import {RouteConfig, Router, RouterOutlet, ComponentInstruction} from "angular2/router";
+import {PromiseWrapper} from 'angular2/src/facade/async';
 
 import {Admin} from "../admin/admin.component";
 import {Header} from "../header/header.component";
@@ -11,6 +14,30 @@ import {Room} from "../room/room.component";
 import {RoomService} from "../../services/RoomService";
 import {UserService} from "../../services/UserService";
 
+@Directive({
+  selector: 'logged-in-router-outlet'
+})
+export class LoggedInRouterOutlet extends RouterOutlet {
+  publicRoutes: any;
+  private parentRouter: Router;
+
+  constructor(_elementRef: ElementRef, _loader: DynamicComponentLoader,
+              _parentRouter: Router, @Attribute('name') nameAttr: string) {
+    super(_elementRef, _loader, _parentRouter, nameAttr);
+
+    this.parentRouter = _parentRouter;
+    this.publicRoutes = {'login': true };
+  }
+
+  activate(instruction: ComponentInstruction) {
+    let url = instruction.urlPath;
+    if (!this.publicRoutes[url] && !localStorage.getItem('jwt')) {
+      this.parentRouter.navigateByUrl('/login');
+    }
+    return super.activate(instruction);
+  }
+}
+
 @RouteConfig([
     {path: "/admin/...", component: Admin, name: "Admin"},
     {path: "/home", component: Home, name: "Home", useAsDefault: true},
@@ -21,7 +48,14 @@ import {UserService} from "../../services/UserService";
 @Component({
     selector: "cafe",
     templateUrl: "cafe/components/cafe/cafe.view.html",
-    directives: [RouterOutlet, Header],
+    directives: [LoggedInRouterOutlet, Header],
     providers: [RoomService, UserService],
 })
-export class CafeComponent {}
+export class CafeComponent implements OnInit{
+    constructor(private userService: UserService) {
+    }
+
+    ngOnInit() {
+        this.userService.auth().subscribe();
+    }
+}

@@ -19,7 +19,7 @@ export let Time = mongoose.model('Time', TimeSchema);
 
 export let RoomSchema = new mongoose.Schema({
     buildingId: {type: mongoose.Schema.Types.ObjectId, ref: 'Building'},
-    number: {type: Number, default: 0},
+    number: {type: String, default: '0'},
     seats: {type: Number, default: 0},
     times: {type: Array<Time>(), default: []},
 }, {collection: appName + 'cafe.room'});

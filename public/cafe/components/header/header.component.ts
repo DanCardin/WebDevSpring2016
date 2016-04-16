@@ -19,6 +19,7 @@ export class Header extends PathAware {
     }
 
     logout() {
+        localStorage.removeItem('jwt');
         this.userService.currentUser = null;
         this.router.navigate(["/Login"]);
     }

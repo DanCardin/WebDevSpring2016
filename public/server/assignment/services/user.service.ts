@@ -3,7 +3,6 @@ let JwtStrategy = require('passport-jwt').Strategy;
 let ExtractJwt = require('passport-jwt').ExtractJwt;
 let jwt = require('jsonwebtoken');
 
-
 import {UserModel} from '../models/user.model';
 
 let auth = () => {

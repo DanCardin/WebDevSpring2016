@@ -32,6 +32,9 @@ export class Profile {
     }
 
     deleteClaim(claim) {
-        this.claimService.deleteClaimForUser(this.userService.currentUser._id).subscribe(res => this.claims = res);
+        this.claimService.deleteClaimForUser(
+            this.userService.currentUser._id,
+            claim._id
+        ).subscribe(res => this.claims = res);
     }
 }

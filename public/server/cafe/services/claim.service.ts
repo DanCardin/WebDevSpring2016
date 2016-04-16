@@ -11,8 +11,10 @@ export class ClaimService {
         console.log('getClaimsForUser', req.params.userId);
         let result = ClaimModel
             .getClaimsForUser(req.params.userId)
-            .then((res) => {return {result: res};})
-            .catch((res) => {return {result: null, message: res};});
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            );
         res.json(result);
     }
 
@@ -20,8 +22,10 @@ export class ClaimService {
         console.log('createClaimsForUser', req.params.userId, req.body);
         let result = ClaimModel
             .createClaimForUser(req.params.userId, req.body)
-            .then((res) => {return {result: res};})
-            .catch((res) => {return {result: null, message: res};});
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            );
         res.json(result);
     }
 
@@ -29,8 +33,10 @@ export class ClaimService {
         console.log('deleteClaim', req.params.userId, req.params.claimId);
         let result = ClaimModel
             .deleteClaim(req.params.userId, req.params.claimId)
-            .then((res) => {return {result: res};})
-            .catch((res) => {return {result: null, message: res};});
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            );
         res.json(result);
     }
 }

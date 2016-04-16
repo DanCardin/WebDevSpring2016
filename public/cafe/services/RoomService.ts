@@ -12,15 +12,23 @@ export class RoomService {
     }
 
     getTimeFromString(time: string) {
-        let format = 'hh:mm'
-        return moment(time, format).valueOf();
+        let format = 'MM/DD/YYYY hh:mm';
+        return moment(`1/1/2016 ${time}`, format).valueOf();
     }
 
     getSurroundingTimes(time: Date, numTimes): Observable<Array<Date>> {
         return this.http
             .get('/api/cafe/room/time?time=' + time.getTime() + '&_number=' + numTimes)
             .map(res => res.json())
-            .map(res => res.map(d => new Date(d)));
+            .map(res => res.result)
+            .map(res => {
+                console.log('sssss', res);
+                if (res) {
+                    console.log('hah?', res.map(d => new Date(d._id)))
+                    return res.map(d => new Date(d._id));
+                }
+                return [];
+            });
     }
 
     getBuildingsAtTime(time) {

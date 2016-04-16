@@ -2,7 +2,7 @@
 
 import {Injectable} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
-import {AuthHttp} from 'angular2-jwt';
+import {AuthHttp} from 'angular2-jwt/angular2-jwt';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 
@@ -11,10 +11,20 @@ export class UserService {
     public currentUser;
     private headers;
 
-    constructor(public http: Http) {
+    constructor(public http: Http, public authHttp: AuthHttp) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
+    }
+
+    auth() {
+        return this.authHttp
+            .post('/api/auth', '', {headers: this.headers})
+            .map(res => res.json())
+            .map(res => {
+                this.currentUser = res.result;
+                return res.result;
+            });
     }
 
     findUserById(userId: string) {
@@ -36,7 +46,7 @@ export class UserService {
     }
 
     findAllUsers(): Observable<Array<{}>> {
-        return this.authHttp
+        return this.http
             .get('/api/cafe/user')
             .map(res => res.json())
             .map(res => res.result);
