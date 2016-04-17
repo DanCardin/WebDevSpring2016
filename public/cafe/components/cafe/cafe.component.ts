@@ -1,5 +1,5 @@
 import {
-    Component, Directive, Attribute, ElementRef, DynamicComponentLoader, OnInit
+    Component, Directive, Attribute, ElementRef, DynamicComponentLoader
 } from "angular2/core";
 import {RouteConfig, Router, RouterOutlet, ComponentInstruction} from "angular2/router";
 import {PromiseWrapper} from 'angular2/src/facade/async';
@@ -13,6 +13,7 @@ import {Room} from "../room/room.component";
 
 import {RoomService} from "../../services/RoomService";
 import {UserService} from "../../services/UserService";
+
 
 @Directive({
   selector: 'logged-in-router-outlet'
@@ -38,6 +39,7 @@ export class LoggedInRouterOutlet extends RouterOutlet {
   }
 }
 
+
 @RouteConfig([
     {path: "/admin/...", component: Admin, name: "Admin"},
     {path: "/home", component: Home, name: "Home", useAsDefault: true},
@@ -51,11 +53,6 @@ export class LoggedInRouterOutlet extends RouterOutlet {
     directives: [LoggedInRouterOutlet, Header],
     providers: [RoomService, UserService],
 })
-export class CafeComponent implements OnInit{
-    constructor(private userService: UserService) {
-    }
-
-    ngOnInit() {
-        this.userService.auth().subscribe();
-    }
+export class CafeComponent {
+    constructor(private userService: UserService) {}
 }

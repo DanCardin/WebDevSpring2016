@@ -36,4 +36,11 @@ export class ClaimService {
             .map(res => res.json())
             .map(res => res.result);
     }
+
+    getClaimsForBuilding(building) {
+        return this.http
+            .get('/api/cafe/claim/' + building)
+            .map(res => res.json())
+            .map(res => res.result);
+    }
 }

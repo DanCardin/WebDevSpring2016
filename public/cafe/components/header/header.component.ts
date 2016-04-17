@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, OnInit} from "angular2/core";
 import {RouteConfig, Router, RouterLink, RouterOutlet} from "angular2/router";
 
 import {PathAware} from "../path-aware.component";
@@ -13,9 +13,16 @@ import {SearchService} from "../../services/SearchService";
     templateUrl: "cafe/components/header/header.view.html",
     providers: [SearchService],
 })
-export class Header extends PathAware {
+export class Header extends PathAware implements OnInit {
     constructor(router: Router, private userService: UserService) {
         super(router);
+    }
+
+    ngOnInit() {
+        console.log('authing')
+        if (localStorage.getItem('jwt')) {
+            this.userService.auth().subscribe();
+        }
     }
 
     logout() {

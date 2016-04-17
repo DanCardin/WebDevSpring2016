@@ -1,4 +1,4 @@
-import {Component} from "angular2/core";
+import {Component, SimpleChange} from "angular2/core";
 import {Router} from "angular2/router";
 
 import {UserService} from "../../services/UserService";
@@ -15,7 +15,7 @@ export class Profile {
     constructor(private router: Router, private userService: UserService, private claimService: ClaimService) {
         if (this.userService.currentUser) {
             this.claimService.getClaimsForUser(this.userService.currentUser._id).subscribe(res => this.claims = res);
-            this.userService.findUserById(this.userService.currentUser._id).subscribe(res => this.user = res);
+            this.user = this.userService.currentUser;
         }
     }
 

@@ -1,5 +1,4 @@
 // <reference path="../typings/main.d.ts"/>
-
 import {Injectable} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
 import {AuthHttp} from 'angular2-jwt/angular2-jwt';
@@ -14,66 +13,74 @@ export class UserService {
     constructor(public http: Http, public authHttp: AuthHttp) {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
-        this.headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
     }
 
     auth() {
+        console.log('auttthhh')
         return this.authHttp
-            .post('/api/auth', '', {headers: this.headers})
+            .post('/api/cafe/auth', '', {headers: this.headers})
             .map(res => res.json())
             .map(res => {
                 this.currentUser = res.result;
+                console.log('currr', this.currentUser);
                 return res.result;
             });
     }
 
     findUserById(userId: string) {
-        return this.http
+        console.log('findUserById');
+        return this.authHttp
             .get('/api/cafe/user/' + userId)
             .map(res => res.json())
             .map(res => res.result);
     }
 
     findUserByUsernameAndPassword(username: string, password: string) {
+        console.log('logging in now')
         return this.http
-            .get('/api/cafe/user/' + '?username=' + username + '&password=' + password)
+            .post('/api/cafe/login', JSON.stringify({username: username, password: password}), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
+                localStorage.setItem('jwt', res.jwt);
                 this.currentUser = res.result;
-                console.log('resss', res.result);
+                console.log('resss', res.jwt);
                 return res.result;
             });
     }
 
     findAllUsers(): Observable<Array<{}>> {
-        return this.http
+        return this.authHttp
             .get('/api/cafe/user')
             .map(res => res.json())
             .map(res => res.result);
     }
 
-    createUser(user) {
+    createUser(user, update=true) {
         return this.http
             .post('/api/cafe/user', JSON.stringify(user), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
-                this.currentUser = res.result;
+                if (update) {
+                    this.currentUser = res.result;
+                }
                 return res.result;
             });
     }
 
     deleteUserById(userId) {
-        return this.http
+        return this.authHttp
             .delete('/api/cafe/user/' + userId)
             .map(res => res.json());
     }
 
-    updateUser(guid, user) {
-        return this.http
+    updateUser(guid, user, update=true) {
+        return this.authHttp
             .put('/api/cafe/user/' + guid, JSON.stringify(user), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
-                this.currentUser = res.result;
+                if (update) {
+                    this.currentUser = res.result;
+                }
                 return res.result;
             });
     }

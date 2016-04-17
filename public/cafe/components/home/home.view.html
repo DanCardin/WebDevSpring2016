@@ -1,30 +1,21 @@
 <div class="fluid-container">
   <ul class="nav nav-tabs row centered">
-    <li class="nav-item">
-      <a class="nav-link btn-primary text-xs-center" (click)="moveTime(-1)">&lt;</a>
-    </li>
-    <li class="nav-item" *ngFor="#time of times | async">
-      <a class="btn text-xs-center" [class.active]="index == midway" (click)="selectTime(time)">
+    <li class="nav-item" *ngFor="#time of times; #i = index">
+      <a class="btn text-xs-center" [ngClass]="activeTime(i)" (click)="selectTime(time)">
         {{ time | date:"h:mm" }}
       </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link btn-primary text-xs-center" (click)="moveTime(1)">&gt;</a>
     </li>
   </ul>
 
   <accordion [closeOthers]="oneAtATime">
     <accordion-group
-      *ngFor="#building of buildings | async"
+      *ngFor="#building of buildings"
       [heading]="building.name"
       [attr.id]="'building_' + building.name"
     >
       <tabset [vertical]="true" type="pills">
-        <tab
-          class="row"
-          *ngFor="#room of building.rooms"
-        >
-          <template tab-heading class="col-xs-3">
+        <tab class="row" *ngFor="#room of building.rooms">
+          <template tabHeading class="col-xs-3">
             <span [attr.id]="'building_' + room.number + building.name">
               {{ room.number }}
             </span>
@@ -45,7 +36,7 @@
                   <span class="">Open Seats: {{ room.seats }}</span>
                 </div>
                 <div class="row">
-                  <a class="btn btn-block btn-success">Claim</a>
+                  <a (click)="claimRoom(building, room)" class="btn btn-block btn-success">Claim</a>
                 </div>
                 <div class="row">
                   <a class="btn btn-block btn-primary" [routerLink]="['Room']">
@@ -54,7 +45,10 @@
                 </div>
               </div>
               <div class="col-xs-7">
-                <sebm-google-map [latitude]="lat" [longitude]="lng">
+                <sebm-google-map
+                  [latitude]="building.lat || 42.340082"
+                  [longitude]="building.lng || -71.08948839999999"
+                  [zoom]="zoom">
                 </sebm-google-map>
               </div>
             </div>

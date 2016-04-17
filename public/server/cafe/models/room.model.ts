@@ -21,15 +21,17 @@ export module RoomModel {
         let result = {}
 
         let url = `${base_url}/201601`;
-        return getRestResults(url, 'majors').then(function (majors) {
+        return getRestResults(url, 'majors')
+        .then((majors) => {
             let result = [];
             for (var major of majors) {
                 result.push(`${url}/majors/${major['ident']}`);
             }
             return result.slice(0, 5);
         })
-        .mapSeries(function (majorUrl) {
-            return getRestResults(majorUrl, 'courses').then((courses) => {
+        .mapSeries((majorUrl) => {
+            return getRestResults(majorUrl, 'courses')
+            .then((courses) => {
                 let result = [];
                 for (var course of courses) {
                     result.push(`${majorUrl}/courses/${course['ident']}`);
@@ -40,7 +42,8 @@ export module RoomModel {
         })
         .reduce((ret, recommends) => ret.concat(recommends))
         .mapSeries((courseUrl) => {
-            return getRestResults(courseUrl, 'sections').then((sections) => {
+            return getRestResults(courseUrl, 'sections')
+            .then((sections) => {
                 console.log('sections', sections)
                 let result = [];
                 for (var section of sections) {
@@ -72,95 +75,163 @@ export module RoomModel {
             });
         })
         .reduce((ret, recommends) => ret.concat(recommends))
-        .mapSeries((slot => {
+        .mapSeries((slot) => {
             console.log('slot', slot)
-            return RoomModel.addBuilding(slot.name)
-            .then((building) => {
-                if (building.length) {
-                    return building[0];
+            let options = {
+                uri: `http://maps.google.com/maps/api/geocode/json?address=${slot.name}+northeastern+university,boston,ma&sensor=false&region=US`,
+                json: true,
+            };
+            bluebird.Promise.resolve(rp(options))
+            .then((res) => {
+                if (res.results.length) {
+                    return res.results[0].geometry.location;
                 }
-                return building;
+                return {lat: 42.340082, lng: -71.08948839999999};
             })
-            .catch((err) => console.log("building already exists"))
-            .then((building) => {
-                console.log('buillding', building)
-                return RoomModel.addRoom(building._id, slot.number, slot.seats)
-                .then((room) => {
-                    if (room.length) {
-                        return room[0];
+            .then((locatio) => {
+                return RoomModel.addBuilding(slot.name, locatio.lat, locatio.lng)
+                .then((building) => {
+                    if (building.length) {
+                        return building[0];
                     }
-                    return room;
+                    return building;
                 })
-                .catch((err) => console.log("room already exists"));
-            })
-            .then((room) => {
-                if (room && room.length) {
-                    return;
-                }
-                console.log('room', room)
-                let makeTime = (num) => {
-                    let list = (num / 100).toString().split('.');
-                    let result = (new Date(2016, 1, 1, Number(list[0]), Number(list[1])));
-                    return result.getTime();
-                }
-                let timeslot = {
-                    start: makeTime(slot.start.toString()),
-                    end: makeTime(slot.end.toString()),
-                    days: slot.slots,
-                    roomId: room._id,
-                };
-                return RoomModel.addTime(timeslot)
-                .then((timeslot) => {
-                    console.log(`added ${slot.name}, ${timeslot}`);
-                    return timeslot[0];
+                .catch((err) => console.log("building already exists"))
+                .then((building) => {
+                    console.log('buillding', building)
+                    return RoomModel.addRoom(building._id, slot.number, slot.seats)
+                    .then((room) => {
+                        if (room.length) {
+                            return room[0];
+                        }
+                        return room;
+                    })
+                    .catch((err) => console.log("room already exists"));
+                })
+                .then((room) => {
+                    if (room && room.length) {
+                        return;
+                    }
+                    console.log('room', room)
+                    let makeTime = (num) => {
+                        let list = (num / 100).toString().split('.');
+                        let hour = Number(list[0]);
+                        if (hour < 8) {
+                            hour += 12;
+                        }
+                        let result = (new Date(2016, 1, 1, hour, Number(list[1])));
+                        return result.getTime();
+                    }
+                    let timeslot = {
+                        start: makeTime(slot.start.toString()),
+                        end: makeTime(slot.end.toString()),
+                        days: slot.slots,
+                        roomId: room._id,
+                    };
+                    return RoomModel.addTime(timeslot)
+                    .then((timeslot) => {
+                        console.log(`added ${slot.name}, ${timeslot}`);
+                        return timeslot[0];
+                    })
+                    .catch((err) => console.log(err));
                 })
                 .catch((err) => console.log(err));
             })
             .catch((err) => console.log(err));
-        }))
+        })
         .catch((err) => console.log(err));
     }
 
     export function getSurroundingTimes(time: number, numTimes: number) {
-        return bluebird.Promise.join(
-            Time.aggregate([{'$match': {'start': {'$gte': time}}}, {'$group': {'_id': '$start'}}, {'$sort': { 'start': -1}}, {'$limit': 3}]).exec(),
-            Time.aggregate([{'$match': {'start': {'$lt': time}}}, {'$group': {'_id': '$start'}}, {'$sort': { 'start': 1}}, {'$limit': 2}]).exec(),
-            (res, res2) => {
-                res.push.apply(res, res2);
-                console.log('res', res)
-                return res;
-            });
+        let datetime = new Date(time);
+        if (datetime.getHours() < 8) {
+            datetime.setHours(datetime.getHours() + 12);
+        }
+        let dateNumber = datetime.getTime();
+
+        return bluebird.Promise.resolve(Time.find({}).sort({start: 1}).exec())
+        .then((times) => {
+            let preTimes = times.map(time => time.start - dateNumber);
+            let firstIndex = 0;
+            let map = {0: 'S', 1: 'M', 2: 'T', 3: 'W', 4: 'R', 5: 'F', 6: 'S'};
+
+            for (var i = 0; i < preTimes.length; i++) {
+                // if (times[i].days.indexOf(map[new Date().getDay()]) !== -1) {
+                    if (preTimes[i] > 0) {
+                        firstIndex = i;
+                        break;
+                    }
+                // }
+            }
+            console.log('pre times', preTimes, firstIndex);
+            let returnTimes = [];
+            for (var i = firstIndex - 1; i < times.length; i++) {
+                // if (times[i].days.indexOf(map[new Date().getDay()]) !== -1) {
+                console.log('hey hey');
+                // if (times[i].days.indexOf(map[1]) !== -1) {
+                    if (i === firstIndex - 1) {
+                        returnTimes.push(times[i].start);
+                    } else if (i > firstIndex - 1) {
+                        if (returnTimes.indexOf(times[i].start) === -1) {
+                            returnTimes.push(times[i].start);
+                        }
+                    }
+                    if (returnTimes.length === numTimes) {
+                        break;
+                    }
+                // }
+            }
+            console.log('returntimes', returnTimes);
+            return returnTimes;
+        });
     }
 
     function findRoom(roomId) {
-        return Room
-            .findById(roomId)
-            .exec();
+        return Room.findById(roomId).exec();
     }
 
     export function getBuildingsAtTime(time) {
         if (time) {
             time = Number(time);
         }
-        return Building.find({}).exec();
+        return bluebird.Promise.resolve(Time.find({'start': time}).exec())
+        .then((times) => {
+            let timesa = {};
+            for (var time of times) {
+                timesa[time.roomId] = time;
+            }
+            return Room.find({'_id': {$in: Object.keys(timesa)}}).exec()
+            .then(rooms => {
+                let roomsa = {};
+                for (var room of rooms) {
+                    roomsa[room.buildingId] = room;
+                }
+                return Building.find({'_id': {$in: Object.keys(roomsa)}}).exec()
+                .then(buildings => {
+                    for (var building of buildings) {
+                        building.rooms = roomsa[building._id];
+                    }
+                    return buildings;
+                });
+            });
+        });
     }
 
     export function getRooms() {
-        return Room.find({})
-            .populate('Building')
-            .exec();
+        return Room.find({}).populate('Building').exec();
     }
 
     export function getTimesForRoom(roomId) {
-        return Time.findOne({roomId: roomId}).exec();
+        return Time.find({roomId: roomId}).exec();
     }
 
-    export function addBuilding(name): mongoose.Promise<mongoose.Document[]> {
-        return Building.find({name : name}, function (err, docs) {
-            if (!docs.length){
-                return (new Building({name : name})).save();
+    export function addBuilding(name, lat=42.340082, lng=-71.08948839999999): mongoose.Promise<mongoose.Document[]> {
+        return Building.find({name : name}, (err, docs) => {
+            console.log('doc', docs, name);
+            if (!docs.length) {
+                return (new Building({name: name, lat: lat, lng: lng})).save();
             } else {
-                return Building.findOne({name : name}).exec();
+                return Building.findOne({name: name}).exec();
             }
         }).exec();
     }
@@ -185,6 +256,7 @@ export module RoomModel {
     }
 
     export function editRoom(roomId, update) {
+        console.log('roomasdfkajsdf', roomId, update)
         return Room.findByIdAndUpdate(roomId, update, {new: true}).exec();
     }
 

@@ -11,6 +11,7 @@ export class Login {
     constructor(private router: Router, private userService: UserService) {}
 
     login(username: string, password: string) {
+        console.log('logging in')
         this.userService
             .findUserByUsernameAndPassword(username, password)
             .subscribe((user) => {
@@ -22,9 +23,8 @@ export class Login {
 
     register(username: string, password: string, verify: string, email: string) {
         if (password && verify && password === verify) {
-            let user = {username: username, password: password, email: email};
             this.userService
-                .createUser(user)
+                .createUser({username: username, password: password, email: email})
                 .subscribe((user) => {
                     if (user) {
                         this.router.navigate(["/Profile"]);

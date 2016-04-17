@@ -22,10 +22,8 @@ export class RoomService {
             .map(res => res.json())
             .map(res => res.result)
             .map(res => {
-                console.log('sssss', res);
                 if (res) {
-                    console.log('hah?', res.map(d => new Date(d._id)))
-                    return res.map(d => new Date(d._id));
+                    return res.map(d => new Date(d));
                 }
                 return [];
             });
@@ -56,10 +54,11 @@ export class RoomService {
         return this.http
             .get('/api/cafe/room/' + roomId + '/time')
             .map(res => res.json())
-            .map(res => res.result);
+            .map(res => res.result)
     }
 
     addBuilding(name: string) {
+        console.log('add building')
         return this.http
             .post('/api/cafe/building', JSON.stringify({'name': name}), {headers: this.headers})
             .map(res => res.json())
@@ -83,7 +82,7 @@ export class RoomService {
     editRoom(roomId, newBuilding: string, newNumber: string) {
         return this.http
             .put('/api/cafe/room/' + roomId,
-                 JSON.stringify({'building': newBuilding, 'number': newNumber}),
+                 JSON.stringify({'buildingId': newBuilding, 'number': newNumber}),
                  {headers: this.headers}
             )
             .map(res => res.json())

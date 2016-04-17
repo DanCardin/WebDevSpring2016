@@ -5,8 +5,8 @@ import {provide} from "angular2/core";
 import {CORE_DIRECTIVES} from "angular2/common";
 import {ROUTER_PROVIDERS} from "angular2/router";
 import {JSONP_PROVIDERS, HTTP_BINDINGS, Http} from 'angular2/http';
-import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from 'angular2-google-maps/core';
 import {AuthHttp, AuthConfig} from 'angular2-jwt/angular2-jwt';
+import {ANGULAR2_GOOGLE_MAPS_PROVIDERS} from 'angular2-google-maps/core';
 
 import {CafeComponent} from "./components/cafe/cafe.component";
 import {UserService} from "./services/UserService";

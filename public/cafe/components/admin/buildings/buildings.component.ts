@@ -57,7 +57,7 @@ export class Row extends Time implements OnInit {
     @Output() public deleted = new EventEmitter();
     @Output() public edited = new EventEmitter();
 
-    private times;
+    public times = [];
     public days = [];
     private previousSelection = null;
 
@@ -72,7 +72,7 @@ export class Row extends Time implements OnInit {
 
     ngOnChanges(changes: {[propName: string]: SimpleChange}) {
         if (changes['room']) {
-            this.times = this.roomService.getTimesForRoom(this.room._id);
+            this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
         }
     }
 
@@ -82,7 +82,6 @@ export class Row extends Time implements OnInit {
 
     setBuildingName() {
         for (var i = 0; i < this.buildings.length; i++) {
-            console.log('meow', this.buildings[i]._id, this.room.buildingId);
             if (this.buildings[i]._id === this.room.buildingId) {
                 return this.buildings[i].name;
             }
@@ -102,9 +101,16 @@ export class Row extends Time implements OnInit {
     }
 
     commitEdit(newBuilding, newRoom) {
+        let buildingId;
+        for (var i = 0; i < this.buildings.length; i++) {
+            if (this.buildings[i].name === newBuilding) {
+                buildingId = this.buildings[i]._id;
+                break;
+            }
+        }
         this.editBuildingMode = false;
         this.editRoomMode = false;
-        this.edited.emit([this.room._id, newBuilding, newRoom]);
+        this.edited.emit([this.room._id, buildingId, newRoom]);
         this.buildingName = this.setBuildingName();
     }
 
@@ -117,7 +123,8 @@ export class Row extends Time implements OnInit {
         if (!startTime || !endTime || this.days.length == 0) {
             return;
         }
-        this.times = this.roomService.addTime(this.room._id, startTime, endTime, this.days);
+        this.roomService.addTime(this.room._id, startTime, endTime, this.days).subscribe();
+        this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
     }
 
     selectDay(day) {
@@ -130,7 +137,8 @@ export class Row extends Time implements OnInit {
     }
 
     deleteTime(timeId) {
-        this.times = this.roomService.deleteTime(this.room._id, timeId);
+        this.roomService.deleteTime(this.room._id, timeId);
+        this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
     }
 
     deleteRoom(roomId) {
@@ -161,32 +169,34 @@ export class Buildings {
     public buildings;
     public rooms;
     constructor(private router: Router, private roomService: RoomService) {
-        this.buildings = this.roomService.getBuildings();
-        this.rooms = this.roomService.getRooms();
+        this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
+        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }
 
     addRoom() {
         this.roomService.addRoom().subscribe();
-        this.rooms = this.roomService.getRooms();
+        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }
 
     editRoom(update) {
-        this.rooms = this.roomService.editRoom(update[0], update[1], update[2]);
+        console.log('update', update);
+        this.roomService.editRoom(update[0], update[1], update[2]).subscribe();
+        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }
 
     deleteRoom(roomId) {
         this.roomService.deleteRoom(roomId).subscribe();
-        this.rooms = this.roomService.getRooms();
+        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }
 
     addBuilding(buildingName) {
         this.roomService.addBuilding(buildingName.value).subscribe();
-        this.buildings = this.roomService.getBuildings();
+        this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
         buildingName.value = '';
     }
 
     deleteBuilding(buildingName) {
         this.roomService.deleteBuilding(buildingName.value).subscribe();
-        this.buildings = this.roomService.getBuildings();
+        this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
     }
 }

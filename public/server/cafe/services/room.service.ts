@@ -29,7 +29,7 @@ export class RoomService {
         res.json(
             RoomModel.getBuildingsAtTime(req.query.time)
             .then(
-                (res) => {return {result: res};},
+                (res) => {{result: res};},
                 (res) => {return {result: null, message: res};}
             )
         );

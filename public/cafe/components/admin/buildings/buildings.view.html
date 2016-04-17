@@ -10,7 +10,7 @@
     </div>
     <div class="col-xs-6">
       <select #buildingSelect placeholder="Building">
-        <option *ngFor="#building of buildings | async" [value]="building._id">{{ building.name }}</option>
+        <option *ngFor="#building of buildings" [value]="building._id">{{ building.name }}</option>
       </select>
       <a class="btn btn-danger" (click)="deleteBuilding(buildingSelect)">Delete</a>
     </div>
@@ -19,7 +19,7 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <thead (added)="addRoom()"></thead>
-    <tr *ngFor="#room of rooms | async"
+    <tr *ngFor="#room of rooms"
       (deleted)="deleteRoom($event)"
       (edited)="editRoom($event)"
       [room]="room"

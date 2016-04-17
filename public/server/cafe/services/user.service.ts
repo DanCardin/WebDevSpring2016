@@ -11,8 +11,8 @@ let auth = () => {
 
 export class UserService {
     constructor (private app) {
-        this.app.post('/api/auth', this.auth);
-        this.app.post('/api/assignment/login', this.login);
+        this.app.post('/api/cafe/auth', this.auth);
+        this.app.post('/api/cafe/login', this.login);
         this.app.post('/api/cafe/user', this.createUser);
         this.app.get('/api/cafe/user', auth, this.findUserByCredentials);
         this.app.get('/api/cafe/user/:userId', auth, this.findUserById);
@@ -36,12 +36,13 @@ export class UserService {
     }
 
     auth(req, res) {
+        console.log('fuck this');
         let token = req.headers.authorization;
         if (!token) {
             return res.json({});
         }
         let decoded = jwt.verify(token.slice(4), 'secret')._doc;
-        console.log('decoded', Object.keys(decoded));
+        console.log('fuck this', decoded);
         return res.json(
             UserModel.findUserById(decoded._id)
             .then(

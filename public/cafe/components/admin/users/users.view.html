@@ -1,39 +1,35 @@
 <div class="table-responsive">
   <table class="table table-bordered table-striped table-hover">
     <tr>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Username
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Password
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Role
-      </a></th>
-      <th><a>
-        <span class="fa fa-chevron-down" aria-hidden="true"></span>
-        Action
-      </a></th>
+      <th>Username</th>
+      <th>Password</th>
+      <th>Admin</th>
+      <th>Action</th>
     </tr>
     <tr>
-      <td><input type="text" placeholder="Username"></td>
-      <td><input type="text" placeholder="Password"></td>
-      <td><input type="text" placeholder="role1, role2"></td>
+      <td><input #username type="text" placeholder="Username"></td>
+      <td><input #password type="text" placeholder="Password"></td>
+      <td><input #admin type="checkbox"></td>
       <td>
-        <a><span class="fa fa-medsize fa-plus" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-ok" aria-hidden="true"></span></a>
+        <a (click)="addUser(username, password, admin)" [hidden]="!!editedUser">
+          <span class="fa fa-medsize fa-plus" aria-hidden="true"></span>
+        </a>
+        <a (click)="commitEdit(username, password, admin)" [hidden]="!editedUser">
+          <span class="fa fa-medsize fa-check" aria-hidden="true"></span>
+        </a>
       </td>
     </tr>
-    <tr *ngFor="#user of users | async">
-      <td>{{user?.username}}</td>
+    <tr *ngFor="#user of users">
+      <td>{{user.username}}</td>
       <td></td>
-      <td>Admin</td>
+      <td><span [hidden]="user.isAdmin" class="fa fa-medsize fa-check" aria-hidden="true"></span></td>
       <td>
-        <a><span class="fa fa-medsize fa-remove" aria-hidden="true"></span></a>
-        <a><span class="fa fa-medsize fa-pencil" aria-hidden="true"></span></a>
+        <a (click)="removeUser(user)">
+          <span class="fa fa-medsize fa-remove" aria-hidden="true"></span>
+        </a>
+        <a (click)="editUser(user, username, admin)">
+          <span class="fa fa-medsize fa-pencil" aria-hidden="true"></span>
+        </a>
       </td>
     </tr>
   </table>

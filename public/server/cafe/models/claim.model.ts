@@ -13,31 +13,23 @@ import {Building, Room, Time} from './room.schema';
 export module ClaimModel {
     export function getClaimsForUser(userId) {
         return Claim
-            // .populate('Building')
-            // .populate('Room')
-            // .populate('Time')
             .find({userId: userId})
             .exec();
     }
 
-    export function createClaimForUser(userId: number, claim) {
-        mock.claims.push({
-            _id: (new Date()).getTime(),
+    export function createClaimForUser(userId, claim) {
+        return (new Building({
             userId: userId,
-            buildingId: claim.buildingId,
-            roomId: claim.roomId,
-            timeId: claim.timeId,
-        });
-        return getClaimsForUser(userId);
+            building: claim.building,
+            time: claim.timeslot,
+        })).save();
     }
 
-    export function deleteClaim(userId: number, claimId: number) {
-        for (var i = 0; i < mock.claims.length; i++) {
-            if (mock.claims[i]._id) {
-                mock.claims.splice(i, 1);
-                break;
-            }
-        }
-        return getClaimsForUser(userId);
+    export function deleteClaim(userId, claimId) {
+        return Building.findByIdAndRemove(claimId).exec();
+    }
+
+    export function getClaimsForBuilding(building) {
+        return Building.find({building: building}).count().exec();
     }
 }

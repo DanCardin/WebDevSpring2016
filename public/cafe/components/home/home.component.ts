@@ -1,15 +1,19 @@
 import {Component} from 'angular2/core';
+import {NgClass} from 'angular2/common';
 import {Http} from 'angular2/http';
 import {RouterLink} from "angular2/router";
 import {ACCORDION_DIRECTIVES, TAB_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {ANGULAR2_GOOGLE_MAPS_DIRECTIVES} from 'angular2-google-maps/core';
 
 import {RoomService} from "../../services/RoomService";
+import {ClaimService} from "../../services/ClaimService";
+import {UserService} from "../../services/UserService";
 
 @Component({
     selector: "home",
     templateUrl: "cafe/components/home/home.view.html",
-    directives: [ACCORDION_DIRECTIVES, TAB_DIRECTIVES, RouterLink, ANGULAR2_GOOGLE_MAPS_DIRECTIVES],
+    directives: [NgClass, ACCORDION_DIRECTIVES, TAB_DIRECTIVES, RouterLink, ANGULAR2_GOOGLE_MAPS_DIRECTIVES],
+    providers: [ClaimService],
     styles: [`
         .sebm-google-map-container {
             height: 300px;
@@ -21,17 +25,40 @@ export class Home {
     public buildings;
     public midway;
     public oneAtATime: boolean = true;
+    public currentTime;
 
-    public lat: number = 51.678418;
-    public lng: number = 7.809007;
+    public zoom: number = 18;
 
-    constructor(private http: Http, private roomService: RoomService) {
+    constructor(
+        private http: Http,
+        private roomService: RoomService,
+        private userService: UserService,
+        private claimService: ClaimService
+    ) {
         let numTimes = 5;
         this.times = [];
         this.midway = Math.floor(numTimes / 2);
 
-        this.times = this.roomService.getSurroundingTimes(new Date(), numTimes);
-        this.buildings = this.roomService.getBuildingsAtTime(new Date());
+        let time = new Date();
+        let curTime = new Date(2016, 1, 1, time.getHours(), time.getMinutes());
+        this.roomService.getSurroundingTimes(curTime, numTimes)
+        .subscribe(times => {
+            if (times.length) {
+                this.times = times;
+                this.currentTime = times[1];
+                // this.roomService.getBuildingsAtTime(this.currentTime)
+                // .subscribe(buildings => {
+                //     this.buildings = buildings;
+                //     console.log('buildings', buildings);
+                //     for (var building of buildings) {
+                //         this.claimService.getClaimsForBuilding(building.name).subscribe(claims => {
+                //             building.seats -= claims;
+                //             console.log('after', building);
+                //         });
+                //     }
+                // });
+            }
+        });
     }
 
     public status: Object = {
@@ -43,6 +70,23 @@ export class Home {
     }
 
     moveTime() {
+    }
+
+    activeTime(index) {
+        if (index === 1) {
+            return 'btn-primary';
+        }
+        return '';
+    }
+
+    claimRoom(building, room) {
+        this.claimService.createClaimForUser(this.userService.currentUser._id, {
+            building: building.name,
+            timeslot: this.currentTime.toString(),
+        }).subscribe();
+        this.claimService.getClaimsForBuilding(building.name).subscribe(claims => {
+            building.seats -= claims;
+        });
     }
 
     private getCoords() {
