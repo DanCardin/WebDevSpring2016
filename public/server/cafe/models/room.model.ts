@@ -142,16 +142,10 @@ export module RoomModel {
         .catch((err) => console.log(err));
     }
 
-    export function getSurroundingTimes(time: number, numTimes: number) {
-        let datetime = new Date(time);
-        if (datetime.getHours() < 8) {
-            datetime.setHours(datetime.getHours() + 12);
-        }
-        let dateNumber = datetime.getTime();
-
+    export function getSurroundingTimes(timeNumber: number, numTimes: number) {
         return bluebird.Promise.resolve(Time.find({}).sort({start: 1}).exec())
         .then((times) => {
-            let preTimes = times.map(time => time.start - dateNumber);
+            let preTimes = times.map(time => time.start - timeNumber);
             let firstIndex = 0;
             let map = {0: 'S', 1: 'M', 2: 'T', 3: 'W', 4: 'R', 5: 'F', 6: 'S'};
 
@@ -167,8 +161,6 @@ export module RoomModel {
             let returnTimes = [];
             for (var i = firstIndex - 1; i < times.length; i++) {
                 // if (times[i].days.indexOf(map[new Date().getDay()]) !== -1) {
-                console.log('hey hey');
-                // if (times[i].days.indexOf(map[1]) !== -1) {
                     if (i === firstIndex - 1) {
                         returnTimes.push(times[i].start);
                     } else if (i > firstIndex - 1) {
@@ -191,6 +183,9 @@ export module RoomModel {
     }
 
     export function getBuildingsAtTime(time) {
+        if (time === undefined) {
+            return Building.find({}).exec();
+        }
         if (time) {
             time = Number(time);
         }
@@ -202,23 +197,35 @@ export module RoomModel {
             }
             return Room.find({'_id': {$in: Object.keys(timesa)}}).exec()
             .then(rooms => {
+                console.log('rooms', rooms)
                 let roomsa = {};
                 for (var room of rooms) {
-                    roomsa[room.buildingId] = room;
+                    if (!roomsa[room.buildingId]) {
+                        roomsa[room.buildingId] = [room];
+                    } else {
+                        roomsa[room.buildingId].push(room);
+                    }
                 }
+                console.log('roomsa', roomsa, Object.keys(roomsa))
                 return Building.find({'_id': {$in: Object.keys(roomsa)}}).exec()
                 .then(buildings => {
-                    for (var building of buildings) {
-                        building.rooms = roomsa[building._id];
+                    console.log('buildings asdf', buildings)
+                    for (var i = 0; i < buildings.length; i++) {
+                        buildings[i].rooms = roomsa[buildings[i]._id];
+                        console.log('wat', buildings[i].rooms);
                     }
+                    console.log('buildings', buildings)
                     return buildings;
-                });
-            });
-        });
+                })
+                .catch(res => console.log(res));
+            })
+            .catch(res => console.log(res));
+        })
+        .catch(res => console.log(res));
     }
 
     export function getRooms() {
-        return Room.find({}).populate('Building').exec();
+        return Room.find({}).exec();
     }
 
     export function getTimesForRoom(roomId) {

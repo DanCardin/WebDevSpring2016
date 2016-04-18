@@ -46,17 +46,18 @@ export class Home {
             if (times.length) {
                 this.times = times;
                 this.currentTime = times[1];
-                // this.roomService.getBuildingsAtTime(this.currentTime)
-                // .subscribe(buildings => {
-                //     this.buildings = buildings;
-                //     console.log('buildings', buildings);
-                //     for (var building of buildings) {
+                this.roomService.getBuildingsAtTime(this.currentTime)
+                .subscribe(buildings => {
+                    console.log('buildings', buildings)
+                    this.buildings = buildings;
+                    // for (var building of buildings) {
+                        // console.log('buildings', building);
                 //         this.claimService.getClaimsForBuilding(building.name).subscribe(claims => {
                 //             building.seats -= claims;
                 //             console.log('after', building);
                 //         });
-                //     }
-                // });
+                    // }
+                });
             }
         });
     }
@@ -65,12 +66,6 @@ export class Home {
         isFirstOpen: true,
         isFirstDisabled: false,
     };
-
-    selectTime() {
-    }
-
-    moveTime() {
-    }
 
     activeTime(index) {
         if (index === 1) {

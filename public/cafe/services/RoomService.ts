@@ -36,6 +36,13 @@ export class RoomService {
             .map(res => res.result);
     }
 
+    updateBuildingsFromApi() {
+        return this.http
+            .get('/api/cafe/buildings')
+            .map(res => res.json())
+            .map(res => res.result);
+    }
+
     getBuildings() {
         return this.http
             .get('/api/cafe/building')

@@ -29,7 +29,7 @@ export class RoomService {
         res.json(
             RoomModel.getBuildingsAtTime(req.query.time)
             .then(
-                (res) => {{result: res};},
+                (res) => {console.log('wwwww', res); return {result: res};},
                 (res) => {return {result: null, message: res};}
             )
         );
@@ -47,7 +47,7 @@ export class RoomService {
     }
 
     getTimesForRoom(req, res) {
-        console.log('getTimesForRoom', req.params.roomId);
+        // console.log('getTimesForRoom', req.params.roomId);
         res.json(
             RoomModel.getTimesForRoom(req.params.roomId)
             .then(

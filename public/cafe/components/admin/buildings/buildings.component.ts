@@ -1,6 +1,7 @@
 import {OnInit, Component, Input, SimpleChange, Output, EventEmitter} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router} from 'angular2/router';
+import {TOOLTIP_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 import {RoomService} from '../../../services/RoomService';
 
@@ -81,6 +82,9 @@ export class Row extends Time implements OnInit {
     }
 
     setBuildingName() {
+        if (!this.buildings) {
+            return;
+        }
         for (var i = 0; i < this.buildings.length; i++) {
             if (this.buildings[i]._id === this.room.buildingId) {
                 return this.buildings[i].name;
@@ -160,10 +164,25 @@ export class THead {
     }
 }
 
+import {Component, ChangeDetectionStrategy} from 'angular2/core';
+
 @Component({
     selector: 'profile',
     templateUrl: 'cafe/components/admin/buildings/buildings.view.html',
-    directives: [THead, Row],
+    directives: [THead, Row, TOOLTIP_DIRECTIVES],
+      styles: [`
+    /* Specify styling for tooltip contents */
+    .tooltip.customClass .tooltip-inner {
+        color: #880000;
+        background-color: #ffff66;
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+    /* Hide arrow */
+    .tooltip.customClass .tooltip-arrow {
+        display: none;
+    }
+  `],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Buildings {
     public buildings;
@@ -198,5 +217,9 @@ export class Buildings {
     deleteBuilding(buildingName) {
         this.roomService.deleteBuilding(buildingName.value).subscribe();
         this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
+    }
+
+    pullFromApi() {
+        this.roomService.updateBuildingsFromApi().subscribe();
     }
 }
