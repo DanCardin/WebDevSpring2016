@@ -10,7 +10,7 @@
   </a>
   <div class="collapse navbar-toggleable-xs" id="navbar">
     <ul class="nav navbar-nav pull-sm-right">
-      <li class="nav-item" [class.active]="linkActive('/Admin')" [hidden]="!(userService?.currentUser)">
+      <li class="nav-item" [class.active]="linkActive('/Admin')" [hidden]="!(userService?.currentUser?.isAdmin === true)">
         <a class="nav-link" [routerLink]="['Admin']">Admin</a>
       </li>
       <li class="nav-item">

@@ -15,6 +15,6 @@ export let UserSchema = new mongoose.Schema({
     },
     password: {type: String, required: true},
     email: {type: String, required: true},
-    isAdmin: {type: String, default: true},
+    isAdmin: {type: Boolean, default: false},
 }, {collection: appName + 'cafe.user'});
 export let User = mongoose.model('CafeUser', UserSchema);

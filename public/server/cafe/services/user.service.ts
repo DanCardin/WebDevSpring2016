@@ -14,10 +14,10 @@ export class UserService {
         this.app.post('/api/cafe/auth', this.auth);
         this.app.post('/api/cafe/login', this.login);
         this.app.post('/api/cafe/user', this.createUser);
-        this.app.get('/api/cafe/user', auth, this.findUserByCredentials);
-        this.app.get('/api/cafe/user/:userId', auth, this.findUserById);
-        this.app.put('/api/cafe/user/:userId', auth, this.updateUser);
-        this.app.delete('/api/cafe/user/:userId', auth, this.deleteUser);
+        this.app.get('/api/cafe/user', this.findUserByCredentials);
+        this.app.get('/api/cafe/user/:userId', this.findUserById);
+        this.app.put('/api/cafe/user/:userId', this.updateUser);
+        this.app.delete('/api/cafe/user/:userId', this.deleteUser);
 
         let opts = {
             jwtFromRequest: ExtractJwt.fromAuthHeader(),
@@ -46,7 +46,7 @@ export class UserService {
         return res.json(
             UserModel.findUserById(decoded._id)
             .then(
-                (res) => {return {result: res};},
+                (res) => {console.log('authed'); return {result: res};},
                 (res) => {return {result: null, message: res};}
             )
         );

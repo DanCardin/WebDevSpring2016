@@ -1,26 +1,57 @@
 <div class="container">
   <div class="row">
     <div class="col-xs-4">
-      <input
-        #buildingName
-        (keyup.enter)="addBuilding(buildingName)"
-        type="text"
-        placeholder="Building">
-      <a class="btn btn-primary" (click)="addBuilding(buildingName)">Add</a>
+      <div class="card text-xs-center">
+        <div class="card-header">
+          Add Buidlings
+        </div>
+        <div class="card-block">
+          <div class="row">
+            <div class="col-xs-8">
+              <input
+                #buildingName
+                (keyup.enter)="addBuilding(buildingName)"
+                type="text"
+                class="btn-block"
+                placeholder="Building">
+            </div>
+            <div class="col-xs-4">
+              <a class="btn btn-primary btn-block" (click)="addBuilding(buildingName)">Add</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <select #buildingSelect placeholder="Building" class="btn-block">
+                <option *ngFor="#building of buildings" [value]="building._id">{{ building.name }}</option>
+              </select>
+            </div>
+            <div class="col-xs-4">
+              <a class="btn btn-danger btn-block" (click)="deleteBuilding(buildingSelect)">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-xs-4">
-      <select #buildingSelect placeholder="Building">
-        <option *ngFor="#building of buildings" [value]="building._id">{{ building.name }}</option>
-      </select>
-      <a class="btn btn-danger" (click)="deleteBuilding(buildingSelect)">Delete</a>
+    <div class="col-xs-2">
     </div>
-    <div class="col-xs-4">
-      <a
-        class="btn btn-danger"
-        (click)="pullFromApi()"
-        tooltip="Please don't click this because I have limited API calls and this uses a bunch. It also shouldn't actually change any of the data because its already here."
-        tooltipPlacement="bottom"
-      >Pull from API</a>
+    <div class="col-xs-6">
+      <div class="card text-xs-center">
+        <div class="card-header">
+          CAREFUL!
+        </div>
+        <div class="card-block">
+          <p class="card-text">
+          Please don't click this because I have limited API calls and this uses a bunch.
+          It also shouldn't actually change any of the data because its already here,
+          plus it takes like 15 minutes to finish.
+          <a
+            class="btn btn-danger"
+            (click)="pullFromApi()"
+            tooltip="Seriously! Think twice!"
+            tooltipPlacement="bottom"
+          >Pull from API</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>

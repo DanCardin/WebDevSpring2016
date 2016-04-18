@@ -16,13 +16,11 @@ export class UserService {
     }
 
     auth() {
-        console.log('auttthhh')
         return this.authHttp
             .post('/api/cafe/auth', '', {headers: this.headers})
             .map(res => res.json())
             .map(res => {
                 this.currentUser = res.result;
-                console.log('currr', this.currentUser);
                 return res.result;
             });
     }
@@ -36,14 +34,12 @@ export class UserService {
     }
 
     findUserByUsernameAndPassword(username: string, password: string) {
-        console.log('logging in now')
         return this.http
             .post('/api/cafe/login', JSON.stringify({username: username, password: password}), {headers: this.headers})
             .map(res => res.json())
             .map(res => {
                 localStorage.setItem('jwt', res.jwt);
                 this.currentUser = res.result;
-                console.log('resss', res.jwt);
                 return res.result;
             });
     }
@@ -56,6 +52,7 @@ export class UserService {
     }
 
     createUser(user, update=true) {
+        console.log('new user', user)
         return this.http
             .post('/api/cafe/user', JSON.stringify(user), {headers: this.headers})
             .map(res => res.json())

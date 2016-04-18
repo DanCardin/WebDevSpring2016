@@ -15,34 +15,59 @@ export class Users {
         this.userService.findAllUsers().subscribe((users) => this.users = users);
     }
 
-    addUser(username, password, admin) {
-        if (!username.value && !password.value) {
+    addUser(username, email, password, admin) {
+        if (!username.value || !password.value || !email.value) {
             return;
         }
         this.editedUser = null;
         this.userService.createUser({
             username: username.value,
+            email: email.value,
             password: password.value,
-            isAdmin: admin.value,
-        }, false).subscribe();
-        this.userService.findAllUsers().subscribe((users) => this.users = users);
+            isAdmin: admin.checked,
+        }, false).subscribe(res => {
+            username.value = '';
+            email.value = '';
+            password.value = '';
+            admin.checked = false;
+            this.userService.findAllUsers().subscribe(users => this.users = users);
+        });
     }
 
     removeUser(user) {
         this.editedUser = null;
-        this.userService.deleteUserById(user._id).subscribe();
-        this.userService.findAllUsers().subscribe((users) => this.users = users);
+        this.userService.deleteUserById(user._id).subscribe(user => {
+            this.userService.findAllUsers().subscribe((users) => {console.log(users);this.users = users});
+        });
     }
 
-    editUser(user, username, admin) {
+    editUser(user, username, email, admin) {
         this.editedUser = user;
         username.value = user.username;
-        admin.value = user.isAdmin;
+        email.value = user.email;
+        admin.checked = user.isAdmin;
     }
 
-    commitEdit(username, password, admin) {
-        this.userService.updateUser(this.editedUser._id, false).subscribe();
-        this.userService.findAllUsers().subscribe((users) => this.users = users);
-        this.editedUser = null;
+    commitEdit(username, email, password, admin) {
+        let update = {
+            username: username.value,
+            email: email.value,
+            isAdmin: admin.checked,
+            password: password.value,
+        };
+        if (!password.value) {
+            update.password = this.editedUser.password;
+        }
+        console.log('passowrd', update)
+        this.userService.updateUser(this.editedUser._id, update, false).subscribe(res => {
+            this.userService.findAllUsers().subscribe((users) => {
+                this.users = users;
+                username.value = '';
+                email.value = '';
+                password.value = '';
+                admin.checked = false;
+            });
+            this.editedUser = null;
+        });
     }
 }

@@ -21,7 +21,9 @@ export module UserModel {
             username: newUser.username,
             password: newUser.password,
             email: newUser.email,
+            isAdmin: newUser.isAdmin,
         };
+        console.log('new user', userObject)
         return (new User(userObject)).save();
     }
 
