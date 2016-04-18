@@ -1,7 +1,6 @@
 import {OnInit, Component, Input, SimpleChange, Output, EventEmitter} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Router} from 'angular2/router';
-import {TOOLTIP_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 import {RoomService} from '../../../services/RoomService';
 
@@ -73,7 +72,10 @@ export class Row extends Time implements OnInit {
 
     ngOnChanges(changes: {[propName: string]: SimpleChange}) {
         if (changes['room']) {
-            this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
+            this.roomService.getTimesForRoom(this.room._id).subscribe(times => {
+                console.log('times', times)
+                this.times = times;
+            });
         }
     }
 
@@ -127,8 +129,9 @@ export class Row extends Time implements OnInit {
         if (!startTime || !endTime || this.days.length == 0) {
             return;
         }
-        this.roomService.addTime(this.room._id, startTime, endTime, this.days).subscribe();
-        this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
+        this.roomService.addTime(this.room._id, startTime, endTime, this.days).subscribe(res => {
+            this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
+        });
     }
 
     selectDay(day) {
@@ -141,8 +144,9 @@ export class Row extends Time implements OnInit {
     }
 
     deleteTime(timeId) {
-        this.roomService.deleteTime(this.room._id, timeId);
-        this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
+        this.roomService.deleteTime(this.room._id, timeId).subscribe(res => {
+            this.roomService.getTimesForRoom(this.room._id).subscribe((times) => this.times = times);
+        });
     }
 
     deleteRoom(roomId) {
@@ -164,31 +168,19 @@ export class THead {
     }
 }
 
-import {Component, ChangeDetectionStrategy} from 'angular2/core';
-
 @Component({
     selector: 'profile',
     templateUrl: 'cafe/components/admin/buildings/buildings.view.html',
-    directives: [THead, Row, TOOLTIP_DIRECTIVES],
-      styles: [`
-    /* Specify styling for tooltip contents */
-    .tooltip.customClass .tooltip-inner {
-        color: #880000;
-        background-color: #ffff66;
-        box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    }
-    /* Hide arrow */
-    .tooltip.customClass .tooltip-arrow {
-        display: none;
-    }
-  `],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    directives: [THead, Row],
 })
 export class Buildings {
     public buildings;
     public rooms;
     constructor(private router: Router, private roomService: RoomService) {
-        this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
+        this.roomService.getBuildings().subscribe(buildings => {
+            console.log('buildings', buildings)
+            this.buildings = buildings;
+        });
         this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }
 

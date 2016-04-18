@@ -126,7 +126,7 @@ export class RoomService {
     addTime(req, res) {
         console.log('addRoom', req.params.roomId, req.body);
         res.json(
-            RoomModel.addTime(req.params.roomId, req.body)
+            RoomModel.addTime(req.body)
             .then(
                 (res) => {return {result: res};},
                 (res) => {return {result: null, message: res};}

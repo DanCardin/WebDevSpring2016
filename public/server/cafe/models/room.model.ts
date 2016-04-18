@@ -45,33 +45,29 @@ export module RoomModel {
             return getRestResults(courseUrl, 'sections')
             .then((sections) => {
                 console.log('sections', sections)
-                let result = [];
+                let result = {};
                 for (var section of sections) {
                     if (section && section.timeslots && section.timeslots.length) {
                         for (var slot of section.timeslots) {
-                            result.push({
-                                loc: slot.location,
-                                name: slot.location.replace(/ \d+[A-Z]?$/, ''),
-                                number: slot.location.replace(/^[a-zA-Z ]+ ?/, ''),
-                                start: slot.start_time,
-                                end: slot.end_time,
-                                seats: (section.seats || {capacity: 1}).capacity,
-                                callNumber: section.call_number,
-                                slots: ((slots) => {
-                                    let result = {};
-                                    for (var newSlot of slots) {
-                                        if (slot.location === newSlot.location) {
-                                            result[slot.day] = true;
-                                        }
-                                    }
-                                    return Object.keys(result);
-                                })(section.timeslots)
-                            });
+                            if (result[slot.location + slot.start_time] === undefined) {
+                                result[slot.location + slot.start_time] = {
+                                    loc: slot.location,
+                                    name: slot.location.replace(/ \d+[A-Z]?$/, ''),
+                                    number: slot.location.replace(/^[a-zA-Z ]+ ?/, ''),
+                                    start: slot.start_time,
+                                    end: slot.end_time,
+                                    seats: (section.seats || {capacity: 1}).capacity,
+                                    callNumber: section.call_number,
+                                    slots: [slot.day],
+                                };
+                            } else {
+                                result[slot.location + slot.start_time].slots.push(slot.day);
+                            }
                         }
                     }
                 }
                 console.log('result', result);
-                return result;
+                return Object.keys(result).map(key => result[key]);
             });
         })
         .reduce((ret, recommends) => ret.concat(recommends))
@@ -274,7 +270,9 @@ export module RoomModel {
             if (!docs.length) {
                 return (new Time(time)).save();
             }
-            return Time.findOne({roomId: time.roomId, start: time.start, end: time.end}).limit(1).exec();
+            return Time.findOne(
+                {roomId: time.roomId, start: time.start, end: time.end, days: time.days}
+            ).limit(1).exec();
         }).exec();
     }
 

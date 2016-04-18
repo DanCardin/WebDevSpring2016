@@ -3,7 +3,7 @@
     <div class="col-xs-4">
       <div class="card text-xs-center">
         <div class="card-header">
-          Add Buidlings
+          Add Buildings
         </div>
         <div class="card-block">
           <div class="row">
@@ -21,7 +21,7 @@
           </div>
           <div class="row">
             <div class="col-xs-8">
-              <select #buildingSelect placeholder="Building" class="btn-block">
+              <select #buildingSelect class="btn-block">
                 <option *ngFor="#building of buildings" [value]="building._id">{{ building.name }}</option>
               </select>
             </div>
@@ -47,8 +47,6 @@
           <a
             class="btn btn-danger"
             (click)="pullFromApi()"
-            tooltip="Seriously! Think twice!"
-            tooltipPlacement="bottom"
           >Pull from API</a>
         </div>
       </div>

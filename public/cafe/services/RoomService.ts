@@ -108,6 +108,7 @@ export class RoomService {
         return this.http
             .post('/api/cafe/room/' + roomId + '/time',
                 JSON.stringify({
+                    roomId: roomId,
                     'start': this.getTimeFromString(startTime),
                     'end': this.getTimeFromString(endTime),
                     'days': days}

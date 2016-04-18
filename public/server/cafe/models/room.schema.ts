@@ -10,6 +10,7 @@ if (process && process.env) {
 
 export let TimeSchema = new mongoose.Schema({
     roomId: {type: mongoose.Schema.Types.ObjectId, ref: 'Room', required: true},
+    days: {type: Array<String>(), default: []},
     start: {type: Number, ref: 'Room', required: true},
     end: {type: Number, required: true},
 }, {collection: appName + 'cafe.time'});
