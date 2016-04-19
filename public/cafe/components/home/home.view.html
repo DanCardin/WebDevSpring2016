@@ -33,16 +33,14 @@
                 </div>
                 <hr>
                 <div class="row">
-                  <span class="">Open Seats: {{ room.seats }}</span>
+                  <span class="">Open Seats: {{ room.new_seats || room.seats }}</span>
                 </div>
-                <div class="row">
+                <div class="row" [hidden]='room.claimed'>
                   <a (click)="claimRoom(building, room)" class="btn btn-block btn-success">Claim</a>
                 </div>
-                <!-- <div class="row"> -->
-                <!--   <a class="btn btn&#45;block btn&#45;primary" [routerLink]="['Room']"> -->
-                <!--     Details... -->
-                <!--   </a> -->
-                <!-- </div> -->
+                <div class="row" [hidden]='!room.claimed'>
+                  <a (click)="unclaimRoom(building, room)" class="btn btn-block btn-warning">Unclaim</a>
+                </div>
               </div>
               <div class="col-xs-7">
                 <sebm-google-map

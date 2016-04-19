@@ -18,18 +18,27 @@ export module ClaimModel {
     }
 
     export function createClaimForUser(userId, claim) {
-        return (new Building({
-            userId: userId,
-            building: claim.building,
-            time: claim.timeslot,
-        })).save();
+        return Claim.find({userId: userId, building: claim.building}, (err, docs) => {
+            if (!docs.length) {
+                console.log('createing a claim', {
+                    userId: userId,
+                    building: claim.building,
+                    time: claim.timeslot,
+                });
+                return (new Claim({
+                    userId: userId,
+                    building: claim.building,
+                    time: claim.timeslot,
+                })).save();
+            }
+        }).exec()
     }
 
-    export function deleteClaim(userId, claimId) {
-        return Building.findByIdAndRemove(claimId).exec();
+    export function deleteClaim(userId, claim) {
+        return Claim.remove({userId: userId, building: claim}).exec();
     }
 
     export function getClaimsForBuilding(building) {
-        return Building.find({building: building}).count().exec();
+        return Claim.find({building: building}).count().exec();
     }
 }

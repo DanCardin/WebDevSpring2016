@@ -8,7 +8,7 @@ if (process && process.env) {
 }
 
 export let ClaimSchema = new mongoose.Schema({
-    userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
+    userId: {type: mongoose.Schema.Types.ObjectId, required: true},
     building: {type: String, required: true},
     time: {type: String, required: true},
 }, {collection: appName + 'cafe.claim'});

@@ -30,9 +30,9 @@ export class ClaimService {
             .map(res => res.result);
     }
 
-    deleteClaimForUser(userId, claimId) {
+    deleteClaimForUser(userId, claim) {
         return this.http
-            .delete('/api/cafe/user/' + userId + '/claim/' + claimId)
+            .delete('/api/cafe/user/' + userId + '/claim/' + claim)
             .map(res => res.json())
             .map(res => res.result);
     }

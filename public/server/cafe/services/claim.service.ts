@@ -25,7 +25,10 @@ export class ClaimService {
             .createClaimForUser(req.params.userId, req.body)
             .then(
                 (res) => {return {result: res};},
-                (res) => {return {result: null, message: res};}
+                (res) => {
+                    console.log('res', res)
+                    return {result: null, message: res};
+                }
             );
         res.json(result);
     }

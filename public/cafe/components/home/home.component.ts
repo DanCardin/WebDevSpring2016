@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+import {Component, OnInit} from 'angular2/core';
 import {NgClass} from 'angular2/common';
 import {Http} from 'angular2/http';
 import {RouterLink} from "angular2/router";
@@ -20,7 +20,7 @@ import {UserService} from "../../services/UserService";
         }
     `],
 })
-export class Home {
+export class Home implements OnInit{
     public times;
     public buildings;
     public midway;
@@ -34,7 +34,9 @@ export class Home {
         private roomService: RoomService,
         private userService: UserService,
         private claimService: ClaimService
-    ) {
+    ) {}
+
+    ngOnInit() {
         let numTimes = 5;
         this.times = [];
         this.midway = Math.floor(numTimes / 2);
@@ -48,15 +50,16 @@ export class Home {
                 this.currentTime = times[1];
                 this.roomService.getBuildingsAtTime(this.currentTime)
                 .subscribe(buildings => {
-                    console.log('buildings', buildings)
                     this.buildings = buildings;
-                    // for (var building of buildings) {
-                        // console.log('buildings', building);
-                //         this.claimService.getClaimsForBuilding(building.name).subscribe(claims => {
-                //             building.seats -= claims;
-                //             console.log('after', building);
-                //         });
-                    // }
+                    for (var building of buildings) {
+                        for (var room of building.rooms) {
+                            this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
+                                room.new_seats = room.seats - claims;
+                                room.claimed = claims;
+                                console.log('room.claimed', room.claimed, room.new_seats)
+                            });
+                        }
+                    }
                 });
             }
         });
@@ -74,13 +77,25 @@ export class Home {
         return '';
     }
 
+    unclaimRoom(building, room) {
+        this.claimService.deleteClaimForUser(this.userService.currentUser._id, room.number + building.name)
+        .subscribe(result => {
+            this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
+                room.new_seats = room.seats - claims;
+                room.claimed = claims;
+            });
+        });
+    }
+
     claimRoom(building, room) {
         this.claimService.createClaimForUser(this.userService.currentUser._id, {
-            building: building.name,
+            building: room.number + building.name,
             timeslot: this.currentTime.toString(),
-        }).subscribe();
-        this.claimService.getClaimsForBuilding(building.name).subscribe(claims => {
-            building.seats -= claims;
+        }).subscribe(result => {
+            this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
+                room.new_seats = room.seats - claims;
+                room.claimed = claims;
+            });
         });
     }
 

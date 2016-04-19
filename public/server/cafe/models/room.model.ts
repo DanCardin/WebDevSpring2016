@@ -219,7 +219,7 @@ export module RoomModel {
     }
 
     export function getRooms() {
-        return Room.find({}).exec();
+        return Room.find({}).sort({_id: 1}).exec();
     }
 
     export function getTimesForRoom(roomId) {
