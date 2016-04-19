@@ -64,6 +64,9 @@ img.face {
   width: 200px;
   height: 200px;
   clear: right;
+  border-radius: 50%;
+  position: absolute;
+  left: 90%;
 }
 
 

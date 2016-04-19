@@ -198,6 +198,7 @@ export module RoomModel {
                         roomsa[room.buildingId].push(room);
                     }
                 }
+                console.log('roomasaaaaa', roomsa)
                 return roomsa;
             })
             .then(roomsa => {

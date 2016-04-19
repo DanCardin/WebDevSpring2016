@@ -36,13 +36,11 @@ export class UserService {
     }
 
     auth(req, res) {
-        console.log('fuck this');
         let token = req.headers.authorization;
         if (!token) {
             return res.json({});
         }
         let decoded = jwt.verify(token.slice(4), 'secret')._doc;
-        console.log('fuck this', decoded);
         return res.json(
             UserModel.findUserById(decoded._id)
             .then(
@@ -53,7 +51,6 @@ export class UserService {
     }
 
     login(req, res) {
-        console.log('woahhh', req.body)
         res.json(
             UserModel.findUserByCredentials(req.body)
             .then(
@@ -69,7 +66,6 @@ export class UserService {
     }
 
     createUser(req, res) {
-        console.log('createUser');
         let result = UserModel
             .createUser(req.body)
             .then(
@@ -81,7 +77,6 @@ export class UserService {
 
     findUserByCredentials(req, res) {
         if (req.query.hasOwnProperty('username') && req.query.hasOwnProperty('password')) {
-            console.log('findUserByCredentials');
             let result = UserModel.findUserByCredentials(req.query)
             .then(
                 (res) => {return {result: res};},
@@ -89,7 +84,6 @@ export class UserService {
             );
             res.json(result);
         } else {
-            console.log('getAllUsers');
             let result = UserModel.getAllUsers()
             .then(
                 (res) => {return {result: res};},
@@ -100,7 +94,6 @@ export class UserService {
     }
 
     findUserById(req, res) {
-        console.log('findUserById');
         let result = UserModel
             .findUserById(req.params.userId)
             .then(
@@ -111,7 +104,6 @@ export class UserService {
     }
 
     updateUser(req, res) {
-        console.log('updateUser');
         let result = UserModel
             .updateUser(req.params.userId, req.body)
             .then(
@@ -122,7 +114,6 @@ export class UserService {
     }
 
     deleteUser(req, res) {
-        console.log('deleteUser');
         let result = UserModel
             .deleteUser(req.params.userId)
             .then(

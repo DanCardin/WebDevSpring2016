@@ -27,6 +27,7 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 // Connect to the database
 let db = mongoose.connect(connectionString);
 
+app.use("/", express.static(path.resolve(__dirname, "../homepage")));
 app.use("/assignment", express.static(path.resolve(__dirname, "./assignment")));
 app.use("/cafe", express.static(path.resolve(__dirname, "./cafe")));
 app.use("/node_modules", express.static(path.resolve(__dirname, "../../node_modules")));
@@ -46,7 +47,7 @@ app.get("/cafe/*", (req: express.Request, res: express.Response) => {
 new App(app);
 new Cafe(app);
 app.get("/", (req: express.Request, res: express.Response) => {
-    res.sendFile(path.resolve(__dirname, './index.html'));
+    res.sendFile(path.resolve(__dirname, '../homepage/index.html'));
 });
 
 let server = app.listen(port, ipaddress, () => {
