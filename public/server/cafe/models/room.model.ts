@@ -27,7 +27,7 @@ export module RoomModel {
             for (var major of majors) {
                 result.push(`${url}/majors/${major['ident']}`);
             }
-            return result.slice(0, 5);
+            return result;
         })
         .mapSeries((majorUrl) => {
             return getRestResults(majorUrl, 'courses')
@@ -36,7 +36,6 @@ export module RoomModel {
                 for (var course of courses) {
                     result.push(`${majorUrl}/courses/${course['ident']}`);
                 }
-                return result.slice(0, 5);
                 return result;
             });
         })
@@ -153,7 +152,6 @@ export module RoomModel {
                     }
                 // }
             }
-            console.log('pre times', preTimes, firstIndex);
             let returnTimes = [];
             for (var i = firstIndex - 1; i < times.length; i++) {
                 // if (times[i].days.indexOf(map[new Date().getDay()]) !== -1) {
@@ -169,7 +167,6 @@ export module RoomModel {
                     }
                 // }
             }
-            console.log('returntimes', returnTimes);
             return returnTimes;
         });
     }
@@ -231,7 +228,6 @@ export module RoomModel {
 
     export function addBuilding(name, lat=42.340082, lng=-71.08948839999999): mongoose.Promise<mongoose.Document[]> {
         return Building.find({name : name}, (err, docs) => {
-            console.log('doc', docs, name);
             if (!docs.length) {
                 return (new Building({name: name, lat: lat, lng: lng})).save();
             } else {
@@ -247,10 +243,8 @@ export module RoomModel {
     export function addRoom(buildingId=null, name=null, seats=null): mongoose.Promise<mongoose.Document[]> {
         return Room.find({buildingId: buildingId, number: name}, function (err, docs) {
             if (docs && !docs.length) {
-                console.log('create', buildingId, name, seats);
                 (new Room({buildingId: buildingId, number: name, seats: seats})).save();
             }
-            console.log('find new', buildingId, name, seats);
             return Room.findOne({buildingId: buildingId, number: name}).limit(1).exec();
         }).exec();
     }
@@ -260,14 +254,11 @@ export module RoomModel {
     }
 
     export function editRoom(roomId, update) {
-        console.log('roomasdfkajsdf', roomId, update)
         return Room.findByIdAndUpdate(roomId, update, {new: true}).exec();
     }
 
     export function addTime(time) {
-        console.log('add time', time);
         return Time.find({roomId: time.roomId, start: time.start, end: time.end}, function (err, docs) {
-            console.log('docssssslli', docs);
             if (!docs.length) {
                 return (new Time(time)).save();
             }

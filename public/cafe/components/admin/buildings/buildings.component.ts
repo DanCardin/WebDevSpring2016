@@ -72,7 +72,6 @@ export class Row extends Time implements OnInit {
     ngOnChanges(changes: {[propName: string]: SimpleChange}) {
         if (changes['room']) {
             this.roomService.getTimesForRoom(this.room._id).subscribe(times => {
-                console.log('times', times)
                 this.times = times;
             });
         }
@@ -177,7 +176,6 @@ export class Buildings {
     public rooms;
     constructor(private router: Router, private roomService: RoomService) {
         this.roomService.getBuildings().subscribe(buildings => {
-            console.log('buildings', buildings)
             this.buildings = buildings;
         });
         this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
@@ -189,7 +187,6 @@ export class Buildings {
     }
 
     editRoom(update) {
-        console.log('update', update);
         this.roomService.editRoom(update[0], update[1], update[2]).subscribe();
         this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
     }

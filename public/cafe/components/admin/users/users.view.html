@@ -21,7 +21,7 @@
         </a>
       </td>
     </tr>
-    <tr *ngFor="#user of users">
+    <tr *ngFor="#user of users" [id]="user.username">
       <td>{{user.username}}</td>
       <td>{{user.email}}</td>
       <td></td>

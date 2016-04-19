@@ -13,7 +13,7 @@
       <li class="nav-item" [class.active]="linkActive('/Admin')" [hidden]="!(userService?.currentUser?.isAdmin === true)">
         <a class="nav-link" [routerLink]="['Admin']">Admin</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" [hidden]="!(userService?.currentUser?.isAdmin === true)">
         <search></search>
       </li>
       <li class="nav-item">

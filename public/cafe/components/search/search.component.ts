@@ -31,14 +31,14 @@ import {SearchService} from "../../services/SearchService";
         {{ numRooms }} Results:
         <ul>
           <li *ngFor="#room of rooms | async" (click)="selectBuilding(room)">
-            {{ room }}
+            {{ room.number }}
            </li>
         </ul>
 
         {{ numUsers }} Results:
         <ul>
           <li *ngFor="#user of users | async" (click)="selectUser(user)">
-            {{ user }}
+            {{ user.username }}
            </li>
         </ul>
       </div>
@@ -67,23 +67,63 @@ export class Search {
         }
     }
 
-    selectBuilding(item: string) {
-        this.router.navigate(['/Home']);
-        if (!isNaN(+item.charAt(0))) {
-            let i = 2;
-            let str = item.substring(0, 1);
-            while (!isNaN(+str)) {
-                str = item.substring(0, i++);
+    selectBuilding(room) {
+        this.router.navigate(['/Admin/Buildings']);
+        setTimeout(() => {
+            function scrollTo(element, to, duration) {
+                let start = element.scrollTop,
+                    change = to - start,
+                    increment = 20;
+
+                let animateScroll = function(elapsedTime) {
+                    elapsedTime += increment;
+                    var position = easeInOut(elapsedTime, start, change, duration);
+                    element.scrollTop = position;
+                    if (elapsedTime < duration) {
+                        setTimeout(function() {
+                            animateScroll(elapsedTime);
+                        }, increment);
+                    }
+                };
+                animateScroll(0);
             }
-            i -= 2;
-            $('#building_' + item.substring(i, item.length).replace(/\s+/g, '')).children().children().click();
-            $('#building_' + item.replace(/\s+/g, '')).click();
-        } else {
-            $('#building_' + item.replace(/\s+/g, '')).children().children().click();
-        }
+
+            function easeInOut(currentTime, start, change, duration) {
+                currentTime /= duration / 2;
+                if (currentTime < 1) {
+                    return change / 2 * currentTime * currentTime + start;
+                }
+                currentTime -= 1;
+                return -change / 2 * (currentTime * (currentTime - 2) - 1) + start;
+            }
+
+            function cumulativeOffset(element) {
+                let top = 0;
+                do {
+                    top += element.offsetTop  || 0;
+                    element = element.offsetParent;
+                } while(element);
+                return top;
+            };
+
+            let row = document.querySelector('#room_' + room.number + room.buildingName);
+            console.log('row', row)
+            if (row) {
+                scrollTo(document.body, cumulativeOffset(row) - 200, 1250);
+                row.className = 'table-danger';
+                setTimeout(() => row.className = '', 3000);
+            }
+        }, 500);
     }
 
     selectUser(user) {
         this.router.navigate(['/Admin/Users']);
+        setTimeout(() => {
+            let row = document.querySelector('#' + user.username);
+            if (row) {
+                row.className = 'table-danger';
+                setTimeout(() => row.className = '', 3000);
+            }
+        }, 500);
     }
 }
