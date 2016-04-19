@@ -259,6 +259,10 @@ export module RoomModel {
 
     export function addTime(time) {
         return Time.find({roomId: time.roomId, start: time.start, end: time.end}, function (err, docs) {
+            if (err) {
+                console.log('Time ERROR', err);
+                return;
+            }
             if (!docs.length) {
                 return (new Time(time)).save();
             }

@@ -47,7 +47,7 @@ export class Home implements OnInit{
         .subscribe(times => {
             if (times.length) {
                 this.times = times;
-                this.currentTime = times[1];
+                this.currentTime = times[0];
                 this.roomService.getBuildingsAtTime(this.currentTime)
                 .subscribe(buildings => {
                     this.buildings = buildings;
@@ -71,7 +71,7 @@ export class Home implements OnInit{
     };
 
     activeTime(index) {
-        if (index === 1) {
+        if (index === 0) {
             return 'btn-primary';
         }
         return '';
