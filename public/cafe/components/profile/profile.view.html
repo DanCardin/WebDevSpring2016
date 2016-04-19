@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div class="row" [hidden]="!(claims?.length)">
     <h2>My Claims</h2>
     <div class="fluid-container">
       <table class="table table-striped table-hover">
@@ -16,9 +16,9 @@
             <th>
               <a (click)="deleteClaim(claim)" class="btn btn-danger">X</a>
             </th>
-            <td>{{ claim.day }}</td>
-            <td>{{ claim.start | date: "h:mm" }} - {{ claim.end | date: "h:mm" }}</td>
-            <td>{{ claim.place }}</td>
+            <td>Today</td>
+            <td>{{ claim.time | date: "h:mm" }}</td>
+            <td>{{ claim.building }}</td>
           </tr>
         </tbody>
       </table>

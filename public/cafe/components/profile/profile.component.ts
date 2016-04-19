@@ -14,7 +14,7 @@ export class Profile {
     private user;
     constructor(private router: Router, private userService: UserService, private claimService: ClaimService) {
         if (this.userService.currentUser) {
-            this.claimService.getClaimsForUser(this.userService.currentUser._id).subscribe(res => this.claims = res);
+            this.getClaims();
             this.user = this.userService.currentUser;
         }
     }
@@ -31,10 +31,21 @@ export class Profile {
             });
     }
 
+    getClaims() {
+        this.claimService.getClaimsForUser(this.userService.currentUser._id)
+        .map(claims => {
+            for (var claim of claims) {
+                claim.time = new Date(claim.time);
+            }
+            return claims;
+        })
+        .subscribe(claims => {
+            this.claims = claims;
+        });
+    }
+
     deleteClaim(claim) {
-        this.claimService.deleteClaimForUser(
-            this.userService.currentUser._id,
-            claim._id
-        ).subscribe(res => this.claims = res);
+        this.claimService.deleteClaimForUser(this.userService.currentUser._id, claim.building)
+        .subscribe(result => this.getClaims());
     }
 }
