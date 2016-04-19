@@ -104,7 +104,7 @@ export class Row extends Time implements OnInit {
         }
     }
 
-    commitEdit(newBuilding, newRoom) {
+    commitEdit(newBuilding, newRoom, latitude, longitude) {
         let buildingId;
         for (var i = 0; i < this.buildings.length; i++) {
             if (this.buildings[i].name === newBuilding) {
@@ -114,7 +114,7 @@ export class Row extends Time implements OnInit {
         }
         this.editBuildingMode = false;
         this.editRoomMode = false;
-        this.edited.emit([this.room._id, buildingId, newRoom]);
+        this.edited.emit([this.room._id, buildingId, newRoom, latitude, longitude]);
         this.buildingName = this.setBuildingName();
     }
 
@@ -184,6 +184,37 @@ export class Buildings {
     addRoom() {
         this.roomService.addRoom().subscribe();
         this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
+    }
+
+    getSelectLat(selected, lat=true) {
+        if (!this.buildings) {
+            return '';
+        }
+        for (var building of this.buildings) {
+            if (building._id === selected.value) {
+                if (lat) {
+                    return building.lat;
+                }
+                return building.lng;
+            }
+        }
+        return '';
+    }
+
+    updateLocation(buildingSelect, lat, lng) {
+        lat.value = this.getSelectLat(buildingSelect, true);
+        lng.value = this.getSelectLat(buildingSelect, false);
+    }
+
+    changeBuilding(buildingSelect, lat, lng) {
+        let update = {};
+        if (lat) {
+            update.lat = lat;
+        }
+        if (lng) {
+            update.lng = lng;
+        }
+        this.roomService.changeBuilding(buildingSelect, update).subscribe();
     }
 
     editRoom(update) {

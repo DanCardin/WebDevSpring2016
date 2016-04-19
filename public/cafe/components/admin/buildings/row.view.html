@@ -14,7 +14,10 @@
       (keyup.escape)="cancelEdit()"
       (blur)="commitEdit(buildingSelect.value, roomSelect.value)"
     >
-      <option *ngFor="#building of buildings">{{ building.name }}</option>
+      <option
+        *ngFor="#building of buildings"
+        [selected]="building.name === buildingName"
+      >{{ building.name }}</option>
     </select>
   </div>
 </td>

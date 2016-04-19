@@ -22,7 +22,7 @@
           </template>
           <div class="col-xs-12">
             <div class="row">
-              <div class="col-xs-3 col-xs-offset-2">
+              <div class="col-sm-3 col-xs-6">
                 <div class="row">
                   <a class="btn btn-block btn-danger" data-toggle="modal" data-target="#myModal">
                     Report Problem
@@ -33,7 +33,12 @@
                 </div>
                 <hr>
                 <div class="row">
-                  <span class="">Open Seats: {{ room.new_seats || room.seats }}</span>
+                  <span class="col-xs-6">Start Time: {{ room.start }}</span>
+                  <span class="col-xs-6">End Time: {{ room.end }}</span>
+                </div>
+                <hr>
+                <div class="row">
+                  <span class="col-xs-12">Open Seats: {{ room.new_seats || room.seats }}</span>
                 </div>
                 <div class="row" [hidden]='room.claimed'>
                   <a (click)="claimRoom(building, room)" class="btn btn-block btn-success">Claim</a>
@@ -42,11 +47,16 @@
                   <a (click)="unclaimRoom(building, room)" class="btn btn-block btn-warning">Unclaim</a>
                 </div>
               </div>
-              <div class="col-xs-7">
+              <div class="col-sm-9 col-xs-6">
                 <sebm-google-map
                   [latitude]="building.lat || 42.340082"
                   [longitude]="building.lng || -71.08948839999999"
                   [zoom]="zoom">
+                    <sebm-google-map-marker
+                      [latitude]="building.lat || 42.340082"
+                      [longitude]="building.lng || -71.08948839999999"
+                      [label]="building.name">
+                    </sebm-google-map-marker>
                 </sebm-google-map>
               </div>
             </div>

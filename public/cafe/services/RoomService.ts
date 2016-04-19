@@ -13,7 +13,7 @@ export class RoomService {
 
     getTimeFromString(time: string) {
         let format = 'MM/DD/YYYY hh:mm';
-        return moment(`1/1/2016 ${time}`, format).valueOf();
+        return moment(`2/1/2016 ${time}`, format).valueOf();
     }
 
     getSurroundingTimes(time: Date, numTimes): Observable<Array<Date>> {
@@ -72,6 +72,14 @@ export class RoomService {
             .map(res => res.result);
     }
 
+    changeBuilding(building, update) {
+        console.log('add building')
+        return this.http
+            .post('/api/cafe/building/' + building, JSON.stringify(update), {headers: this.headers})
+            .map(res => res.json())
+            .map(res => res.result);
+    }
+
     deleteBuilding(buildingId) {
         return this.http
             .delete('/api/cafe/building/' + buildingId)
@@ -86,11 +94,13 @@ export class RoomService {
             .map(res => res.result);
     }
 
-    editRoom(roomId, newBuilding: string, newNumber: string) {
+    editRoom(roomId, newBuilding: string, newNumber: string, latitude: string, longitude: string) {
         return this.http
             .put('/api/cafe/room/' + roomId,
-                 JSON.stringify({'buildingId': newBuilding, 'number': newNumber}),
-                 {headers: this.headers}
+                JSON.stringify(
+                    {buildingId: newBuilding, number: newNumber, latitude: latitude, longitude: longitude}
+                ),
+                {headers: this.headers}
             )
             .map(res => res.json())
             .map(res => res.result);

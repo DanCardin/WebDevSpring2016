@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-12 col-md-6">
       <div class="card text-xs-center">
         <div class="card-header">
           Add Buildings
@@ -21,7 +21,11 @@
           </div>
           <div class="row">
             <div class="col-xs-8">
-              <select #buildingSelect class="btn-block">
+              <select
+                #buildingSelect
+                class="btn-block"
+                (change)="updateLocation(buildingSelect, latitude, longitude)"
+              >
                 <option *ngFor="#building of buildings" [value]="building._id">{{ building.name }}</option>
               </select>
             </div>
@@ -29,12 +33,30 @@
               <a class="btn btn-danger btn-block" (click)="deleteBuilding(buildingSelect)">Delete</a>
             </div>
           </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <input
+                #latitude
+                type="text"
+                placeholder="latitude"
+                class="full-width"
+                (blur)="changeBuilding(buildingSelect.value, latitude.value, longitude.value)"
+                (keyup.enter)="changeBuilding(buildingSelect.value, latitude.value, longitude.value)">
+            </div>
+            <div class="col-xs-8">
+              <input
+                #longitude
+                type="text"
+                placeholder="longitude"
+                class="full-width"
+                (blur)="changeBuilding(buildingSelect.value, latitude.value, longitude.value)"
+                (keyup.enter)="changeBuilding(buildingSelect.value, latitude.value, longitude.value)">
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-xs-2">
-    </div>
-    <div class="col-xs-6">
+    <div class="col-xs-12 col-md-6">
       <div class="card text-xs-center">
         <div class="card-header">
           CAREFUL!

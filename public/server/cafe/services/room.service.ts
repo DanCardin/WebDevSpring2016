@@ -5,6 +5,7 @@ export class RoomService {
         this.app.get('/api/cafe/buildings', this.queryApi);
         this.app.get('/api/cafe/building', this.getBuildings);
         this.app.post('/api/cafe/building', this.addBuilding);
+        this.app.post('/api/cafe/building/:building', this.changeBuilding);
         this.app.delete('/api/cafe/building/:buildingId', this.deleteBuilding);
 
         this.app.get('/api/cafe/room', this.getRooms);
@@ -72,6 +73,17 @@ export class RoomService {
         console.log('addBuilding', req.body.name);
         res.json(
             RoomModel.addBuilding(req.body.name)
+            .then(
+                (res) => {return {result: res};},
+                (res) => {return {result: null, message: res};}
+            )
+        );
+    }
+
+    changeBuilding(req, res) {
+        console.log('changeBuilding', req.params.building, req.body);
+        res.json(
+            RoomModel.changeBuilding(req.params.building, req.body)
             .then(
                 (res) => {return {result: res};},
                 (res) => {return {result: null, message: res};}

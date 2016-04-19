@@ -52,7 +52,9 @@ export class Home implements OnInit{
                 .subscribe(buildings => {
                     this.buildings = buildings;
                     for (var building of buildings) {
+                        console.log('building', building)
                         for (var room of building.rooms) {
+                            console.log('room', room)
                             this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
                                 room.new_seats = room.seats - claims;
                                 room.claimed = claims;
