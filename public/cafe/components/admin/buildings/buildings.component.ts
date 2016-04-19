@@ -4,7 +4,6 @@ import {Router} from 'angular2/router';
 
 import {RoomService} from '../../../services/RoomService';
 
-
 class Time {
     private dayOfWeekMap = {
         'M': 'label-primary', 'T': 'label-success', 'W': 'label-info', 'R': 'label-warning', 'F': 'label-danger'

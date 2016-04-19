@@ -191,9 +191,8 @@ export module RoomModel {
             for (var time of times) {
                 timesa[time.roomId] = time;
             }
-            return Room.find({'_id': {$in: Object.keys(timesa)}}).exec()
+            return bluebird.Promise.resolve(Room.find({'_id': {$in: Object.keys(timesa)}}).exec())
             .then(rooms => {
-                console.log('rooms', rooms)
                 let roomsa = {};
                 for (var room of rooms) {
                     if (!roomsa[room.buildingId]) {
@@ -202,16 +201,18 @@ export module RoomModel {
                         roomsa[room.buildingId].push(room);
                     }
                 }
-                console.log('roomsa', roomsa, Object.keys(roomsa))
-                return Building.find({'_id': {$in: Object.keys(roomsa)}}).exec()
-                .then(buildings => {
-                    console.log('buildings asdf', buildings)
-                    for (var i = 0; i < buildings.length; i++) {
-                        buildings[i].rooms = roomsa[buildings[i]._id];
-                        console.log('wat', buildings[i].rooms);
-                    }
-                    console.log('buildings', buildings)
-                    return buildings;
+                return roomsa;
+            })
+            .then(roomsa => {
+                return bluebird.Promise.resolve(Building.find({'_id': {$in: Object.keys(roomsa)}}).exec())
+                .mapSeries(building => {
+                    let result = {};
+                    result['lat'] = building.lat;
+                    result['lng'] = building.lng;
+                    result['name'] = building.name;
+                    result['_id'] = building._id;
+                    result['rooms'] = roomsa[building._id];
+                    return result;
                 })
                 .catch(res => console.log(res));
             })
