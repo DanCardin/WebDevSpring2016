@@ -218,18 +218,21 @@ export class Buildings {
     }
 
     editRoom(update) {
-        this.roomService.editRoom(update[0], update[1], update[2]).subscribe();
-        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
+        this.roomService.editRoom(update[0], update[1], update[2]).subscribe(res => {
+            this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
+        });
     }
 
     deleteRoom(roomId) {
-        this.roomService.deleteRoom(roomId).subscribe();
-        this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
+        this.roomService.deleteRoom(roomId).subscribe(res => {
+            this.roomService.getRooms().subscribe((rooms) => this.rooms = rooms);
+        });
     }
 
     addBuilding(buildingName) {
-        this.roomService.addBuilding(buildingName.value).subscribe();
-        this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
+        this.roomService.addBuilding(buildingName.value).subscribe(res => {
+            this.roomService.getBuildings().subscribe((buildings) => this.buildings = buildings);
+        });
         buildingName.value = '';
     }
 

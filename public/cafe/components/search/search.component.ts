@@ -31,7 +31,7 @@ import {SearchService} from "../../services/SearchService";
         {{ numRooms }} Results:
         <ul>
           <li *ngFor="#room of rooms | async" (click)="selectBuilding(room)">
-            {{ room.number }}
+            {{ room.buildingName }}
            </li>
         </ul>
 
@@ -106,7 +106,8 @@ export class Search {
                 return top;
             };
 
-            let row = document.querySelector('#room_' + room.number + room.buildingName);
+            console.log('ldfsadlkfja', room.buildingId)
+            let row = document.querySelector('#room_' + room.number + room.buildingId);
             console.log('row', row)
             if (row) {
                 scrollTo(document.body, cumulativeOffset(row) - 200, 1250);

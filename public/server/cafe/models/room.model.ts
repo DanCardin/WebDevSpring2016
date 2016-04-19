@@ -167,6 +167,12 @@ export module RoomModel {
                     }
                 // }
             }
+
+            console.log('retir', returnTimes);
+            if (!returnTimes.length) {
+                returnTimes.push(timeNumber);
+            }
+            console.log('retir', returnTimes);
             return returnTimes;
         });
     }

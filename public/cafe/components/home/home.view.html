@@ -1,9 +1,15 @@
 <div class="fluid-container">
   <ul class="nav nav-tabs row centered">
+    <li class="nav-item">
+      <a class="btn btn-warning text-xs-center" [ngClass]="activeTime(i)" (click)="prevTime(time)">&lt;</a>
+    </li>
     <li class="nav-item" *ngFor="#time of times; #i = index">
       <a class="btn text-xs-center" [ngClass]="activeTime(i)" (click)="selectTime(time)">
         {{ time | date:"h:mm" }}
       </a>
+    </li>
+    <li class="nav-item" [hidden]="times.length < 2">
+      <a class="btn btn-warning text-xs-center" [ngClass]="activeTime(i)" (click)="nextTime(time)">&gt;</a>
     </li>
   </ul>
 

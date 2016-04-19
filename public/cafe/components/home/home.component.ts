@@ -23,7 +23,6 @@ import {UserService} from "../../services/UserService";
 export class Home implements OnInit{
     public times;
     public buildings;
-    public midway;
     public oneAtATime: boolean = true;
     public currentTime;
 
@@ -37,33 +36,52 @@ export class Home implements OnInit{
     ) {}
 
     ngOnInit() {
-        let numTimes = 5;
-        this.times = [];
-        this.midway = Math.floor(numTimes / 2);
-
         let time = new Date();
         let curTime = new Date(2016, 1, 1, time.getHours(), time.getMinutes());
+        this.selectTime(curTime);
+    }
+
+    prevTime(time) {
+        let curTime = this.times[0];
+        curTime.setMinutes(curTime.getMinutes() - 1);
+        this.selectTime(curTime);
+    }
+
+    nextTime(time) {
+        if (this.times.length > 1) {
+            let curTime = this.times[1];
+            this.selectTime(curTime);
+        }
+    }
+
+    selectTime(curTime) {
+        console.log('curtimes', curTime)
+        let numTimes = 5;
+        this.times = [];
+
         this.roomService.getSurroundingTimes(curTime, numTimes)
         .subscribe(times => {
-            if (times.length) {
-                this.times = times;
-                this.currentTime = times[0];
-                this.roomService.getBuildingsAtTime(this.currentTime)
-                .subscribe(buildings => {
-                    this.buildings = buildings;
-                    for (var building of buildings) {
-                        console.log('building', building)
-                        for (var room of building.rooms) {
-                            console.log('room', room)
-                            this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
-                                room.new_seats = room.seats - claims;
-                                room.claimed = claims;
-                                console.log('room.claimed', room.claimed, room.new_seats)
-                            });
-                        }
-                    }
-                });
+            console.log('timeslength', times)
+            if (!times.length) {
+                times = [curTime];
             }
+            this.times = times;
+            this.currentTime = times[0];
+            this.roomService.getBuildingsAtTime(this.currentTime)
+            .subscribe(buildings => {
+                this.buildings = buildings;
+                for (var building of buildings) {
+                    console.log('building', building)
+                    for (var room of building.rooms) {
+                        console.log('room', room)
+                        this.claimService.getClaimsForBuilding(room.number + building.name).subscribe(claims => {
+                            room.new_seats = room.seats - claims;
+                            room.claimed = claims;
+                            console.log('room.claimed', room.claimed, room.new_seats)
+                        });
+                    }
+                }
+            });
         });
     }
 
