@@ -35,11 +35,11 @@
       <td><input #password type="text" placeholder="Password"></td>
       <td><input #firstName type="text" placeholder="firstName"></td>
       <td><input #lastName type="text" placeholder="lastName"></td>
-      <td><input #roles type="text" placeholder="role1, role2"></td>
+      <td><input #isAdmin type="text" placeholder="role1, role2"></td>
       <td>
         <a>
           <span
-            (click)="addUser(username, password, firstName, lastName, roles)"
+            (click)="addUser(username, password, firstName, lastName, isAdmin)"
             [hidden]="!!selectedUser"
             class="fa fa-medsize fa-plus"
             aria-hidden="true"
@@ -47,7 +47,7 @@
         </a>
         <a>
           <span
-            (click)="updateUser(username, password, firstName, lastName, roles)"
+            (click)="updateUser(username, password, firstName, lastName, isAdmin)"
             [hidden]="!selectedUser"
             class="fa fa-medsize fa-check"
             aria-hidden="true"
@@ -55,12 +55,12 @@
         </a>
       </td>
     </tr>
-    <tr *ngFor="#user of users | async">
+    <tr *ngFor="#user of users">
       <td>{{ user.username }}</td>
       <td></td>
       <td>{{ user.firstName || '' }}</td>
       <td>{{ user.lastName || '' }}</td>
-      <td>{{ isAdmin(user) || '' }}</td>
+      <td>{{ isAdminFn(user.isAdmin) || '' }}</td>
       <td>
         <a>
           <span
@@ -71,7 +71,7 @@
         </a>
         <a>
           <span
-            (click)="selectUser(user, username, password, firstName, lastName, roles)"
+            (click)="selectUser(user, username, password, firstName, lastName, isAdmin)"
             [hidden]="!!selectedUser"
             class="fa fa-medsize fa-pencil"
             aria-hidden="true"

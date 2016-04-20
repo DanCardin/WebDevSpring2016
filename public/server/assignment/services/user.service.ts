@@ -5,9 +5,15 @@ let jwt = require('jsonwebtoken');
 
 import {UserModel} from '../models/user.model';
 
-let auth = () => {
-    return passport.authenticate('jwt', {session: false});
-}
+let auth = ((req, res, next) => {
+    return passport.authenticate('jwt', { session: false }, (error, user, info, status) => {
+        if (user === false && info && info.message === 'No auth token') {
+            // Just unauthorized - nothing serious, so continue normally
+            return next();
+        }
+        return next();
+    })(req, res, next);
+});
 
 export class UserService {
     constructor (private app) {
@@ -23,13 +29,17 @@ export class UserService {
         let opts = {
             jwtFromRequest: ExtractJwt.fromAuthHeader(),
             secretOrKey: 'secret',
+            authScheme: 'JWT',
             issuer: 'dcardin.webdev.com',
             audience: 'assignment.com',
+            session: false,
+            passReqToCallback: true,
         };
         passport.use(new JwtStrategy(
             opts,
-            (jwt_payload, done) => {
-                UserModel.findUserById(jwt_payload)
+            (req, jwt_payload, done) => {
+                console.log('lkjasdfasdf', jwt_payload)
+                UserModel.findUserById(jwt_payload._id)
                 .then((res) => {
                     done(null, res);
                 })
@@ -42,7 +52,7 @@ export class UserService {
             return res.json({});
         }
         let decoded = jwt.verify(token.slice(4), 'secret')._doc;
-        console.log('decoded', Object.keys(decoded));
+        console.log('decoded', decoded);
         return res.json(
             UserModel.findUserById(decoded._id)
             .then((res) => {return {result: res};})

@@ -8,14 +8,14 @@ import {UserService} from "../../services/UserService";
     templateUrl: "assignment/views/admin/admin.view.html",
 })
 export class Admin {
-    private users;
+    private users = [];
     private selectedUser;
     constructor(private userService: UserService) {
-        this.users = this.userService.findAllUsers();
+        this.userService.findAllUsers().subscribe(users => this.users = users);
     }
 
-    addUser(username, password, firstName, lastName, roles) {
-        if (!(username.value || password.value || roles.value)) {
+    addUser(username, password, firstName, lastName, isAdmin) {
+        if (!username.value || !password.value) {
             return;
         }
         this.userService.createUser({
@@ -23,14 +23,19 @@ export class Admin {
             password: password.value,
             firstName: firstName.value,
             lastName: lastName.value,
-            roles: roles.value,
-        }).subscribe()
-        this.users = this.userService.findAllUsers();
+            isAdmin: isAdmin.value === 'admin',
+        }).subscribe(res => {
+            this.userService.findAllUsers().subscribe(users => this.users = users);
+            username.value = '';
+            password.value = '';
+            firstName.value = '';
+            lastName.value = '';
+            isAdmin.value = '';
+        });
     }
 
-    updateUser(username, password, firstName, lastName, roles) {
-        console.log('before', username.value, password.value)
-        if (!(username.value || password.value) && this.selectedUser) {
+    updateUser(username, password, firstName, lastName, isAdmin) {
+        if ((!username.value || !password.value) && this.selectedUser) {
             return;
         }
         this.userService.updateUser(this.selectedUser._id, {
@@ -38,27 +43,29 @@ export class Admin {
             password: password.value,
             firstName: firstName.value,
             lastName: lastName.value,
-            roles: roles.value === 'admin',
-        }).subscribe()
-        username.value = '';
-        password.value = '';
-        firstName.value = '';
-        lastName.value = '';
-        roles.value = '';
-        this.users = this.userService.findAllUsers();
+            isAdmin: isAdmin.value === 'admin',
+        }).subscribe(res => {
+            username.value = '';
+            password.value = '';
+            firstName.value = '';
+            lastName.value = '';
+            isAdmin.value = '';
+            this.userService.findAllUsers().subscribe(users => this.users = users);
+            this.selectedUser = null;
+        });
     }
 
-    isAdmin(user) {
-        if (user.isAdmin) {
+    isAdminFn(isAdmin) {
+        if (isAdmin === 'true') {
             return 'admin';
-        } else {
-            return '';
         }
+        return '';
     }
 
     removeUser(user) {
-        this.userService.deleteUserById(user._id).subscribe();
-        this.users = this.userService.findAllUsers();
+        this.userService.deleteUserById(user._id).subscribe(res => {
+            this.userService.findAllUsers().subscribe(users => this.users = users);
+        });
     }
 
     selectUser(user, username, password, firstName, lastName, roles) {
@@ -67,6 +74,7 @@ export class Admin {
         password.value = user.password;
         firstName.value = user.firstName;
         lastName.value = user.lastName;
+        console.log('userssss', user)
         if (user.isAdmin) {
             roles.value = 'admin';
         }

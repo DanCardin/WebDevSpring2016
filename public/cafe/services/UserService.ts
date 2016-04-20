@@ -12,7 +12,7 @@ export class UserService {
 
     constructor(public http: Http, public authHttp: AuthHttp) {
         this.headers = new Headers();
-        this.headers.append('Content-Type', 'application/json');
+        this.headers = new Headers();
     }
 
     auth() {
