@@ -5,6 +5,8 @@ let jwt = require('jsonwebtoken');
 
 import {UserModel} from '../models/user.model';
 
+let secret = process.env.SESSION_SECRET || 'secret';
+
 let auth = ((req, res, next) => {
     return passport.authenticate('jwt', { session: false }, (error, user, info, status) => {
         if (user === false && info && info.message === 'No auth token') {
@@ -28,7 +30,7 @@ export class UserService {
 
         let opts = {
             jwtFromRequest: ExtractJwt.fromAuthHeader(),
-            secretOrKey: 'secret',
+            secretOrKey: secret,
             authScheme: 'JWT',
             issuer: 'dcardin.webdev.com',
             audience: 'assignment.com',
@@ -51,7 +53,7 @@ export class UserService {
         if (!token) {
             return res.json({});
         }
-        let decoded = jwt.verify(token.slice(4), 'secret')._doc;
+        let decoded = jwt.verify(token.slice(4), secret)._doc;
         console.log('decoded', decoded);
         return res.json(
             UserModel.findUserById(decoded._id)
@@ -67,7 +69,7 @@ export class UserService {
             .then((res) => {
                 return {
                     result: res,
-                    jwt: jwt.sign(res, 'secret'),
+                    jwt: jwt.sign(res, secret),
                 };
             })
             .catch((res) => {return {result: null, message: res};})
