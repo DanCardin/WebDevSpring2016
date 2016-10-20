@@ -1,3 +1,11 @@
-The OpenShift `nodejs` cartridge documentation can be found at:
+Cafe
+====
 
-http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
+A webapp which queries Courseoff to find times when classrooms at your
+university are not being used, so that you can!
+
+Installation
+------------
+
+    npm install
+    gulp run
